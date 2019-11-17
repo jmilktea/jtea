@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.56.102:8848
+      config:
+        server-addr: 192.168.56.102:8848
+        file-extension: yaml
