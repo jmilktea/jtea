@@ -57,8 +57,8 @@ docker exec -it 容器id ps -ef 和 docker exec -it 容器id top -p 进程id -H 
 20转换为16进制即为14
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/images/javacpu100-7.png)
 
-5.docker logs 341 > highcpu-docker.log 导出进程信息，找到线程id为14的线程
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/images/javacpu100-8.png)
-
-需要注意的是，由于docker的安全策略，这里如果直接使用jstack 4125 > highcpu.log 会报错，提示
+5.使用jstack 4125 > highcpu.log 会报错，这是由于docker的安全策略所限制，提示
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/images/javacpu100-9.png)
+
+不过jstack信息依然会输出到docker日志，所以我们可以通过 docker logs 341 > highcpu-docker.log 导出docker日志，找到线程id为14的线程
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/images/javacpu100-8.png)
