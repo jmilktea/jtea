@@ -5,3 +5,11 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 ## spring cloud
 [spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/gateway-nacos/readme.md)  
 [nacos集群](https://github.com/jmilktea/jmilktea/blob/master/nacos-cluster/nacos%E9%9B%86%E7%BE%A4.md)
+
+## 工具
+[github仓库多人协作](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/github%E4%BB%93%E5%BA%93%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C.pdf)
+[git分支管理](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86.md)
+
+## 解决方案
+[java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)
+[java 内存占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E9%AB%98%E9%97%AE%E9%A2%98.md)
