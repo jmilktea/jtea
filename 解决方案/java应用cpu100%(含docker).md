@@ -1,5 +1,5 @@
 ## 前言
-线上应用占用cpu高的问题相信很多朋友都遇到过，可能是由于程序哪里出现bug导致频繁在循环计算，或者是由于应用内存不足导致频繁进行gc。有时候为了快速恢复我们会重启应用，但这属于临时解决，很快问题又会再次出现，所以要根本解决需要知道此时应用正在做什么。本章介绍使用jstack和docker logs两种模式，前者是应用直接部署在宿主机上，后者是部署在docker容器中。
+线上应用占用cpu高的问题相信很多朋友都遇到过，可能是由于程序哪里出现bug导致频繁在循环计算，或者是由于应用内存不足导致频繁进行gc。有时候为了快速恢复我们会重启应用，但这属于临时解决，很快问题又会再次出现，所以要根本解决需要知道此时应用正在做什么。本章介绍使用jstack来解决这个问题，并且分为应用直接部署在宿主机和docker两种情况。
 
 ## 普通java程序
 1.模拟问题
@@ -35,9 +35,9 @@ public class HighcpuApplication {
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/images/javacpu100-4.png)
 
 ## docker部署
-现在大部分应用都跑在docker容器，java应用跑在docker上时，解决方式有些不同
+使用docker部署时基础镜像可以选择jdk或者jre，jdk体积较大，但是包含所有开发工具。jre提交小，但是不包含jstack jmap等工具，所以当使用jre时，进入容器jstack会提示命令不存在。使用jdk的场景只需要进入到容器，然后执行和上面一样的流程即可，最后把文件拷贝出来分析即可。下面看看使用jre镜像时的步骤
+
 1.发布应用到docker容器
-由于jdk镜像比较大，所以一般使用的是jre镜像。这就会出现一个问题，jre没有jstack jmap等命令，所以进入容器进行jstack会提示命令不存在。
 ```
 from openjdk:8-jre
 copy ./highcpu-0.0.1-SNAPSHOT.jar app.jar
