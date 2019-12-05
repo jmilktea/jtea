@@ -1,9 +1,9 @@
 ## 前言
-网关对于微服务来说是必不可少的，它相当于一个“门面”和"切面"。门面即把服务和外部隔离，外部只能跟网关进行交互，不需要关注里面的服务。切面即可以把网关当成一个系统级别的拦截器，关注的是横切关注点，如鉴权，限流，日志等。本章介绍的是spring cloud gateway的过滤器。
+网关对于微服务来说是必不可少的，它相当于一个“门面”和"切面"。门面即把服务和外部隔离，外部只能跟网关进行交互，不需要关注里面的服务。切面即可以把网关当成一个系统级别的拦截器，关注的是横切关注点，如鉴权，限流，日志等。本章介绍的是spring cloud gateway的过滤器，这是我们开发最关注的地方。
 
 ## spring cloud gateway   
-请求过程如下图
-
+请求过程如下图  
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-filter/images/gate%E8%AF%B7%E6%B1%82.png)  
 客户端向Spring Cloud Gateway发出请求，如果Gateway Handler Mapping确定请求与路由匹配，则将其发送到Gateway Web Handler。此handler通过特定于该请求的过滤器链处理请求。
 从功能上来说，filter可以分为全局和特定两种，全局即对所有请求生效，特定可以针对某些服务生效。全局的过滤器继承了GlobalFilter，特定过滤器可以继承GatewayFilter或者AbstractGatewayFilterFactory。
 
