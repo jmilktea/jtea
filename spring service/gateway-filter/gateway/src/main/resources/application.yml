@@ -1,0 +1,12 @@
+server:
+  port: 8082
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/user/**
+          filters:
+            - UserLog
