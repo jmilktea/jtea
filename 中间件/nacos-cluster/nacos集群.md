@@ -33,7 +33,7 @@ node3ip:8852
 
 - 启动  
 同理配置node2和node3，修改端口为8851和8852，使用sh startup.sh 分别启动3个节点。效果如图：
-![image](https://github.com/jmilktea/jmilktea/blob/master/nacos-cluster/nacos-cluster.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos-cluster.png)
 
 使用如下命令，可以看到注册中心多了一个服务
 ```
@@ -57,7 +57,7 @@ WARN [IS LEADER] no leader is available now!
 客户端如何访问集群？  
 方式1：通过配置集群节点ip。缺点是要写死ip和端口，当需要新增或修改节点的时候，客户端也需要修改，不利于扩展。    
 方式2：通过域名转发，优点是对客户端透明，集群可以动态伸缩，如图：
-![image](https://github.com/jmilktea/jmilktea/blob/master/nacos-cluster/nacos.com.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos.com.png)
 
 leader节点挂了怎么办？  
 按照raft流程，leader挂了会重新选举。我们kill掉leader节点，可以看到集群重新选举了一个新leader，再次把该节点kill掉，可以看到最后一个节点变成Candidate，并且不会再成为leader。重新把kill的节点启动，选举重新进行（term递增），选出新的leader。
