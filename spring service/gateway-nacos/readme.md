@@ -58,5 +58,5 @@ gateway配置也是在nacos中，其中路由规则配置为url以/order开头�
 
 ## 思考
 1.网关高可用  
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/gateway-ha.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/gateway-ha2.png)
 
