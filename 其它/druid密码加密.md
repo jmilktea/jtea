@@ -23,3 +23,5 @@ connectProperties: {config.decrypt: true, config.decrypt.key: ${publickey}}
 
 2. druid的加密意义何在？  
 虽然我们配置了加密后的文本，但如果我拿到了加密后的password和publickey，依然能在本地轻松获得密码，如此来说该加密是否还有意义？实际上访问数据库一定要账号密码，而且是明文，这点是数据库的规定，druid在这层上也是尽力了。一般我们都不会把安全信息写在配置文件上（经历过的公司基本都会出现开发将代码上传到github），而是通过环境变量传递，这样我们可以在执行脚本上再做一层安全控制。
+
+3. [参考官方文档](https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter)
