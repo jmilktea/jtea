@@ -1,0 +1,10 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: eureka-ha-server
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8082/eureka/,http://localhost:8083/eureka/
+
