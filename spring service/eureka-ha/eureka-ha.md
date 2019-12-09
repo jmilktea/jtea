@@ -1,4 +1,4 @@
-![image]()
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka.png)
 
 [服务注册]：服务启动时，会通过rest请求向配置的注册中心进行注册，告诉配置中心自己的名称和地址等信息，这些信息保存在eureka server的一个ConcurrentHashMap中。服务只会向第一个注册中心进行注册，如果失败，才继续向其它注册中心注册。
 
