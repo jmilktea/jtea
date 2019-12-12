@@ -16,4 +16,10 @@
 [服务剔除]：eureka默认情况下会每60s检查一遍，把有90s没续约的服务剔除
 
 ## 存储机制
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-store.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-store.png)  
+
+[registry]：是一个嵌套的ConcurrentHashMap，第一层key是服务名称，value是一个Map。第二层key是实例id，value 是一个记录ip,端口等信息的对象。eureka server ui显示的就是从registry读取
+
+[readWriteCacheMap]：是一个guava cache，存储了注册信息，默认情况下每60s就会清理90s没有来续约的client。readWriteCacheMap和registry是实时同步的
+
+[readWriteCacheMap]：是一个只读的map，数据定时从readWriteCacheMap同步，默认是30s同步一次。client每30s就会向server获取最新信息，是从readOnlyCacheMap获取
