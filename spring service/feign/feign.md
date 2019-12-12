@@ -19,3 +19,39 @@ logging:
 ```
 效果如下：  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/feign/images/log.png)  
+
+## 拦截器
+拦截器允许我们对所有的feign或者特定的feign做一些全局处理，如添加请求头等。如下列举3种方式
+1. 基于java配置。需要注意的是，如果加上FeiginInterceptor的@Configuration会是一个全局的拦截器，也就是对所有feign client都生效。如果不加上，则通过指定的feign的configuration配置生效。  
+```
+//@Configuration
+public class FeignInterceptor implements RequestInterceptor {
+
+    @Override
+    public void apply(RequestTemplate requestTemplate) {
+        requestTemplate.header("name", "test");
+    }
+}
+@FeignClient(name = "provider1", url = "localhost:8081", configuration = FeignInterceptor.class)
+public interface FeignProvider {
+
+    @RequestMapping(value = "/provide", method = RequestMethod.GET)
+    String provide1(String id);
+}
+```
+2. 基于配置文件，provider2是fegin的name  
+```
+feign:
+  client:
+    config:
+      provider2:
+        requestInterceptors:
+          - com.jmilktea.service.feign.client.FeignInterceptor
+```
+3. 基于feign builder配置  
+```
+    @Bean
+    public FeignProvider3 feignProvider3() {
+        return Feign.builder().contract(new SpringMvcContract()).requestInterceptor(new FeignInterceptor()).target(FeignProvider3.class, "localhost:8081");
+    }
+```
