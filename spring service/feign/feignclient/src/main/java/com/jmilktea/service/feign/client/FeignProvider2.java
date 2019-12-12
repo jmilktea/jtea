@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author huangyb
  * @date 2019/12/12
  */
-@FeignClient(name = "provider1", url = "localhost:8081", configuration = FeignInterceptor.class)
-public interface FeignProvider {
+@FeignClient(name = "provider2", url = "localhost:8081")
+public interface FeignProvider2 {
 
     @RequestMapping(value = "/provide", method = RequestMethod.GET)
-    String provide1(String id);
+    String provide2(String id);
 }

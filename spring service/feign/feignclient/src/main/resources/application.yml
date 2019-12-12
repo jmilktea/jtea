@@ -2,5 +2,12 @@ logging:
   level:
     com.jmilktea.service.feign.client.FeignProvider: debug
 
+
 server:
   port: 8083
+feign:
+  client:
+    config:
+      provider2:
+        requestInterceptors:
+          - com.jmilktea.service.feign.client.FeignInterceptor

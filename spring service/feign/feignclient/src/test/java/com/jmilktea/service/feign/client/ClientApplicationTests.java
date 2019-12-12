@@ -7,11 +7,5 @@ import org.springframework.cloud.openfeign.FeignClient;
 @SpringBootTest
 class ClientApplicationTests {
 
-    @Autowired
-    private FeignProvider feignProvider;
-
-    public void test(){
-        feignProvider.provide("1a");
-    }
 
 }
