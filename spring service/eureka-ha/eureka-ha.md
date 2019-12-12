@@ -1,3 +1,4 @@
+## 基本概念
 ![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka.png)
 
 [服务注册]：服务启动时，会通过rest请求向配置的注册中心进行注册，告诉配置中心自己的名称和地址等信息，这些信息保存在eureka server的一个ConcurrentHashMap中。服务只会向第一个注册中心进行注册，如果失败，才继续向其它注册中心注册。
@@ -13,3 +14,6 @@
 [服务下线]：下线时可以通过rest请求告诉注册中心，注册中心会把这个消息通知其他注册中心和服务
 
 [服务剔除]：eureka默认情况下会每60s检查一遍，把有90s没续约的服务剔除
+
+## 存储机制
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-store/eureka.png)
