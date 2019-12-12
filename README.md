@@ -5,7 +5,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 ## spring boot/cloud
 [spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/readme.md)  
 [spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-filter/gateway%20filter.md)    
-[eureka ha](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-ha.md)  
+[eureka ha](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-ha.md)    
+[feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/feign/feign.md)  
 
 ## 中间件
 [nacos集群](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos%E9%9B%86%E7%BE%A4.md)
