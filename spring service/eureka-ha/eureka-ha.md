@@ -16,4 +16,4 @@
 [服务剔除]：eureka默认情况下会每60s检查一遍，把有90s没续约的服务剔除
 
 ## 存储机制
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-store/eureka.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-store.png)
