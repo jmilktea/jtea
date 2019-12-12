@@ -1,0 +1,6 @@
+logging:
+  level:
+    com.jmilktea.service.feign.client.FeignProvider: debug
+
+server:
+  port: 8083
