@@ -13,6 +13,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 
 ## 其它
 [druid加密](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/druid%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86.md)  
+[jasypt加密配置文件](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/jasypt.md)  
 [编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E6%A6%82%E5%BF%B5.md)  
 
 ## 工具
