@@ -34,4 +34,5 @@ curl -X POST \
 
 ## postman
 实际情况可能参数比较长，命令就会比较难打，我们可以在postman把请求写出，然后导出curl命令  
-![image]() 
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/images/code.png)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/images/curl.png)
