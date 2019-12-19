@@ -5,11 +5,16 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 ## spring boot/cloud
 [spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/readme.md)  
 [spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-filter/gateway%20filter.md)    
-[eureka ha](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-ha.md)    
+[eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-ha.md)    
 [feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/feign/feign.md)  
 
 ## 中间件
 [nacos集群](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos%E9%9B%86%E7%BE%A4.md)
+
+## 其它
+[druid加密](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/druid%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86.md)  
+[jasypt加密配置文件](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/jasypt.md)  
+[编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E6%A6%82%E5%BF%B5.md)  
 
 ## 工具
 [github仓库多人协作](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/github%E4%BB%93%E5%BA%93%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C.pdf)  
