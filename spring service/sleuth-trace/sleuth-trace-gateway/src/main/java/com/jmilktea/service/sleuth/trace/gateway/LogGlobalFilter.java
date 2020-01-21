@@ -22,8 +22,10 @@ public class LogGlobalFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         MDC.put("uid", "123");
         ExtraFieldPropagation.set("uid", "123");
-        log.info("============gate way log=========");
-        return chain.filter(exchange);
+//        log.info("============gate way log=========");
+        return chain.filter(exchange).doFirst(() -> {
+            log.info("============gate way log=========");
+        });
     }
 
     @Override
