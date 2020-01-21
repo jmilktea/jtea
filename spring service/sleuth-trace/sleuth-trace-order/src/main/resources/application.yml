@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: order-service
+  sleuth:
+    log:
+      slf4j:
+        whitelisted-mdc-keys: uid
+    propagation-keys: uid
+server:
+  port: 8081
+
