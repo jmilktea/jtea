@@ -30,6 +30,8 @@ public class LogGlobalFilter implements GlobalFilter, Ordered {
         //log.info("============gate way log=========");
         return chain.filter(exchange).doFirst(() -> {
             log.info("============gate way log=========");
+        }).doFinally(s -> {
+            MDC.clear();
         });
     }
 
