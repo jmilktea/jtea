@@ -1,5 +1,5 @@
 ## 描述
-webflux中递归或者分页可以使用expand来实现，示例代码如下
+webflux中递归可以使用expand来实现，示例代码如下
 ```
     @Test
     public void testMonoPage() {
