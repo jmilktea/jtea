@@ -71,5 +71,5 @@ public class SwaggerController {
 ```
 
 - 效果
-![image]()
+![image](https://github.com/jmilktea/jmilktea/blob/master/webflux/images/swagger.png)
 
