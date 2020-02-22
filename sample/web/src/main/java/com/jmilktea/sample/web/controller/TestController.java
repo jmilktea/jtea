@@ -1,6 +1,7 @@
 package com.jmilktea.sample.web.controller;
 
 import com.jmilktea.sample.web.core.ReactiveResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -9,27 +10,27 @@ import reactor.core.publisher.Mono;
 @RequestMapping("test")
 public class TestController {
 
-    @RequestMapping("ping")
+    @GetMapping("ping")
     public Mono<String> ping() {
         return Mono.just("ping success");
     }
 
-    @RequestMapping("webresult")
-    public Mono<ReactiveResult> webResult() {
+    @GetMapping("webresult")
+    public Mono<ReactiveResult<String>> webResult() {
         return ReactiveResult.success("success");
     }
 
-    @RequestMapping("exp")
+    @GetMapping("exp")
     public Mono<String> exp() {
         throw new NullPointerException();
     }
 
-    @RequestMapping("monoexp")
+    @GetMapping("monoexp")
     public Mono<String> monoExp() {
         return Mono.error(new RuntimeException());
     }
 
-    @RequestMapping("error")
+    @GetMapping("error")
     public Mono<ReactiveResult> error() {
         return ReactiveResult.fail("1001", "1001 error");
     }

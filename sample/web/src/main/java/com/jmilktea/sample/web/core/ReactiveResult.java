@@ -35,7 +35,7 @@ public class ReactiveResult<T> {
         return Mono.just(ReactiveResult.SUCCESS);
     }
 
-    public static <T> Mono<ReactiveResult> success(T data) {
+    public static <T> Mono<ReactiveResult<T>> success(T data) {
         return Mono.just(new ReactiveResult(data));
     }
 
