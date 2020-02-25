@@ -41,3 +41,4 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 ## 解决方案
 [java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
 [java 内存占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E9%AB%98%E9%97%AE%E9%A2%98.md)
+[HttpClient线程池设置问题](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/HttpClient%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98.md)
