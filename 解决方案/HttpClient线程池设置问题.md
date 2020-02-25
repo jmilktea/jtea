@@ -1,7 +1,7 @@
 ## 背景
    线程池看似很大，但是请求速度很慢。查看调用方/被调用方的内存、CPU资源非常低。
 ## 问题原因
-使用的httpClient包是: org.apache.httpcomponents
+使用的httpClient包是: org.apache.httpcomponents。其中一段处理好连接池的源码：
 
     ```
      if (systemProperties) {
