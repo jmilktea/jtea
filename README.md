@@ -12,7 +12,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [错误处理](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.md)  
 [日志追踪](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E6%97%A5%E5%BF%97%E8%BF%BD%E8%B8%AA.md)   
 [全局异常处理](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86.md)  
-[expand递归](https://github.com/jmilktea/jmilktea/blob/master/webflux/expand%E9%80%92%E5%BD%92(%E5%88%86%E9%A1%B5).md)  
+[expand递归](https://github.com/jmilktea/jmilktea/blob/master/webflux/expand%E9%80%92%E5%BD%92.md)  
 [swagger](https://github.com/jmilktea/jmilktea/blob/master/webflux/swagger.md)  
 
 ## 中间件
@@ -36,6 +36,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [git分支管理](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86.md)  
 [jmeter](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/jmeter/jmeter.md)  
 [curl](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/curl.md)  
+[idea插件](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)
 
 ## 解决方案
 [java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
