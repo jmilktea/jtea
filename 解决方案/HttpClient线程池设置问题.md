@@ -20,8 +20,8 @@
         poolingmgr.setDefaultMaxPerRoute(maxConnPerRoute);
     }
     ```
-   - maxConnTotal参数:连接池中最大连接数。最大链接数是 10.
-   - maxConnPerRoute参数:是针对一个域名同时间能使用的最多的连接数，例如：分别请求 www.xx.com和www.xx2.com 的资源那么他就会产生两个route。
+   - maxConnTotal参数:连接池中最大连接数。默认最大链接数是 10.
+   - maxConnPerRoute参数:是针对一个域名同时间能使用的最多的连接数，默认是 5.例如：分别请求 www.xx.com和www.xx2.com 的资源那么他就会产生两个route。
     如果没设置默认就是 5
  ## 问题解决
  - 上诉问题慢如蜗牛是因为没有设置 maxConnPerRoute参数。导致同一个域名同一时间使用最多的链接数太少。加大这个参数至合理范围。
