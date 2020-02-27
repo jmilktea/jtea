@@ -37,5 +37,5 @@ public class TestController {
 
     //git ff 1
     //git nf 1 2
-    //git squash 1 2 3 4 5
+    //git squash 1 2 3 4 5 6
 }
