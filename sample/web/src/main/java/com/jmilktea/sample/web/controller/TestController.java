@@ -34,4 +34,8 @@ public class TestController {
     public Mono<ReactiveResult> error() {
         return ReactiveResult.fail("1001", "1001 error");
     }
+
+    //git ff 1 2
+    //git nf 1 2
+    //git squash 1 2 3 4 5
 }
