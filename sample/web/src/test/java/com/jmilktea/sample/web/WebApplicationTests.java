@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -80,5 +81,12 @@ class WebApplicationTests {
                 .log("single debug")
                 .doOnNext(s -> System.out.println("single result is:" + s))
                 .subscribe();
+    }
+
+    @Test
+    public void testMapAndFlatMap() throws InterruptedException {
+        Flux.just(1, 2, 3, 4).map(s -> s * 2).subscribe(s -> System.out.println(s));
+        Flux.range(1, 10).flatMap(s -> Mono.just(s * 2).delayElement(Duration.ofSeconds(1))).subscribe(s -> System.out.println(s));
+        Thread.sleep(3000);
     }
 }
