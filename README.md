@@ -39,7 +39,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [git合并参数ff nf squash](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/%E5%90%88%E5%B9%B6%E5%8F%82%E6%95%B0%20--ff%20--nf%20--squash.md)  
 [jmeter](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/jmeter/jmeter.md)  
 [curl](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/curl.md)  
-[idea插件](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)
+[idea插件汇总](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)
 
 ## 解决方案
 [java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
