@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -35,7 +36,7 @@ class WebApplicationTests {
                 System.out.println(s);
             });
             return Mono.just(true);
-        }).onErrorContinue((t,d)->{
+        }).onErrorContinue((t, d) -> {
             System.out.println(t);
         }).collectList().flatMap(s -> Mono.just(true));
     }
@@ -62,5 +63,22 @@ class WebApplicationTests {
         if (list.get(0).equals(10)) {
             throw new RuntimeException();
         }
+    }
+
+    @Test
+    public void testDebug() {
+        //Hooks.onOperatorDebug();
+        //Flux.just(1, 2, 3).single().checkpoint("debug").subscribe();
+        //Flux.just(1, 2, 3).single().log("debug").subscribe();
+        Flux.just(1, 2, 3, 4)
+                .flatMap(s -> {
+                    System.out.println("item:" + s);
+                    return Mono.just(s * 2);
+                })
+                .filter(s -> s % 2 != 0)
+                .single()
+                .log("single debug")
+                .doOnNext(s -> System.out.println("single result is:" + s))
+                .subscribe();
     }
 }
