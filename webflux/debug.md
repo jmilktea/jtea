@@ -13,7 +13,8 @@
 ```
 我们看运行结果  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/webflux/images/debug-default.png)  
-可以看到输出的信息，比较有用的Source was empty，有经验的可能会通过MonoSingle$SingleSubscriber这里去找到有没有single的相关调用，但是像上面说的，这不够直观，并且在调用链很长的情况下，或者有多个single调用时，这个定位变得困难。最后通过stack trace的输出，它指向的错误是subscribe这一行，也不是我们想要的结果。
+可以看到输出的信息，比较有用的Source was empty，有经验的可能会通过MonoSingle$SingleSubscriber这里去找到有没有single的相关调用，但是像上面说的，这不够直观，并且在调用链很长的情况下，或者有多个single调用时，这个定位变得困难。最后通过stack trace的输出，它指向的错误是subscribe这一行，也不是我们想要的结果。下面介绍几种方法，来辅助定位问题位置。
+
 - 启用调试模式
 ```
 Hooks.onOperatorDebug();
