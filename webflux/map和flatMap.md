@@ -1,7 +1,7 @@
 map和flatMap方法都可以将元素映射成另一种元素，两者的区别是：  
 1. map 返回普通类型，而flatMap的是Publisher，也就是Mono或者Flux对象
 2. map 的转换是同步的，而flatMap是异步的  
-两者的操作过程如图：
+两者的操作过程如图，可以看到flatMap并没有按照顺序(颜色)输出：
 ![image](https://github.com/jmilktea/jmilktea/blob/master/webflux/images/map.png)  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/webflux/images/flatmap.png)
 
