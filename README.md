@@ -15,6 +15,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [expand递归](https://github.com/jmilktea/jmilktea/blob/master/webflux/expand%E9%80%92%E5%BD%92.md)  
 [swagger](https://github.com/jmilktea/jmilktea/blob/master/webflux/swagger.md)  
 [debug](https://github.com/jmilktea/jmilktea/blob/master/webflux/debug.md)  
+[map&flatMap](https://github.com/jmilktea/jmilktea/blob/master/webflux/map%E5%92%8CflatMap.md)  
 
 ## 中间件
 [nacos集群](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos%E9%9B%86%E7%BE%A4.md)
