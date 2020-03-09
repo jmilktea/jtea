@@ -20,8 +20,10 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 ## 中间件
 [nacos集群](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos%E9%9B%86%E7%BE%A4.md)
 
-## linux
-[实操](https://github.com/jmilktea/jmilktea/blob/master/linux/%E5%AE%9E%E6%93%8D.md)  
+## linux  
+[命令](https://github.com/jmilktea/jmilktea/blob/master/linux/%E5%91%BD%E4%BB%A4.md)  
+[实操](https://github.com/jmilktea/jmilktea/blob/master/linux/%E5%AE%9E%E6%93%8D.md)   
+
 
 ## 代码片段
 [InputStream转String](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/inputstream2string.md)  
