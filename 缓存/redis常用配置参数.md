@@ -1,4 +1,4 @@
-[redis配置](https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf)
+[redis配置](https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf)还蛮多的，不过注释写得很清楚。这里记录一些需要关注的常用配置。
 
 ################################## NETWORK #####################################  
 - bind 127.0.0.1  
