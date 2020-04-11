@@ -89,6 +89,10 @@ class WebApplicationTests {
 
 	@Test
 	public void testDefaultIfEmptyAndSwitchIfEmpty() {
+		int I = 10;
+		if (I > 0)
+			System.out.println("test");
+
 		//不会输出内容
 		getEmptyData().flatMap(result -> {
 			System.out.println(result);
