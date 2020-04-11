@@ -47,7 +47,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [git合并参数ff nf squash](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/%E5%90%88%E5%B9%B6%E5%8F%82%E6%95%B0%20--ff%20--nf%20--squash.md)  
 [jmeter](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/jmeter/jmeter.md)  
 [curl](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/curl.md)  
-[idea插件汇总](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)
+[idea插件汇总](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)  
+[p3c插件](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/p3c.md)  
 
 ## 缓存
 [redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/%E7%BC%93%E5%AD%98/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md) 
