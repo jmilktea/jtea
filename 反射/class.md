@@ -11,7 +11,7 @@
 以上是一个接口作为一个示例。获取 Long.class 和 User.class
 ```
    Class<ITest> iTestClass = ITest.class;
-   //接口是多继承的 获取多个接口的信息
+   //接口是多继承的 获取多个接口的信息 如果是Class继承 就用 iTestClass.getGenericSuperclass()
    Type[] types = iTestClass.getGenericInterfaces(); 
    //获取第一个接口的泛型
    Type[] actualTypeArguments =( (ParameterizedType) types[0]).getActualTypeArguments();
