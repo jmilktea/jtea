@@ -1,7 +1,7 @@
 ## 简介
 反射在开发中经常用到，尤其是写一些公共组件或者框架经常用到。这一篇文章讨论怎么获取泛型，枚举值等等。
 
-## 代码（这个是一个示例，将要从这个class拿取各种值）
+### 代码（这个是一个示例，将要从这个class获取各种值）
 ```
     @Service
     public interface ITest extends Model<Long,User>  {
