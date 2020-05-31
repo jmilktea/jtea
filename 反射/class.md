@@ -26,7 +26,7 @@ Class Method Parameter 获取注解
     //获取接口方法
     Method[] declaredMethods = iTestClass.getDeclaredMethods();
     //获取方法的注解
-    methodInfo.setAnnotations(declaredMethods[0].getAnnotations());
+    declaredMethods[0].getAnnotations();
     //获取方法参数的注解 二维数组 和参数一样对应
     Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 ```
@@ -53,3 +53,4 @@ Class Method Parameter 获取注解
    - TypeVariable 普通Class参数。例如：String、User对象
    - ParameterizedType 带泛型的参数。例如 List,Map等等
    - GenericArrayType 数组类型参数。
+   - WildcardType 泛型有继承关系的 例如：LIst<? extends User>
