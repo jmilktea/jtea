@@ -38,7 +38,7 @@ public class ExecutorInterceptor implements Interceptor {
 
 	@Override
 	public void setProperties(Properties properties) {
-
+		//这里可以设置一些属性值，在intercept时使用
 	}
 
 	@Override
