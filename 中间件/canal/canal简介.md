@@ -41,10 +41,10 @@ binlog文件的生成有三种方式：statement,row和mixed，不同模式下bi
 server代表一个canal运行实例，对应于一个jvm，就是一个进程  
 instance对应于一个数据队列，1个server对应1..n个instance，不同instance可以有不同配置,也有一份公用的配置    
 instance模块：  
-eventParser (数据源接入，模拟slave协议和master进行交互，协议解析)
-eventSink (Parser和Store链接器，进行数据过滤，加工，分发的工作)
-eventStore (数据存储)
-metaManager (增量订阅&消费信息管理器)  
+eventParser (数据源接入，模拟slave协议和master进行交互，协议解析)  
+eventSink (Parser和Store链接器，进行数据过滤，加工，分发的工作)  
+eventStore (数据存储)  
+metaManager (增量订阅&消费信息管理器)    
 [详细参考](https://github.com/alibaba/canal/wiki/%E7%AE%80%E4%BB%8B)   
 - 目录介绍  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/canal-floder.png)   
