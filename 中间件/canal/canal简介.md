@@ -11,10 +11,10 @@
 
 - mysql binlog  
 **相关配置：**    
-log-bin=mysql-bin binlog文件命名前缀，如mysql-bin.000001  
-expire_logs_day=15 binlog过期时间，为了防止占用太多磁盘空间，可以设置一个过期时间  
-binlog-format=Row binlog记录模式  
-server_id=1 MySQL replaction需要定义，master和slave不能重复，对于canal来说，会自动生成一个，可以通过show slave hosts查看
+**log-bin=mysql-bin** binlog文件命名前缀，如mysql-bin.000001  
+**expire_logs_day=15** binlog过期时间，为了防止占用太多磁盘空间，可以设置一个过期时间  
+**binlog-format=Row** binlog记录模式  
+**server_id=1** MySQL replaction需要定义，master和slave不能重复，对于canal来说，会自动生成一个，可以通过show slave hosts查看
 
 mysql的binlog是多文件存储的，可以通过**show binary logs;**查看当前有哪些binglog文件，如：  
 ![iamge](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/show-binlog.png)    
