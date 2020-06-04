@@ -30,7 +30,7 @@ binlog文件的生成有三种方式：statement,row和mixed，不同模式下bi
 混合模式。一般基于statement，不满足时切换为row
 
 - canal实现原理  
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/canal-slave.png)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/canal-slave-2.png)  
 1. canal模拟mysql slave的交互协议，伪装自己为mysql slave，向mysql master发送dump协议
 2. mysql master收到dump请求，开始推送binary log给slave(也就是canal)
 3. canal解析binary log对象(原始为byte流)
