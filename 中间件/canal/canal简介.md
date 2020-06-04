@@ -19,7 +19,7 @@
 mysql的binlog是多文件存储的，可以通过**show binary logs**查看当前有哪些binglog文件，如：  
 ![iamge](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/show-binlog.png)    
 
-binlog文件的生成有三种方式：statement,row和mixed，不同模式下binlog记录的内容不相同。可以通过**show variables like 'binlog_format';**查看当前使用哪种模式，[详细参考](https://dev.mysql.com/doc/refman/5.7/en/binary-log.html)**
+binlog文件的生成有三种方式：statement,row和mixed，不同模式下binlog记录的内容不相同。可以通过**show variables like 'binlog_format';**查看当前使用哪种模式，[详细参考](https://dev.mysql.com/doc/refman/5.7/en/binary-log.html)**  
 可以通过mysqlbinlog来查看binlog的内容，如：**mysqlbinlog --base64-output=decode-rows -v --start-datetime="2020-06-04 07:21:09" --stop-datetime="2020-06-05 07:59:50" mysql-bin.000003** --base64-output=decode-rows用来解码，默认binlog的sql语句是编码后的；--start/stop-datetime指定一个时间范围，也可以根据位点位置来筛选。  
 - statement  
 基于sql语句。由于只是简单的记录sql语句，所有存储空间较小，但是不能详细反映行的变化。如：  
