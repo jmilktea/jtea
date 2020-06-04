@@ -16,7 +16,7 @@
 **binlog-format=Row** binlog记录模式  
 **server_id=1** MySQL replaction需要定义，master和slave不能重复，对于canal来说，会自动生成一个，可以通过show slave hosts查看
 
-mysql的binlog是多文件存储的，可以通过**show binary logs;**查看当前有哪些binglog文件，如：  
+mysql的binlog是多文件存储的，可以通过**show binary logs**查看当前有哪些binglog文件，如：  
 ![iamge](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/show-binlog.png)    
 
 binlog文件的生成有三种方式：statement,row和mixed，不同模式下binlog记录的内容不相同。可以通过**show variables like 'binlog_format';**查看当前使用哪种模式，[详细参考](https://dev.mysql.com/doc/refman/5.7/en/binary-log.html)。可以通过**mysqlbinlog --base64-output=decode-rows -v --start-datetime="2020-06-04 07:21:09" --stop-datetime="2020-06-05 07:59:50" mysql-bin.000003** 来查看binlog内容。  
