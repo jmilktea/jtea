@@ -39,12 +39,12 @@ canal.mq.partitionsNum=16 #mq partition数，也是用来决定消息是发送�
 ```
 
 - 启动canal  
-./startup.sh，观察日志
-![image]()  
+./startup.sh，观察日志  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/canal-start-log.png)  
 
 - rocketmq观察消息  
 要先按照规则创建对应的topic，如account_test，修改变触发binlog，可以观察到消息生成  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/images/canal-mqmsg.png)   
 消息内容解释：
 ```
 {
