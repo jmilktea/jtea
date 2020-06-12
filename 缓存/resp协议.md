@@ -74,6 +74,6 @@ System.out.println(message);
 ```
 按照协议给redis发了一串内容，执行后可以看到返回了+OK 表示成功，那串字符被redis server正确理解，到redis查看也生成了key。  
 
-参考  
+**参考**  
 [redis协议说明](http://www.redis.cn/topics/protocol.html)  
 [5分钟深入Redis之RESP协议](https://mp.weixin.qq.com/s?__biz=MzUzOTY4NjQyMQ==&mid=2247483707&idx=1&sn=c9249dd7cd6de2861eecc72206bc79a2&chksm=fac5e241cdb26b57f860ead9eb062f728293c2e32766ea9d6c35259e99a852a654ac4a485fc5&mpshare=1&srcid=0611H54eXLatfhA5m44w2UcG&sharer_sharetime=1591837790073&sharer_shareid=548db259b62bf54e9bd9577cfeb9791e&from=singlemessage&scene=1&subscene=10000&clicktime=1591863559&enterid=1591863559&ascene=1&devicetype=android-29&version=27000f3b&nettype=WIFI&abtest_cookie=AAACAA%3D%3D&lang=zh_CN&exportkey=A%2B860LL6b56SMjSGFdfuN1s%3D&pass_ticket=HqDnASAW4PlYP8QIDTkQtjoFHdiFkRZH0wCL6mQCK84aEDF77vokau6U2Bpgso%2Fr&wx_header=1)  
