@@ -55,7 +55,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [github仓库多人协作](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/github%E4%BB%93%E5%BA%93%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C.pdf)  
 [git分支管理](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86.md)  
 [git合并参数ff nf squash](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/%E5%90%88%E5%B9%B6%E5%8F%82%E6%95%B0%20--ff%20--nf%20--squash.md)   
-[git stash](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/git%20stash.md) 
+[git stash](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/git%20stash.md)  
 [jmeter](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/jmeter/jmeter.md)  
 [curl](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/curl.md)  
 [idea插件汇总](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)  
