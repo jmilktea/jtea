@@ -37,6 +37,10 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [锁](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E9%94%81.md)  
 [数据库开发规范](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)  
 
+## 设计
+[编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E6%A6%82%E5%BF%B5.md)    
+[分层设计](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
+
 ## 代码片段
 [InputStream转String](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/inputstream2string.md)  
 [apache-csv](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/apache-csv.md)    
@@ -46,9 +50,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 ## 其它
 [druid加密](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/druid%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86.md)  
 [jasypt加密配置文件](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/jasypt.md)  
-[编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E6%A6%82%E5%BF%B5.md)    
 [ThreadLocal扩展](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/ThreadLocal%E6%89%A9%E5%B1%95.md)   
-[分层设计](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)  
+[单元测试启动加速](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8%E5%8A%A0%E9%80%9F.md)  
 
 ## 工具
 [arthas实践](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/arthas/%E5%AE%9E%E8%B7%B5.md)  
