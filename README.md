@@ -35,7 +35,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 
 ## mysql
 [锁](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E9%94%81.md)  
-[数据库开发规范](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)  
+[数据库开发规范](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)   
+[mysql log](https://github.com/jmilktea/jmilktea/blob/master/mysql/mysql%20log.md)   
 
 ## 设计
 [编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E6%A6%82%E5%BF%B5.md)    
