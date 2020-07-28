@@ -1,4 +1,4 @@
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/spring%20bean%20lift%20cycle.png)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/spring%20bean%20life%20cycle.png)  
 
 - 三个流程   
 根据上图可以分为3个阶段，准备阶段->实例化bean阶段->bean销毁阶段。准备阶段是spring容器启动开始各种初始化，从配置文件，java config等获取bean的相关信息，也就是BeanDefination。严格来说，准备阶段不属于bean生命周期，因为此时只是收集bean的元信息，还没开始创建bean对象。实例化阶段就是bean对象创建阶段，生成可以使用的bean。销毁阶段就是bean销毁过程。
