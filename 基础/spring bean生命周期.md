@@ -10,4 +10,4 @@
 Instantiation可以理解为实例化，此时对象还未完整生成。Initialization可以理解为初始化，此时对象已经生成。InstantiationAwareBeanPostProcessor继承了BeanPostProcessor，可以bean实例化之前和属性注入之前做一些操作。而BeanPostProcessor做的都是在bean已经实例化并且属性已经初始化完成。
 
 - 有了init-method为什么还需要@PostConstruct  
-@PostConstruct并不是spring包下的，而是javax包下的，spring为了兼容，对它进行支持。而init-method是spring bean里的。
+@PostConstruct是java jsr250的规范，spring为了兼容，对它进行支持。而init-method是spring定义的。
