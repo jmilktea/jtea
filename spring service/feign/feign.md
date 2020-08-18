@@ -21,14 +21,14 @@ public interface FeignProvider {
 有时候我们需要观察请求的详细信息，包括参数，返回值等，方便找出问题。使用工具的话可以使用fiddler进行抓包，但我们希望能在ide直接观察。feign默认不输出日志，这非常不利于排除问题。例如如下输出405错误，并不够直观。  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/feign/images/nolog.png)    
 我们需要如下两步开启日志：  
-1.注入log bean
+1. 注入log bean
 ```
 @Bean
 public Logger.Level level(){
     return Logger.Level.FULL;
 }
 ```
-2.配置文件，com.**是feign类的全路径
+2. 配置文件，com.**是feign类的全路径
 ```
 logging:
   level:
@@ -74,7 +74,7 @@ feign:
 ```
 
 ## 超时配置  
-生产环境接口的超时设置是必须的，否则可能由于接口超时导致调用方请求积压，从而导致雪崩效应，拖垮整个上下游服务。feign支持3种超时配置。
+生产环境接口的超时设置是必须的，否则可能由于接口超时导致调用方请求积压，从而导致雪崩效应，拖垮整个上下游服务。feign支持如下3种超时配置。
 - feign
 ```
 feign:
@@ -114,3 +114,22 @@ feign使用ribbon做客户端的负载均衡，当配置了@FeignClient的url属
 这三个超时时间的配置有如下特点：
 1. 配置@FeignClient的url属性，ribbon配置不会生效。hystrix和feign的超时，哪个超时配置小使用哪个
 2. 配置@FeignClient的name属性，如果hystrix超时较小，则使用。否则如果配置了feign的超时时间，则使用（忽略ribbon）。否则使用ribbon的超时时间。
+
+## 连接池  
+和其它池化的思想一样，使用连接池的目的是将链接缓存起来，减少链接的重建。默认情况下，feign使用的是HttpURLConnection，每个请求都会重新建立链接，效率较低。feign支持配置apache httpclient 和 okhttp 链接池，这里已httpclient为例。  
+只需要引入如下包就会使用httpclient
+```
+<dependency>
+  <groupId>io.github.openfeign</groupId>
+  <artifactId>feign-httpclient</artifactId>
+</dependency>
+```  
+常用配置如下：
+```
+feign.httpclient.enabled=true #是否开启httpclient
+feign.httpclient.connection-timeout=2000 #链接超时时间
+feign.httpclient.max-connections=200 #链接池链接最大链接数
+feign.httpclient.max-connections-per-route #单个host最大链接数量 
+feign.httpclient.time-to-live=900 #链接在池中的时间，默认是900s
+feign.httpclient.connection-timer-repeat=3000 #链接池管理定时器执行频率
+```
