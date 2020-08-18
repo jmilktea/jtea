@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: feign-client
+
 logging:
   level:
     com.jmilktea.service.feign.client.FeignProvider: debug
@@ -8,6 +12,35 @@ server:
 feign:
   client:
     config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
       provider2:
         requestInterceptors:
           - com.jmilktea.service.feign.client.FeignInterceptor
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+
+ribbon:
+  ConnectTimeout: 15000
+  ReadTimeout: 15000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:18081/eureka/
+  instance:
+    prefer-ip-address: true
+

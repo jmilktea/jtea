@@ -13,4 +13,7 @@ public interface FeignProvider2 {
 
     @RequestMapping(value = "/provide", method = RequestMethod.GET)
     String provide2(String id);
+
+    @RequestMapping(value = "/testTimeOut", method = RequestMethod.GET)
+    String testTimeOut();
 }

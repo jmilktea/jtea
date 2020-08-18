@@ -1,2 +1,13 @@
 server:
   port: 8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:18081/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: feign-provider
