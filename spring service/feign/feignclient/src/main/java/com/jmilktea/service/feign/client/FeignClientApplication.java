@@ -33,9 +33,14 @@ public class FeignClientApplication {
 		return feignProvider.provide1("1a");
 	}
 
-	@RequestMapping(value = "/provide2", method = RequestMethod.GET)
-	public String provide2(Long id) {
-		return feignProvider2.provide2("1a");
+	@RequestMapping(value = "/testTimeOut2", method = RequestMethod.GET)
+	public String testTimeOut2() {
+		return feignProvider2.testTimeOut();
+	}
+
+	@RequestMapping(value = "/testPostTimeOut2", method = RequestMethod.GET)
+	public String testPostTimeOut2() {
+		return feignProvider2.testPostTimeOut();
 	}
 
 	@RequestMapping(value = "/testTimeOut3", method = RequestMethod.GET)
@@ -43,8 +48,8 @@ public class FeignClientApplication {
 		return feignProvider3.testTimeOut();
 	}
 
-	@RequestMapping(value = "/testTimeOut2", method = RequestMethod.GET)
-	public String testTimeOut2() {
-		return feignProvider2.testTimeOut();
+	@RequestMapping(value = "/testPostTimeOut3", method = RequestMethod.GET)
+	public String testPostTimeOut3() {
+		return feignProvider3.testPostTimeOut();
 	}
 }

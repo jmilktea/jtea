@@ -115,6 +115,51 @@ feign使用ribbon做客户端的负载均衡，当配置了@FeignClient的url属
 1. 配置@FeignClient的url属性，ribbon配置不会生效。hystrix和feign的超时，哪个超时配置小使用哪个
 2. 配置@FeignClient的name属性，如果hystrix超时较小，则使用。否则如果配置了feign的超时时间，则使用（忽略ribbon）。否则使用ribbon的超时时间。
 
+## 重试机制  
+网络环境是不稳定的，有时候会发生抖动，导致请求异常。重试机制可以在网络发生异常导致建立链接超时、失败，或者链接读取数据超时等错误时，进行重试。和超时配置类似，可以使用feign的重试机制，也可以使用ribbon的重试机制。
+- feign重试机制  
+默认情况下，feign是不开启重试机制的。可以自己注册一个Retryer
+```
+@Configuration
+public class SimpleRetryConfiguration {
+
+	@Bean
+	public Retryer retryer() {
+    //2s内重试两次
+		return new Retryer.Default(100, 2000, 2);
+	}
+}
+```
+这样配置会使所有feign client都生效，如果要针对某些client生效，可以注释掉@Configuration，并在具体的feign client指定配置
+```
+@FeignClient(name = "provider2", url = "localhost:8081", configuration = SimpleRetryConfiguration.class)
+public interface FeignProvider2 {
+}
+```  
+使用feign配置有几点需要注意：  
+1. POST请求也会重试，如果接口没有保证幂等，可能会有问题  
+2. 如果同时配置了hystrix超时时间，并且比feign的超时时间小，那么请求超时时会被hystrix熔断，不会有重试的机会
+- ribbon重试机制  
+和超时配置类似，重试机制也可以使用ribbon的重试机制。主要有如下配置：
+```
+ribbon:
+  ConnectTimeout: 1000 
+  ReadTimeout: 1000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1  
+  OkToRetryOnAllOperations: false
+```
+这样配置会使所有feign client都生效，如果要针对某些client生效，可以指定name
+```
+feign-name:
+  ribbon:
+```
+使用ribbon配置有几点需要注意：
+1. 配置了url的属于外部接口，此时请求不会经过ribbon，所以不会生效
+2. 配置了feign超时会覆盖ribbon超时，所以不会生效  
+3. 默认情况下POST请求不会重试
+4. OkToRetryOnAllOperations表示所有失败都重试，此时POST请求失败也会重试
+
 ## 连接池  
 和其它池化的思想一样，使用连接池的目的是将链接缓存起来，减少链接的重建。默认情况下，feign使用的是HttpURLConnection，每个请求都会重新建立链接，效率较低。feign支持配置apache httpclient 和 okhttp 链接池，这里已httpclient为例。  
 只需要引入如下包就会使用httpclient

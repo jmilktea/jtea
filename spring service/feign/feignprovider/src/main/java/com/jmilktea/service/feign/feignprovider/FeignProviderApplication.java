@@ -23,6 +23,14 @@ public class FeignProviderApplication {
 
 	@RequestMapping(value = "/testTimeOut", method = RequestMethod.GET)
 	public String testTimeOut() throws InterruptedException {
+		System.out.println("in");
+		Thread.sleep(20000);
+		return "success";
+	}
+
+	@RequestMapping(value = "/testPostTimeOut", method = RequestMethod.POST)
+	public String testPostTimeOut() throws InterruptedException {
+		System.out.println("in");
 		Thread.sleep(20000);
 		return "success";
 	}

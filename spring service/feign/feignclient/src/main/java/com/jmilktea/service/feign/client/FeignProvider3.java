@@ -14,4 +14,7 @@ public interface FeignProvider3 {
 
 	@RequestMapping(value = "/testTimeOut", method = RequestMethod.GET)
 	String testTimeOut();
+
+	@RequestMapping(value = "/testPostTimeOut", method = RequestMethod.POST)
+	String testPostTimeOut();
 }

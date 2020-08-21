@@ -13,8 +13,8 @@ feign:
   client:
     config:
       default:
-        connectTimeout: 10000
-        readTimeout: 10000
+        connectTimeout: 5000
+        readTimeout: 5000
       provider2:
         requestInterceptors:
           - com.jmilktea.service.feign.client.FeignInterceptor
@@ -29,13 +29,14 @@ hystrix:
           enabled: true
         isolation:
           thread:
-            timeoutInMilliseconds: 2000
+            timeoutInMilliseconds: 5000
 
 ribbon:
-  ConnectTimeout: 15000
-  ReadTimeout: 15000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 0
+  ConnectTimeout: 2000
+  ReadTimeout: 2000
+  MaxAutoRetries: 1
+#  MaxAutoRetriesNextServer: 0
+  #OkToRetryOnAllOperations: true
 
 eureka:
   client:
