@@ -1,4 +1,4 @@
-这里要讲的是git merge几个参数，-ff(fast forward)，-nf (no fast forward)，--squash。在使用git工具在进行代码合并的时候，我们经常会看到它们，例如 tortoisegit 或者 idea，如图
+这里要讲的是git merge几个参数，-ff(fast forward)，-nf (no fast forward)，--squash。在使用git工具在进行代码合并的时候，我们经常会看到它们，例如 tortoisegit 或者 idea，如图  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/images/tor-merge-param.png)
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/images/idea-merge-param.png)
  
