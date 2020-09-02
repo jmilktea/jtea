@@ -5,6 +5,7 @@ import com.jmilktea.sample.mybatis.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class MybatisApplication {
 		SpringApplication.run(MybatisApplication.class, args);
 	}
 
+	@Transactional
 	@RequestMapping("/account/{id}")
 	public Account getAccountById(@PathVariable("id") Long id) {
 		return accountMapper.getById(id);

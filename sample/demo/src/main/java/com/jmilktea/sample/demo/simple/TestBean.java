@@ -1,4 +1,4 @@
-package com.jmilktea.sample.demo;
+package com.jmilktea.sample.demo.simple;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,7 +21,6 @@ public class TestBean implements InitializingBean, DisposableBean {
 
 	@PreDestroy
 	public void destory() {
-		BeanFactoryPostProcessor
 		System.out.println("PreDestroy");
 	}
 

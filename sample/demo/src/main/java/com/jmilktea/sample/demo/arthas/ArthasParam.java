@@ -1,4 +1,4 @@
-package com.jmilktea.sample.demo;
+package com.jmilktea.sample.demo.arthas;
 
 /**
  * @author huangyb1

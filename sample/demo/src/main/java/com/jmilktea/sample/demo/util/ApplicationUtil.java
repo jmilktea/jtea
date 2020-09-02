@@ -1,4 +1,4 @@
-package com.jmilktea.sample.demo;
+package com.jmilktea.sample.demo.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

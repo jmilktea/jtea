@@ -1,5 +1,6 @@
 package com.jmilktea.sample.demo;
 
+import com.jmilktea.sample.demo.simple.TestBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
