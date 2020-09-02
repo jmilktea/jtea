@@ -74,6 +74,6 @@ System.out.println(transService.getClass().getSuperclass()); //com.jmilktea.samp
 ```
 
 ## 问题分析    
-如果上面的原理可以知道，如果我们直接调用的方法没有@Transactional注解，那么就获取不到TransactionInteceptor，在该方法内再次调用有@Transactional注解的方法时，由于此时的调用对象target是我们定义的对象，所以这次调用不会经过代理对象，自然无法被拦截。简单的说，我们在外面注入TransService对象是spring生成的代理对象，此时调用的上下文是代理对象，而在我们方法内调用方法，此时上下文是我们实际定义的对象。如图：
+如果上面的原理可以知道，如果我们直接调用的方法没有@Transactional注解，那么就获取不到TransactionInteceptor，在该方法内再次调用有@Transactional注解的方法时，由于此时的调用对象target是我们定义的对象，所以这次调用不会经过代理对象，自然无法被拦截。简单的说，我们在外面注入TransService对象是spring生成的代理对象，此时调用的上下文是代理对象，而在我们方法内调用方法，此时上下文是我们实际定义的对象。如图：  
 ![iamge](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/transactional-2.png)
 
