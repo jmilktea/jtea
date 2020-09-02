@@ -74,7 +74,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [反射](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84.md)  
 [jvm常用参数](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
 [spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)  
-[@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transaction%E4%B8%8D%E7%94%9F%E6%95%88%3F.md)  
+[@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%3F.md)  
 
 ## 解决方案
 [java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
