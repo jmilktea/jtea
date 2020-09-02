@@ -21,7 +21,7 @@ public class TransService {
 ```
 ## 原理  
 spring会通过jdk proxy或cglib proxy来实现动态代理，有了代理就可以在程序执行前后织入逻辑。如上代码，实际spring通过cglib为我们生成了一个代理类，如图：  
-![image]()    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/transactional-1.png)    
 可以打印如下信息验证，我们注入的实际是spring通过cglib生成的代理类。另外，由于动态生成的代理类重写了toString方法，所以在idea debug显示的还是我们定义的类。 
 ```
 System.out.println(transService.getClass());  //com.jmilktea.sample.demo.service.TransService$$EnhancerBySpringCGLIB$$6bce284d
@@ -75,5 +75,5 @@ System.out.println(transService.getClass().getSuperclass()); //com.jmilktea.samp
 
 ## 问题分析    
 如果上面的原理可以知道，如果我们直接调用的方法没有@Transactional注解，那么就获取不到TransactionInteceptor，在该方法内再次调用有@Transactional注解的方法时，由于此时的调用对象target是我们定义的对象，所以这次调用不会经过代理对象，自然无法被拦截。简单的说，我们在外面注入TransService对象是spring生成的代理对象，此时调用的上下文是代理对象，而在我们方法内调用方法，此时上下文是我们实际定义的对象。如图：
-
+![iamge](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/transactional-2.png)
 
