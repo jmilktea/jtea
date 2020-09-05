@@ -29,7 +29,7 @@ cd src && make install PREFIX=/usr/redis
 ./bin/redis-cli shutdown #停止服务
 ```
 
-如果需要修改一些配置，[可以参考这里]()
+如果需要修改一些配置，[可以参考这里](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)
 
 安装过程可能遇到的问题：
 - cc: 错误：../deps/hiredis/libhiredis.a：没有那个文件或目录  
@@ -41,7 +41,7 @@ make lua hiredis linenoise
 ## 集群  
 集群的搭建是在单机的基础上完成的，为了保证高可用性，redis集群要求至少需要6个节点，其中3个主节点3个从节点，从节点会同步主节点的数据。节点之间是平等的，没有master-slave之分，他们相互通信。当主节点挂了，从节点会顶上代替成为主节点，当节点恢复，会变成从节点。redis集群是以槽位单位的，总共有16383个槽位，会分配到主节点上，当一个key需要写到redis集群时，会先通过算法计算这个key落在哪个槽上，再写到这个槽所在的redis。  
 redis集群架构图如下：   
-[image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-cluster.png)  
 redis集群的搭建是在单机的基础上完成的，本次搭建是在同一个机器上搭建6个节点，对于多个机器也是一样道理，可以相互访问就可以。  
 
 1. 首先创建redis01 redis02 redis03 redis04 redis05 redis06 目录，分别对应6个节点，接着把单机安装的bin目录redis.conf文件分别拷贝到这些目录下  
@@ -70,8 +70,7 @@ redis-cli -c -h 127.0.0.1 -p 7001
 ```
 cluster nodes
 ```  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-cluster-nodes.png)  
 6. 操作  
-进入节点后就可以使用redis命令，从上面可以知道每个节点都有一个槽位范围，如果操作的刚好落在当前节点就会正常运行，否则会访问一个MOVED错误，表示需要重定向到另一个节点，这个时候redis客户端就应该重新连接到另一个节点进行操作。关于MOVED是redis协议的一部分，[可以参考这里]()  
-
-- 集群相关配置  
+进入节点后就可以使用redis命令，从上面可以知道每个节点都有一个槽位范围，如果操作的刚好落在当前节点就会正常运行，否则会访问一个MOVED错误，表示需要重定向到另一个节点，这个时候redis客户端就应该重新连接到另一个节点进行操作。关于MOVED是redis协议的一部分，[可以参考这里](https://github.com/jmilktea/jmilktea/blob/master/redis/resp%E5%8D%8F%E8%AE%AE.md)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-cluster-getset.png)  
