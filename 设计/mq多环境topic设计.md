@@ -17,7 +17,7 @@ kafkaTemplate.send(MqConfig.PRODUCT_CREATE + mqConfig.getSuffix(), data);
 ```
 这种方式的缺点挺明显的，每次发送和接收都需要手动去拼接这个后缀，代码看起来比较乱，而且需要约束开发遵守这个规范。我们希望是在发送和接收不需要关注这个事情，对于发送和接收是透明的。
 
-2. **自动生成topic**  
+2.**自动生成topic**  
 我们先定义好正常的topic，要自动生成有后缀的topic，只需要在给topic赋值时，自动拼接上后缀即可。这里利用到spring bean生命周期的环节，在属性赋值时，可以动态修改属性值。我们定义一个MqConfig实现InitializingBean接口，在afterPropertiesSet里对属性进行修改。
 ```
 @Data
