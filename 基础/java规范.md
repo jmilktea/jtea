@@ -1,8 +1,7 @@
 java开发规范已经有一些比较好的定义，收集如下：  
 [阿里java开发规范](https://github.com/alibaba/p3c/blob/master/Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89.pdf)  
 [google java style](http://hawstein.com/2014/01/20/google-java-style/)  
-
-基于这些基础，我们定义一些推荐的做法
+基于这些规范，我们定义一些推荐的做法，欢迎补充
 
 ## 基础类
 - 习惯格式化代码  
