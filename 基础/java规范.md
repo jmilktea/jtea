@@ -60,7 +60,7 @@ System.out.println(Integer.valueOf(128) == Integer.valueOf(128)); //false
 说明：post接口，mq消息消费都需要考虑幂等，防止重复
 
 - 禁止在事务内做耗时操作  
-说明：在事务内做接口调用，中间件调用等，会延长事务和锁的持有时间，影响db并发效率。[参考]()  
+说明：在事务内做接口调用，中间件调用等，会延长事务和锁的持有时间，影响db并发效率。[参考](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)  
 
 - springboot配置文件   
     - bootstrap.yml放一些服务相关的，如server配置，spring配置，db配置，redis配置等
