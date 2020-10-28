@@ -71,6 +71,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [resp协议](https://github.com/jmilktea/jmilktea/blob/master/redis/resp%E5%8D%8F%E8%AE%AE.md)  
 [redis定时任务](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.md)   
 [redis单机和集群搭建](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%8D%95%E6%9C%BA%E5%92%8C%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.md)  
+[缓存和数据库一致性问题]
 
 ## 基础  
 [反射](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84.md)  
