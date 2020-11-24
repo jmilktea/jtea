@@ -39,9 +39,9 @@ bindResource方法会将链接设置到TransactionSynchronizationManager的resou
 	private static final ThreadLocal<Map<Object, Object>> resources =
 			new NamedThreadLocal<>("Transactional resources");
 ```  
-![image]()    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/transactional2-1.png)    
 后续的操作会通过TransactionSynchronizationManager#getResource获取链接，很明显，如果线程上下文已经存在，那么就返回返回这个链接    
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/transactional2-2.png)  
 
 很明显，多线程执行时，在不同的线程上下文，是没有共享同一个链接的，那么事务自然无效。  
 
@@ -51,7 +51,7 @@ bindResource方法会将链接设置到TransactionSynchronizationManager的resou
 多线程事务，本质上已经是一个分布式事务的问题了，而要解决分布式事务比较复杂，2pc，tcc，可靠消息...，很明显我们通常不愿意把复杂性提高。  
 
 网上还有一种做法，我们参考一下代码
-![image]()
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/images/transactional2-3.png)
 
 这种方式通过使用编程式事务手动提交或回滚事务，通过CountDownLatch让线程互相等待，一起提交或回滚。这类似于2阶段提交，没有根本上解决分布式事务问题。例如在每个线程commit时，部分commit成功了，此时服务挂了，那么没commit的就没了，而已经提交了不会回滚。  
 
