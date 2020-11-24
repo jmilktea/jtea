@@ -57,5 +57,5 @@ bindResource方法会将链接设置到TransactionSynchronizationManager的resou
 
 本质上还是需要从业务角度去解决这个问题，尽量通过拆分大事务，避免一次处理太多数据，如果在业务允许范围内，每次处理的数据少了，那么自然可以不需要多线程了。  
 
-
+参考文章：[要我说，多线程事务它必须就是个伪命题](https://www.toutiao.com/i6892985918131536387/)
 
