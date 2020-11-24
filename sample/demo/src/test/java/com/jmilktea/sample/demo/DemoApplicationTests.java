@@ -29,4 +29,9 @@ class DemoApplicationTests {
 	public void testTransactionFinal() {
 		transService.testTransactionFinal();
 	}
+
+	@Test
+	public void testTransactional2() throws InterruptedException {
+		transService.testTransactional2();
+	}
 }
