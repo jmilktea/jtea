@@ -11,26 +11,13 @@ rm -rf file 是一个危险的命令，容易删库到跑路。但在测试环�
 
 我们可以简单的复现这个问题
 1. df -h 查看当前磁盘空间，可以看到/目录已用7.6G  
-<<<<<<< HEAD
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-1.png)  
 2. 使用 dd if=/dev/zero of=file bs=1M count=1000 命令，创建一个1G的大文件，在使用1查看，可以看到已用8.6G  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-2.png)  
 3. 打开一个新的会话，使用 less file 查看该文件，此时 ps -ef | grep less 可以看到有一个进程正在查看文件  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-3.png)  
 4. 使用rm file删除文件，ls 看到文件已经不存在了，此时用1查看空间，可以看到空间没有释放
 
 ## 解决方案
 1. 由上面的问题原因可以知道，是有进程在引用文件，可以把这个进程停止即可，如上我们把less进程停掉，可以看到1G空间就释放了  
-2. 如果进程正在对外提供服务，不能停止，可以使用重定向的方式，清空文件，命令为：> file
-=======
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-1.png)  
-2. 使用 dd if=/dev/zero of=file bs=1M count=1000 命令，创建一个1G的大文件，在使用1查看，可以看到已用8.6G  
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-2.png)  
-3. 打开一个新的会话，使用 less file 查看该文件，此时 ps -ef | grep less 可以看到有一个进程正在查看文件
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-3.png)  
-4. 使用rm file删除文件，ls 看到文件已经不存在了，此时用1查看空间，可以看到空间没有释放  
-
-## 解决方案  
-1. 由上面的问题原因可以知道，是有进程在引用文件，可以把这个进程停止即可，如上我们把less进程停掉，可以看到1G空间就释放了  
-2. 如果进程正在对外提供服务，不能停止，可以使用重定向的方式，清空文件，也可以释放空间，命令为：> file
->>>>>>> ae9c5a5c66bf37c87a3c041096d76bcef6a76951
+2. 如果进程正在对外提供服务，不能停止，可以使用重定向的方式，清空文件，命令为：> file   
