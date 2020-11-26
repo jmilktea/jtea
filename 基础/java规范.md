@@ -108,7 +108,7 @@ if(a == 1){
 说明：同步每次都要写磁盘，效率低  
 
 - 禁止在日志打印时序列化对象   
-说明：有不少人喜欢这样打日志log.info("data:{}",JsonUtil.toJsonString(data));这样每次打印都会进行序列化，销毁cpu资源  
+说明：有不少人喜欢这样打日志log.info("data:{}",JsonUtil.toJsonString(data));这样每次打印都会进行序列化，消耗cpu资源  
 直接使用log.info("data:{}",data);即可  
 
 - 日志应该尽可能详细  
