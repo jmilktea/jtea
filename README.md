@@ -87,4 +87,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
 [java 内存占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E9%AB%98%E9%97%AE%E9%A2%98.md)  
 [HttpClient线程池设置问题](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/HttpClient%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98.md)  
-[rm命令删除文件了,但磁盘空间没有释放](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/linux%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4.md)  
+[rm命令删除文件了,但磁盘空间没有释放](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/linux%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4.md)   
+
+## 面试  
+[双亲委派机制](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.md)  
