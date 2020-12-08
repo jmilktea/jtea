@@ -22,6 +22,10 @@ curl www.baidu.com -H "id:1" -H "name:zhangsan" -v
 ```
 curl -X POST -d 'id=1' www.baidu.com -v
 ```
+还可以指定从文件读取参数  
+```
+curl -X POST -d @file.txt www.baidu.com -v
+```
 完整例子
 ```
 curl -X POST \
