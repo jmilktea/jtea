@@ -49,16 +49,16 @@ cmd java -jar app.jar
 3.找到cpu占用高的进程4125  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-5.png)
 
-4.找到占用cpu的线程 top -p 4125 -H
+4.找到占用cpu的线程 top -p 4125 -H  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-6.png)
 
 这样找到的线程id并不准确，会和docker内的线程对应不上，所以应该执行
 docker exec -it 容器id ps -ef 和 docker exec -it 容器id top -p 进程id -H  来找到容器内的线程id  
-20转换为16进制即为14
+20转换为16进制即为14  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-7.png)
 
-5.使用jstack 4125 > highcpu.log 会报错，这是由于docker的安全策略所限制，提示
+5.使用jstack 4125 > highcpu.log 会报错，这是由于docker的安全策略所限制，提示  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-9.png)
 
-不过jstack信息依然会输出到docker日志，所以我们可以通过 docker logs 341 > highcpu-docker.log 导出docker日志，找到线程id为14的线程
+不过jstack信息依然会输出到docker日志，所以我们可以通过 docker logs 341 > highcpu-docker.log 导出docker日志，找到线程id为14的线程  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-8.png)
