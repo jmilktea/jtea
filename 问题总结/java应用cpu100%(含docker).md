@@ -31,7 +31,7 @@ public class HighcpuApplication {
 4.将线程id转换为16进制 printf "%x\n" 1863 得到线程的16机制id为747  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-3.png)
 
-5.jstack 1849 > highcpu.log 将进程信息导出，找到747的线程
+5.jstack 1849 > highcpu.log 将进程信息导出，找到747的线程(或者jstack 1849 | less 搜索747)  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/javacpu100-4.png)
 
 ## docker部署
