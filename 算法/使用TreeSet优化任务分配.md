@@ -187,9 +187,9 @@ public class User implements Comparable<User> {
 ```
 输出如下：
 ```
-before memory:248207968
-use memory(byte):63020752
-use seconds:0.376
+before memory:314792216
+use memory:314728
+use seconds:0.399
 ```
 
 ## TreeSet原理   
