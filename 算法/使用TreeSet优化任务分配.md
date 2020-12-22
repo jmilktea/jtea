@@ -3,7 +3,7 @@
 例如有4个人员，A(10),B(12),C(15),D(18)，括号内表示当前人员手上的任务数。需求的分配逻辑是优先分配给任务数较少的人员，当任务数相等时，进行循环分配。
 如下一个任务是分配给A(11)，其依然是最少，则下一次继续分配给A(12)，此时A和B相等，则后续几次的分配是：B,A,A,B,B,A，也就是任务相等时从头到尾，再从尾到头分配。  
 用一张图表示更清晰，整个分配过程如下：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/rbt-task.png)  
 
 整个逻辑实现起来还不太简单，有两个核心点
 1. 优先分配拥有最低任务的人
@@ -12,48 +12,48 @@
 我们看最初的实现如下，这里实现的只是循环分配，还没有实现优先分配最低任务人员(当时还没做)，如果需要实现，需要改如何获取user的逻辑，还得判断任务数相时等等逻辑...
 ```
 private void distribute() {
-		int round = 1, index = 0; //轮次，单数正向分配，双数逆向分配
-		List<User> users = Lists.newArrayList("A", "B", "C", "D"); //要分配的人员
-		while (true) {
-			if (CollectionUtils.isEmpty(users)) {
-				//没有要分配的人员
-				break;
+	int round = 1, index = 0; //轮次，单数正向分配，双数逆向分配
+	List<User> users = Lists.newArrayList("A", "B", "C", "D"); //要分配的人员
+	while (true) {
+		if (CollectionUtils.isEmpty(users)) {
+			//没有要分配的人员
+			break;
+		}
+		List<Job> jobs = getJobs(); //排序获取任务
+		if (CollectionUtils.isEmpty(jobs)) {
+			//没任务了
+			break;
+		}
+		for (Job job : jobs) {
+			User user; //这个任务应该分配到谁
+			if (round % 2 == 0) {
+				user = users.get(users.size() - 1 - index % user.size());
+			} else {
+				user = users.get(index % users.size());
 			}
-			List<Job> jobs = getJobs(); //排序获取任务
-			if (CollectionUtils.isEmpty(jobs)) {
-				//没任务了
-				break;
-			}
-			for (Job job : jobs) {
-				User user; //这个任务应该分配到谁
-				if (round % 2 == 0) {
-					user = users.get(users.size() - 1 - index % user.size());
-				} else {
-					user = users.get(index % users.size());
-				}
-				try {
-					boolean result = service.generateJob(user, job); //生成任务
-					if (result) {
-						user.addJobCount(); //任务数+1
-						if (user.getJobCount() >= user.getMaxTaskNum()) {
-							users.remove(user); //任务达到上限，移除，不再分配
-							if (CollectionUtils.isEmpty(users)) {
-								break;
-							}
+			try {
+				boolean result = service.generateJob(user, job); //生成任务
+				if (result) {
+					user.addJobCount(); //任务数+1
+					if (user.getJobCount() >= user.getMaxTaskNum()) {
+						users.remove(user); //任务达到上限，移除，不再分配
+						if (CollectionUtils.isEmpty(users)) {
+							break;
 						}
-					} else {
-						generateJobFail(job);
 					}
-				} catch (Exception e) {
-					log.error("distribute job error:{}", e.getMessage(), e);
+				} else {
+					generateJobFail(job);
 				}
-				index++;
-				if (index % users.size() == 0) {
-					round++;
-				}
+			} catch (Exception e) {
+				log.error("distribute job error:{}", e.getMessage(), e);
+			}
+			index++;
+			if (index % users.size() == 0) {
+				round++;
 			}
 		}
 	}
+}
 ```
 
 可以看到整个过程实现起来比较复杂，需要判断各种条件，取余，计算等，后续维护起来成本比较大，也容易出错。
@@ -194,7 +194,7 @@ use seconds:0.376
 
 ## TreeSet原理   
 我们先看下TreeSet的继承图  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/rbt-treeset.png)  
 可以看到TreeSet继承了SortSet，支持排序功能，另外还有NavigableSet接口，该接口定义了一些导航方法，如pollFirst获取第一个元素，lower小于指定元素，higher大于指定元素等。  
 另外它还有一个变量m，而这个m默认就是TreeMap，也就是TreeSet是通过TreeMap实现的，我们知道Map表示key-value格式的键值对，那么TreeSet用什么表示value呢？  
 通过add方法的源码可以发现设置的value是一个PRESENT，它是一个静态的Object对象
@@ -228,7 +228,7 @@ A Red-Black tree based {@link NavigableMap} implementation.
 5. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点
 
 当新增或者删除节点时，就可能打破上面的规则，就需要进行**着色**和**旋转**来重新调整。一颗红黑树例子如下：  
-![image]()
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/rbt-tree.png)
 
 红黑树在实际过程中有许多应用
 1. java 中的TreeMap，TreeSet 底层数据结构都是红黑树
