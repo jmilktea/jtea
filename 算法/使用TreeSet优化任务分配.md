@@ -73,36 +73,36 @@ private void distribute() {
 
 我们看具体实现逻辑
 ```
-	private void distribute() {
-		TreeSet<User> jobTreeSet = TreeSetUtils.init("A", "B", "C", "D"); //要分配的人员
-		while (true) {
+private void distribute() {
+	TreeSet<User> jobTreeSet = TreeSetUtils.init("A", "B", "C", "D"); //要分配的人员
+	while (true) {
+		if (jobTreeSet.isEmpty()) {
+			break; //分配完成
+		}			
+		List<Job> jobs = getJobs(); //排序获取任务
+		if (CollectionUtils.isEmpty(jobs)) {
+			break; //分配完成
+		}
+		for (Job job : jobs) {
 			if (jobTreeSet.isEmpty()) {
 				break; //分配完成
-			}			
-			List<Job> jobs = getJobs(); //排序获取任务
-			if (CollectionUtils.isEmpty(jobs)) {
-				break; //分配完成
-			}
-			for (Job job : jobs) {
-				if (jobTreeSet.isEmpty()) {
-					break; //分配完成
-				}				
-				User user = jobTreeSet.pollFirst(); //取最小任务数的人
-				try {					
-					boolean result = service.generateJob(user, job); //生成任务
-					if (result) {
-						if (user.addJobCount()) {							
-							jobTreeSet.add(user); //未满，添加回去重新排序
-						}
-					} else {
-						generateJobFail(job);
+			}				
+			User user = jobTreeSet.pollFirst(); //取最小任务数的人
+			try {					
+				boolean result = service.generateJob(user, job); //生成任务
+				if (result) {
+					if (user.addJobCount()) {							
+						jobTreeSet.add(user); //未满，添加回去重新排序
 					}
-				} catch (Exception e) {
-					log.error("distribute job error:{}", e.getMessage(), e);
+				} else {
+					generateJobFail(job);
 				}
+			} catch (Exception e) {
+				log.error("distribute job error:{}", e.getMessage(), e);
 			}
 		}
 	}
+}
 ```
 
 关键的User定义如下
