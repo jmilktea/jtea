@@ -1,6 +1,6 @@
 ## 简介  
 string作为redis基本数据类型的一种，在redis中使用非常广泛。redis是基于c开发的，但是它并没有使用c里面的字符串类型，c字符串是以空字符结尾的数组，如字符串“redis”，则存储格式如下：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/sds-1.png)  
 而redis自己定义了一套SDS的数据结构（simple dynamic string 简单动态字符串）来表示字符串。  
 redis中SDS定义如下：
 ```
@@ -10,15 +10,14 @@ struct sdshdr {
 
     // 记录buf数组中未使用字节的数量，数组是有空余的
     int free;
-
+    
     // 字节数组，用于保存实际字符串
     char buf[];
-
 };
 ```
 可以看到SDS保存了一些额外信息，len字符串长度，free剩余未使用数量，以及存储实际字符串的字节数组。  
 redis3.2之后的版本对SDS进行优化，根据存储空间大小拆成sdshdr5，sdshdr8，sdshdr16，sdshdr32，sdshdr64几个数据结构，分别用来存储大小为：32 字节（2 的 5 次方）,256 字节（2 的 8 次方），64KB（2 的 16 次方），4GB 大小（2 的 32 次方）以及 2 的 64 次方大小的字符串。[源码](https://github.com/redis/redis/blob/unstable/src/sds.h)   
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/sds-6.png)   
 
 ```
 struct __attribute__ ((__packed__)) sdshdr8 {
@@ -40,13 +39,12 @@ struct __attribute__ ((__packed__)) sdshdr8 {
 
 - 缓冲区溢出  
 假设存在如下字符串  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/sds-2.png)  
 假设需要给s1拼接一个字符串，使用：strcat(s1, " Cluster"); 从图可以看到已经没有足够连续的空间，如果此时编码人员忘记重新分配空间，执行后就会把s2的内容给改了。这种依靠人为控制的容易出错，而且非常隐蔽。  
-![image]()  
-
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/sds-3.png)  
 SDS则每次修改都会去判断是否有足够的free，如果不足就会重新分配空间。这样在使用SDS时就不再需要关心溢出的问题了  
-![image]()  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/sds-4.png)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/sds-5.png)  
 
 - 内存分配  
 由于c字符串是用一个数组来存储字符串，那么每次对字符串进行拼接时，就需要重新申请空间，否则就会出现上面的溢出情况；同理，如果缩短字符串，也需要重新申请内存，并把老的内存释放，否则就会出现内存泄漏。
