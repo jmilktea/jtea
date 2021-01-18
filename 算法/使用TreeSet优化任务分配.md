@@ -235,7 +235,7 @@ A Red-Black tree based {@link NavigableMap} implementation.
 2. java8后，当HashMap发生hash冲突时，也用红黑树存储数据(之前是用链表) 
 3. linux虚拟内存管理  
 
-
+算法可视化：https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
 
 
 
