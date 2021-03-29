@@ -52,7 +52,7 @@ FileChannel相比MappedByteBuffer多了一层写内存的动作，但FileChannel
 
 Active mq在社区的反响平平，原因就是它读写都是使用RandomAccessFile随机读写的方式，效率较低。
 
-参考：  
+## 参考
 [rocketmq while not use FileChannel.write](https://github.com/apache/rocketmq/issues/575)  
 [MappedByteBuffer VS FileChannel ，孰强孰弱？](https://cloud.tencent.com/developer/article/1428920)   
 [磁盘io那些事](https://tech.meituan.com/2017/05/19/about-desk-io.html)  
