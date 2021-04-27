@@ -5,7 +5,7 @@
 
 这里有两个重要条件：  
 
-1.当前位置
+1.当前位置  
 我们地理课本学过，地球上的位置可以通过经度和纬度标记，相当于有一个地理坐标:(经度,纬度)，它可以用来标记地球上每一个位置     
 经度是地球上一个地点离一根被称为本初子午线的南北方向走线以东或以西的度数，本初子午线的经度是0°，地球上其它地点的经度是向东到180°或向西到180°，东经正数，西经为负数。  
 纬度是指过椭球面上某点作法线，该点法线与赤道平面的线面角，其数值在-90至90度之间，位于赤道以北的点的纬度叫北纬，记为，位于赤道以南的点的纬度称南纬，记为S，北纬为正数，南纬为负数。  
@@ -31,6 +31,7 @@
 double distance = spatialContext.calcDistance(spatialContext.makePoint(Double.valueOf("113.93928847821488"), Double.valueOf("22.532265023491117")),
       spatialContext.makePoint(Double.valueOf("113.92095965822314"), Double.valueOf("22.538459349954508"))) * DistanceUtils.DEG_TO_KM;
 ```  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-2.png)
 有圆心和半径，我们可以计算这个范围的经纬度范围，也就是如图的矩形区域，可以计算出它的最小/最大经纬度。从图可以看到这样计算会有一个误差，就是上下左右四个夹角实际是不再r范围内的，当r=10km的，这个范围大概是2km的距离，可以三角形边长简单计算出来。实际过程中我们可以先找到这些点，然后再遍历计算距离，超过r的就去掉即可。spatial4j同样提供了实现：
 ```
 SpatialContext spatialContext = SpatialContext.GEO;
