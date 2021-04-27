@@ -31,7 +31,7 @@
 double distance = spatialContext.calcDistance(spatialContext.makePoint(Double.valueOf("113.93928847821488"), Double.valueOf("22.532265023491117")),
       spatialContext.makePoint(Double.valueOf("113.92095965822314"), Double.valueOf("22.538459349954508"))) * DistanceUtils.DEG_TO_KM;
 ```  
-![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-2.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-2.png)  
 有圆心和半径，我们可以计算这个范围的经纬度范围，也就是如图的矩形区域，可以计算出它的最小/最大经纬度。从图可以看到这样计算会有一个误差，就是上下左右四个夹角实际是不再r范围内的，当r=10km的，这个范围大概是2km的距离，可以三角形边长简单计算出来。实际过程中我们可以先找到这些点，然后再遍历计算距离，超过r的就去掉即可。spatial4j同样提供了实现：
 ```
 SpatialContext spatialContext = SpatialContext.GEO;
