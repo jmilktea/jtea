@@ -1,7 +1,7 @@
 ## 前言
 根据地理位置查找附近的人、商家或者物品是个常见的场景，比如微信附近的人，美团附近的商店，购物网站选择按距离排序，还有共享单车可以看到附近哪里有空闲的单车等。  
 这类场景都是根据当前位置找附近的目标，如图：  
-![image](0)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-0.png)  
 
 这里有两个重要条件：  
 
@@ -21,11 +21,11 @@
 2.椭球模型，这种方式最接近地球的形状，计算出来的结果比较准确，但是计算过程比较复杂  
 
 我们看基于球面的计算方式：  
-![image](7)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-7.png)  
 
 如图：A,B，我们可以将地球看成圆球，假设地球上有A(ja,wa)，B(jb,wb)两点（ja和jb分别是A和B的经度，wa和wb分别是A和B的纬度），A和B两点的球面距离就是AB的弧长，AB弧长=R*角AOB（注：角AOB是A跟B的夹角，O是地球的球心，R是地球半径，约为6367000米）。如何求出角AOB呢？可以先求AOB的最大边AB的长度，再根据余弦定律可以求夹角。整个推导过程有兴趣的可以查看具体资料，实际开发中已经有封装好的类库供我们计算使用。  
 
-![image](1)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-1.png)  
 如图我们取一个附近的位置，两点的坐标分别是(22.532265023491117, 113.93928847821488)和(22.538459349954508, 113.92095965822314)，java中我们可以使用[spatial4j](https://github.com/locationtech/spatial4j)，这是一个地理空间计算库，拥有丰富的api。
 ```
 double distance = spatialContext.calcDistance(spatialContext.makePoint(Double.valueOf("113.93928847821488"), Double.valueOf("22.532265023491117")),
@@ -47,23 +47,23 @@ System.out.println("maxY:" + rectangle.getMaxY());
 ## geohash算法
 
 [geohash](https://en.wikipedia.org/wiki/Geohash)算法是一种地址编码方法，它能够把二维的空间经纬度数据编码成一个字符串。http://www.geohash.cn/ 这里每次点击都会生成一个区域，每个区域都会有一个编号。区域内的所有经纬度都有相同的编号，如下是一个9宫格区域  
-![image](3)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-3.png)  
 
 geohash的思想是用二分的方式给经纬度区间标记0和1，比如这样一个点（39.923201, 116.390705）
 纬度的范围是（-90，90），其中间值为0。对于纬度39.923201，在区间（0，90）中，因此得到一个1；（0，90）区间的中间值为45度，纬度39.923201小于45，因此得到一个0，依次计算下去，即可得到纬度的二进制表示，如下表：  
-![image](4)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-4.png)  
 
 最后得到纬度的二进制表示为：  10111000110001111001  
 同理可以得到经度116.390705的二进制表示为：  11010010110001000100  
 接下来合并经纬度，经度占偶数位，纬度占奇数位，得到：11100 11101 00100 01111 00000 01101 01011 00001
 
 接下来进行Base32编码，Base32编码表的其中一种如下，是用0-9、b-z（去掉a, i, l, o）这32个字母进行编码。具体操作是先将上一步得到的合并后二进制转换为10进制数据，然后对应生成Base32码。需要注意的是，将5个二进制位转换成一个base32码。如11100转换为10进制就是28，根据映射找到：w。 上例最终得到的值为：wx4g0ec1  
-![image](5)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-5.png)   
 
 **突变和误差**  
 geohash依赖于其实现的算法，可能存在突变的情况，也就是两个字符串很接近，但是距离相差非常远。
 当然它也是有误差的，最终得到的编码字符串长度越长，误差就越小。另外大的区域会覆盖小的区域，如wx4g0ec1包含在wx4g0之内。其误差范围如下：  
-![image](6) 
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/redis-geo-6.png) 
 
 **geohash生成**  
 Spatial4J 同样提供了实现，如下：
