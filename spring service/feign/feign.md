@@ -155,8 +155,9 @@ feign-name:
   ribbon:
 ```
 使用ribbon配置有几点需要注意：
-1. 配置了url的属于外部接口，此时请求不会经过ribbon，所以不会生效
-2. 配置了feign超时会覆盖ribbon超时，所以不会生效  
+1. 配置了url的属于外部接口，此时请求不会经过ribbon，所以不会生效  
+~~2. 配置了feign超时会覆盖ribbon超时，所以不会生效~~  
+2. hystrix的超时时间要大于ribbon的超时时间，否则不会生效  
 3. 默认情况下POST请求不会重试
 4. OkToRetryOnAllOperations表示所有失败都重试，此时POST请求失败也会重试
 
