@@ -3,7 +3,7 @@ upsource是jetbrains开发的code review工具，可以方便的进行代码分�
 github/gitlab也有类似的功能，不过使用起来没那么方便。  
 
 ## upsource安装  
-官方下载安装包：https://www.jetbrains.com/upsource/，这个包有1G那么大，免费版本只能有10个用户使用，适合小团队使用。如果项目多又想使用免费版本，可以搭建多个upsource即可。
+官方下载安装包：[下载地址](https://www.jetbrains.com/upsource/)，这个包有1G那么大，免费版本只能有10个用户使用，适合小团队使用。如果项目多又想使用免费版本，可以搭建多个upsource即可。
 
 下载完成后我们上传到服务器，进入bin目录后，使用./upsource.sh命令启动服务。服务初始化需要一定时间，按照提示填写相关信息即可。  
 完成后可以看到如下界面，选择create project可以创建项目  
