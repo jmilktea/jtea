@@ -53,7 +53,7 @@ zset-max-ziplist-value 64
 ```
 
 我们可以使用debug object key 查看key信息如下：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-1.png)  
 
 ### ziplist   
 ziplist字面意思是压缩列表的意思，那么redis为什么不和java hashmap一样使用链表的呢？  
@@ -62,7 +62,7 @@ ziplist字面意思是压缩列表的意思，那么redis为什么不和java has
 这是因为ziplist的每个元素大小可以不同，这样可以实际存储的内容分配空间，同样是为了节省内存空间。  
 
 ziplist的内存布局如下：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-2.png)  
 - zlbytes：32bit无符号整数，表示ziplist占用的字节总数（包括<zlbytes>本身占用的4个字节）  
 - zltail：32bit无符号整数，记录最后一个entry的偏移量，方便快速定位到最后一个entry  
 - zllen：16bit无符号整数，记录entry的个数  
@@ -70,7 +70,7 @@ ziplist的内存布局如下：
 - zlend：ziplist最后一个字节，是一个结束的标记位，值固定为255  
 
 entry的组成如下：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-3.png)  
 
 ziplist可以通过简单的计算实现遍历。但是ziplist也有它的缺点，和数组一样，由于内存是紧凑排列，如果涉及到插入就需要扩容，这意味着需要移动数据，对性能影响很大。  
 所以redis会根据zset-max-ziplist-entries和zset-max-ziplist-value动态判断，如果超过了配置，就转换数据结构，也就是skiplist。  
@@ -79,11 +79,11 @@ ziplist可以通过简单的计算实现遍历。但是ziplist也有它的缺点
 skiplist字面意思是跳表的意思，它通过空间换时间，当zset元素比较多时，空间就不再是主要问题了，每次遍历如果耗时非常大，节省那点空间又有什么用呢。当集合元素比较多时，首要考虑的是时间。  
 普通的链表查找数据需要遍历，时间复杂度是O(n)，效率太低。跳表通过分层的思想减少一些数据的比较判断，这有点类似于二分法，跳表查询的时间复杂度是O(log(N))    
 如下：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-4.png)  
 
 最底层的是完整的原始数据，通过分层每层减少节点的数据量，这里的分层就是空间的消耗，当然不是分得越多越好，需要取一个平衡。  
 例如需要查询20这条数据，普通链表需要从头开始遍历6次才找到目标，而使用跳表，从顶层开始查找，可以快速定位到目标，减少遍历的次数，对于数量很大的情况下，性能会非常明显。  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-5.png)  
 
 这里是跳表基本思想，redis在此基础上做了一些优化，jdk里的ConcurrentSkipList也是跳表的实现。  
 
