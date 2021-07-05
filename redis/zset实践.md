@@ -19,7 +19,7 @@ select * from t_table where status = 0 where create_time > 20210605 order by fie
 分表的做法不再本次讨论范围内，最后我们的做法是，把这个待分配数据存放到redis，使用zset进行存储。   
 
 ## 解决方案   
-zset的原理我们之前已经分析过，参见这里：[zset]()    
+zset的原理我们之前已经分析过，参见这里：[zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)    
 我们的做法是使用zset存储待分配的数据，已分配会从集合删除。zset存储的是value是表的id，score需要根据field_1，field_2设计。  
 8w的数据，主键是bigint类型，大约需要占用10M，预估地址：http://www.redis.cn/redis_memory/  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-p-2.png)    
