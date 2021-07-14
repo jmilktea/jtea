@@ -101,7 +101,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9F.md)  
 [java开发规范](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/java%E8%A7%84%E8%8C%83.md)   
 [什么？@Transactional又不生效了？](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E4%BB%80%E4%B9%88%EF%BC%9F%40Transactional%E5%8F%88%E4%B8%8D%E7%94%9F%E6%95%88%E4%BA%86%EF%BC%9F.md)   
-[cas](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/cas.md)  
+[cas](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/cas.md)   
+[java集合类型-Queue继承体系](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/Queue.md)    
 
 ## 问题总结   
 [java cpu占用高问题排查](https://github.com/jmilktea/jmilktea/blob/master/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
