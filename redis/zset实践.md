@@ -1,6 +1,6 @@
 ## 背景  
 实际项目中有一个需求，需要把未分配的数据，按照一定的排序，分配下去给对应人员作业，具体到表里大概是这样子：  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-p-1.png)  
 
 status=0并且uid为空的表示还没分配给人，有值的表是已经分配给人。每天都个定时任务扫描未分配的数据，按照一定的排序，进行分配，sql如下： 
 ```
@@ -19,14 +19,14 @@ select * from t_table where status = 0 where create_time > 20210605 order by fie
 分表的做法不再本次讨论范围内，最后我们的做法是，把这个待分配数据存放到redis，使用zset进行存储。   
 
 ## 解决方案   
-zset的原理我们之前已经分析过，参见这里：[zset]()    
+zset的原理我们之前已经分析过，参见这里：[zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)    
 我们的做法是使用zset存储待分配的数据，已分配会从集合删除。zset存储的是value是表的id，score需要根据field_1，field_2设计。  
 8w的数据，主键是bigint类型，大约需要占用10M，预估地址：http://www.redis.cn/redis_memory/  
-![image]()    
+![image](https://github.com/jmilktea/jmilktea/blob/master/redis/images/zset-p-2.png)    
 
 order by field_1 asc,field_2 desc 怎么设计score呢？  
 field_1越小越优先，但是又受field_2影响，为了去除这个影响，我们可以乘以一个很大的数，然后再减去field_2，也就是field_1相同，field_2越大score就越小。  
-最终是score=field_1 * 1000000000 - feild_2   
+最终是：**score=field_1 * 1000000000 - feild_2**   
 
 ### 初始化数据  
 开始需要把现有的数据跑到redis中去，我们可以加一个定时任务跑一下，使用的是redis的ZADD命令，代码如下，这里我们加20w的数据  
