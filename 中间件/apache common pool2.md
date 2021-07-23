@@ -94,9 +94,10 @@ private static class RedisPooledObjectFactory<T extends StatefulConnection<?, ?>
     }
 ```
 
-## 示例
+## 示例  
+下面的示例我们定义一个Connection表示链接对象，通过ConnectionFactory创建，并托管给链接池管理，代码如下：  
 ```
-    @Data
+    	@Data
 	@AllArgsConstructor
 	class Connection {
 		private String id;
