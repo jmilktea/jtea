@@ -32,7 +32,67 @@ pool2有3个核心对象，如下：
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/pool2-1.png)  
 
 pool2已经内置了一些实现类，我们可以直接使用，如果需要自定义行为，只要实现核心接口即可。  
-pool2也有许多实际应用，redis客户端jeids和lettuce都使用它来管理链接对象。  
+pool2也有许多实际应用，redis客户端jeids和lettuce都使用它来管理链接对象。以lettuce为例，要开启链接池需要导入pool2包  
+```
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-pool2</artifactId>
+    <version>2.10.0</version>
+</dependency>
+```
+具体实现是在ConnectionPoolSupport类，源码如下：    
+```
+private static class RedisPooledObjectFactory<T extends StatefulConnection<?, ?>> extends BasePooledObjectFactory<T> {
+
+        private final Supplier<T> connectionSupplier;
+
+        RedisPooledObjectFactory(Supplier<T> connectionSupplier) {
+            this.connectionSupplier = connectionSupplier;
+        }
+
+        @Override
+        public T create() throws Exception {
+            return connectionSupplier.get();
+        }
+
+        @Override
+        public void destroyObject(PooledObject<T> p) throws Exception {
+            p.getObject().close();
+        }
+
+        @Override
+        public PooledObject<T> wrap(T obj) {
+            return new DefaultPooledObject<>(obj);
+        }
+
+        @Override
+        public boolean validateObject(PooledObject<T> p) {
+            return p.getObject().isOpen();
+        }
+    }
+
+    private static class ObjectPoolWrapper<T> implements Origin<T> {
+
+        private static final CompletableFuture<Void> COMPLETED = CompletableFuture.completedFuture(null);
+
+        private final ObjectPool<T> pool;
+
+        ObjectPoolWrapper(ObjectPool<T> pool) {
+            this.pool = pool;
+        }
+
+        @Override
+        public void returnObject(T o) throws Exception {
+            pool.returnObject(o);
+        }
+
+        @Override
+        public CompletableFuture<Void> returnObjectAsync(T o) throws Exception {
+            pool.returnObject(o);
+            return COMPLETED;
+        }
+    }
+```
 
 ## 示例
 ```
