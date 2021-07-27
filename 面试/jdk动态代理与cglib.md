@@ -179,6 +179,6 @@ public class SimpleRequestHandler$$EnhancerByCGLIB$$e18bacb9 extends SimpleReque
 springboot这个行为是通过spring.aop.proxy-target-class参数控制的，如果显式设置为false，则会开启jdk动态代理。  
 
 ## 其它实现方式   
-上面介绍的两种方式是常用的方式，也是spring框架所实现的。cglib基于字节码实现动态代理，那么其它字节码技术也可以实现类似的功能，如[javassist](https://github.com/jboss-javassist/javassist)、[Byte-Buddy](https://github.com/raphw/byte-buddy)   
+上面介绍的两种方式是常用的方式，也是spring框架所实现的。cglib基于字节码实现动态代理，那么其它字节码技术也可以实现类似的功能，如[Byte-Buddy](https://github.com/raphw/byte-buddy)，[javassist](https://github.com/jboss-javassist/javassist) javassist在链路追踪的应用非常多  
 cglib在github上可以看到已经很久很更新了，而javassist和Byte-Buddy都还比较活跃，三者的star数差不多。   
 在面试过程中如果可以提及这点，证明知识点更广，是个加分项哦。  
