@@ -113,4 +113,5 @@ mybatis如何与spring结合
 [rm命令删除文件了,但磁盘空间没有释放](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/linux%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89%E9%87%8A%E6%94%BE%E7%A9%BA%E9%97%B4.md)   
 
 ## 面试  
-[双亲委派机制](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.md)  
+[双亲委派机制](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.md)   
+[jdk动态代理与cglib](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E4%B8%8Ecglib.md)  
