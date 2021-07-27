@@ -6,7 +6,7 @@
 
 ## 代理模式    
 代理模式的意图是通过一个类代替真实类，实现对真实类的控制，是一种结构型模式。如图：  
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/images/proxy.png)   
 
 RequestHandlerProxy代理了SimpleRequestHandler实现了对它的控制，可以增加打印请求日志的功能。  
 与代理模式很像的是装饰器模式，也是一种结构型模式。两者的区别是装饰器重点在于装饰，在于增强功能，而代理模式重点在于控制行为，它不会像装饰器模式一样对外添加新的功能。  
