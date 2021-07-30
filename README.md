@@ -58,8 +58,7 @@ mybatis如何与spring结合
 ## 代码片段
 [InputStream转String](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/inputstream2string.md)  
 [apache-csv](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/apache-csv.md)    
-[apache-zip](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/apache-zip.md)  
-[zip4j](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/zip4j.md)  
+[文件压缩解压](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/%E6%96%87%E4%BB%B6%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B.md)  
 
 ## 其它
 [druid加密](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/druid%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86.md)  
