@@ -4,7 +4,9 @@ spring:
     username: root
     password: 123456
   redis:
-    host: 192.168.56.102
+    host: 192.168.1.69
+    port: 6379
+    password: risk_coll_redis:dev
   redisson:
     config:
       clusterServersConfig:
