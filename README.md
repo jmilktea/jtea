@@ -2,12 +2,16 @@
 jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝都会熟悉这个味道。杰伦是音乐界的天才，但是技术上我们都不是天才，唯有努力，滴水穿石，积跬步、至千里。本仓库主要记录开发相关技术知识，微服务，中间件使用，设计模式，工具的使用，常见的问题和解决方案等，以使用和实战为主，都是在实际中抽离出来的，也包括一些个人笔记，方便以后快速查找。
 
 # 目录
+## spring  
+[spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)     
+[spring session统计登录人数](https://github.com/jmilktea/jmilktea/blob/master/spring/SpringSession%E7%BB%9F%E8%AE%A1%E7%99%BB%E5%BD%95%E4%BA%BA%E6%95%B0.md)  
+[spring容器初始化完成事件](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%E5%AE%B9%E5%99%A8%E5%88%9D%E5%A7%8B%E5%AE%8C%E6%88%90%E4%BA%8B%E4%BB%B6.md)  
+
 ## spring boot/cloud
 [spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/readme.md)  
 [spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-filter/gateway%20filter.md)    
 [eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-ha.md)    
 [feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/feign/feign.md)   
-[spring session统计登录人数](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/SpringSession%E7%BB%9F%E8%AE%A1%E7%99%BB%E5%BD%95%E4%BA%BA%E6%95%B0.md)  
 
 ## webflux
 [错误处理](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.md)  
@@ -99,7 +103,6 @@ mybatis如何与spring结合
 ## 基础  
 [反射](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84.md)  
 [jvm常用参数](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
-[spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)  
 [@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9F.md)  
 [java开发规范](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/java%E8%A7%84%E8%8C%83.md)   
 [什么？@Transactional又不生效了？](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E4%BB%80%E4%B9%88%EF%BC%9F%40Transactional%E5%8F%88%E4%B8%8D%E7%94%9F%E6%95%88%E4%BA%86%EF%BC%9F.md)   
