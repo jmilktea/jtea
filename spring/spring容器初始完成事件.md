@@ -62,6 +62,38 @@ SmartLiftcycle接口提供了更丰富的方法，可以在容器启动、结束
  *
 ```  
 我们从接口的定义可以看到，ApplicationContext的refresh,shutdown都会触发接口的执行。如果有多个SmartLiftcycle接口的实现者，会按照定义的顺序执行。  
+其中start方法会在容器触发化完成后触发，stop会在容器消耗时触发。  
+```
+@Component
+public class ContextSmartLifecycle implements SmartLifecycle {
+
+	@Autowired
+	private SimpleBean simpleBean;
+
+	private Boolean running;
+
+	@Override
+	public void start() {
+		running = true;
+		System.out.println("====SmartLifecycle start " + simpleBean.getName());
+	}
+
+	@Override
+	public void stop() {
+		System.out.println("====SmartLifecycle stop " + simpleBean.getName());
+	}
+
+	@Override
+	public boolean isRunning() {
+		return running == null ? false : running;
+	}
+
+	@Override
+	public int getPhase() {
+		return 0;
+	}
+}
+```  
 
 
 
