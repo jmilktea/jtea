@@ -19,9 +19,9 @@ Mapper注解是mybatis提供的，但它不像@Service @Bean这些是spring可�
         </dependency>
 ```
 导入后的包如下  
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mybatis/images/spring-mybatis1.png)   
 其中mybatis包就是mybatis的核心代码，与spring无关。mybatis-spring包是spring集成mybatis的关键，就是这个包把mybatis融入到spring的各个环节，由spring接管。mybatis-spring-boot-autoconfigure是springboot中常见的模式，用于自动配置，导入一些配置类。  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/mybatis/images/spring-mybatis2.png)  
 
 ## MybatisAutoConfiguration   
 一些从MybatisAutoConfiguration开始！它主要做几个事情，注册SqlSessionFactory bean，注册SqlSessionTemplate bean，开始扫描Mapper。  
@@ -330,7 +330,7 @@ public class MapperProxyFactory<T> {
 ```
 到这里我们终于看到jdk动态代理的身影了...，jdk动态代理需要一个InvocationHandler对象，这里传递的是MapperProx，到这里对象的注入就完成了。  
 我们debug可以看到Mapper确实是一个MapperProxy对象。  
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mybatis/images/spring-mybatis3.png)   
 
 ## MapperProxy执行  
 从上面的分析可以看出，我们执行Mapper的方法时，会执行MapperProxy的invoke方法   
