@@ -440,3 +440,13 @@ private class SqlSessionInterceptor implements InvocationHandler {
 
 到这里“魔法”就完成了，最终执行的还是mybatis的核心方法。这里主要涉及到知识点是spring bean的管理和jdk动态代理，spring通过这两个技术把mybatis平滑的集成到spring应用中，让我们可以轻松使用。
 
+## 源码跟踪技巧   
+上面的源码跟踪链路是非常长的，涉及到多个文件，而且来回跳跃，在看源码的时候很容易出现看着看着就段了思路或者找不回之前的关键位置。  
+这个时候可以借助idea书签的功能，书签类似我们在看书的时候，看到感兴趣的位置就夹个书签，方便过段时间再找回来。   
+在idea中我们可以按下ctrl+f11，就会打上一个书签，出现在idea左下角的Favorites框，然后可以编辑描述。如图：  
+![image](https://github.com/jmilktea/jmilktea/blob/master/mybatis/images/spring-mybatis4.png)   
+
+在这个框中是没法调整书签的先后顺序的，比如有时候需要在两个书签中加一个书签呢。  
+可以按下shirt+f11，在这个弹窗可以调整顺序  
+![image](https://github.com/jmilktea/jmilktea/blob/master/mybatis/images/spring-mybatis5.png)  
+
