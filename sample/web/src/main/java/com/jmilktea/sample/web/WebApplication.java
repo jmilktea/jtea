@@ -8,6 +8,7 @@ import reactor.core.publisher.Hooks;
 public class WebApplication {
 
     public static void main(String[] args) {
+
         Hooks.onNextDropped(s->{
             System.out.println("============" + s);
         });
