@@ -31,7 +31,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
 [apache common pool2](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/apache%20common%20pool2.md)    
 [熔断-hystrix](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%86%94%E6%96%AD/hystrix.md)  
-[熔断-resilience4j]  
+[熔断-resilience4j](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%86%94%E6%96%AD/resilience4j.md)     
 [熔断-sentinel]  
 
 ## linux  
