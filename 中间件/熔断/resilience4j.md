@@ -1,19 +1,19 @@
 ## 简介    
 前面我们介绍了hystrix的熔断，知道熔断可以起到保护作用，避免出现“服务雪崩”，往更糟糕的方向发展。hystrix是“豪猪”的意思，这家伙长相图，浑身都是刺，自卫能力非常强，名字非常贴切。     
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/res4j-1.png)   
 
 hystrix是netflix众多套件中的一员，已经被spring cloud集成很久了，但是hystrix已经不再更新，处于维护阶段。     
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/res4j-2.png)   
 
 从github上可以看到，hystrix代码已经3年没有更新了。并且官方推荐了resilience4j作为替代者。并且由于nexflix的停止更新，springcloud在新版本中移除了各个netflix组件的依赖，包括zuul,ribbon,hystrix等(但这并不妨碍我们对它们的学习)。      
-[resilience4j](https://github.com/resilience4j/resilience4j)有“恢复”，“还原”的意思，与应用场景也比较贴切。它受hystrix的启发，利用java8的函数编程，并且设计得更加轻量、高效，它不像hystrix有那么多的外部依赖，非常简洁。在[hystrix篇]()前面我们已经介绍了熔断的原理，包括OPEN,HALF-OPEN,CLOSE三种状态和它们之间的流转，这在resilience4j基本是一样的，如图：  
-![image]()  
+[resilience4j](https://github.com/resilience4j/resilience4j)有“恢复”，“还原”的意思，与应用场景也比较贴切。它受hystrix的启发，利用java8的函数编程，并且设计得更加轻量、高效，它不像hystrix有那么多的外部依赖，非常简洁。在[hystrix篇](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%86%94%E6%96%AD/hystrix.md)前面我们已经介绍了熔断的原理，包括OPEN,HALF-OPEN,CLOSE三种状态和它们之间的流转，这在resilience4j基本是一样的，如图：  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/res4j-3.png)  
 与hystrix不同的是，处于HALF-OPEN时，resilience4j可以配置执行次数和阈值来更灵活的调整，而hystrix是仅通过一次就做出判断。举个例子：  
 当熔断器处理OPEN时，所有请求会fast-fail，一定时间后，hystrix会进入half-open状态，尝试一次调用，如果调用成功，则进入CLOSE，否则回到OPEN。  
 而对于resilience4j，进入half-open后，可以配置至少执行10次，5次成功，才进入CLOSE，否则回到OPEN。可以看到这除了更加灵活，还可以通过多尝试几次，提升概率，减少一些误判。  
 另外，resilience4j也可以在许多请求出现超时的时候先触发熔断，而不通用等到请求超时报错。举个例子：  
 我们配置了调用外部服务5s超时，那么resilience4j可以配置当多数请求超过3s的时候就触发熔断，而不用等到请求5s超时才报错。  
-与hystrix的更多不同参考[这里](https://resilience4j.readme.io/docs/comparison-to-netflix-hystrix)     
+与hystrix的更多不同参考：[这里](https://resilience4j.readme.io/docs/comparison-to-netflix-hystrix)     
 
 **Ring Bit Buffer**   
 在统计请求执行情况时，hystrix采用的是滑动窗口的方式，而resilience4j采用的是环形位图的方式。这有什么优点呢？    
@@ -21,11 +21,14 @@ hystrix是netflix众多套件中的一员，已经被spring cloud集成很久了
 例如一个long占用8个byte，对应64个bit，就可以表示64个请求状态，位图特别适合这种只有0,1状态场景的统计，在redis中也有对应的实现。  
 那么为什么要采用环形呢，用数组不行吗？和上面的表达类似，如果采用数组，我们还是得选择数组元素的类型，最少消费还是1个byte，所以resilience4j自己实现了ring这种数据结构。  
 
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/res4j-4.png)  
 
 ## resilience4j-circuitbreaker
 [官方文档](https://resilience4j.readme.io/v0.17.0/docs/circuitbreaker)     
-从github上可以看到resilience4j采用的是分模块的形式，例如：熔断，限流，重试，缓存等，可以按需引入，当然也可以用all包全部引入。这里我们主要关注熔断circuitbreaker，springcloud已经集成了它。[demo地址](https://github.com/resilience4j/resilience4j-spring-cloud2-demo)    
+从github上可以看到resilience4j采用的是分模块的形式，例如：熔断，限流，重试，缓存等，可以按需引入，当然也可以用all包全部引入。
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/res4j-5.png)
+
+这里我们主要关注熔断circuitbreaker，springcloud已经集成了它。[demo地址](https://github.com/resilience4j/resilience4j-spring-cloud2-demo)    
 
 先看下我们示例的参数
 ```
@@ -73,10 +76,10 @@ serviceClient.test接口的逻辑很简单，p % 2 == 0 接口就返回成功，
 10-20,会直接熔断，不会发起接口调用    
 21-26,会调用接口，然后又回到熔断状态  
 27-30,又会直接熔断  
->30，会调用接口，然后进入正常状态    
+大于30的，会调用接口，然后进入正常状态    
 
 得到的效果和期望是一致的如下  
-![image]()    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/res4j-6.png)    
 
 
 
