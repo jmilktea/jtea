@@ -54,6 +54,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [一条危险的update语句](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%B8%80%E6%9D%A1%E5%8D%B1%E9%99%A9%E7%9A%84update%E8%AF%AD%E5%8F%A5.md)   
 [使用p6spy监控应用sql](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%BD%BF%E7%94%A8p6spy%E7%9B%91%E6%8E%A7%E5%BA%94%E7%94%A8sql.md)  
 [这么分页查数据居然重复了](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E8%BF%99%E4%B9%88%E5%88%86%E9%A1%B5%E6%9F%A5%E6%95%B0%E6%8D%AE%E5%B1%85%E7%84%B6%E9%87%8D%E5%A4%8D%E4%BA%86.md)  
+[MVCC原理]   
 
 ## 设计
 [编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5.md)    
