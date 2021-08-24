@@ -24,11 +24,12 @@
 - 读提交（read committed RC）  
 事务一读到事务二提交的数据，在这种隔离级别下，不会发生脏读，但是会出现不可重复读和幻读。   
 - 可重复读（repeatable read RR）   
-事务一内读到的数据总是和第一次读取到的是一样的，在这种隔离级别下，不会发生脏读和不可重复读，但还是可能出现幻读。   
+事务一内读到的数据总是和第一次读取到的是一样的，在这种隔离级别下，不会发生脏读和不可重复读，但还是**可能**出现幻读。   
 - 串行化   
 串行二字已经表明了它是严格按照事务顺序执行，不存在并发问题，在这种隔离级别下，上面三个问题都不会发生。   
 
 这几种事务隔离级别随着不断严格要求，能解决的问题越来越多，但性能也随着下降，一般情况下读未提交和串行化这两种我们都不会使用。重点关注读提交（RC）和可重复读（RR）这两种，RR是mysql默认的隔离级别，如果我们使用阿里云的mysql，为了提高性能，它的隔离级别是RC。   
+另外我们还注意到，RR级别下可能会出现幻读，也就是说它已经可以解决部分幻读的问题了，至于为什么还会可能会出现下面会分析到。    
 
 ## MVCC原理    
 MVCC(Multi-Version Concurrency Control)多版本并发控制，是mysql控制并发访问的一种手段。  
@@ -42,7 +43,7 @@ MVCC里有两个重要的概念，**版本链**和**一致性视图**。
 - roll_ptr：一个指向上一次修改记录的指针   
 - row_id：行id，如果我们自己设定了主键，就会使用它，否则mysql会为每行数据生成一个row_id    
 
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-1.png)   
 
 roll_ptr指针到底指向什么？？？这个问题我们必须先搞清楚，上面说到它指向上一次修改记录，我们表里数据只有一份，难道mysql把每次修改都做了记录？记录到哪里？   
 没错，mysql确实把每次修改都做了记录，这种记录每次变动的日志就是：**undo log**   
@@ -50,7 +51,7 @@ roll_ptr指针到底指向什么？？？这个问题我们必须先搞清楚，
 undo log从名字上可以看到，它是do的反向，提供回滚功能。undo log的主要作用就是为事务回滚和mvcc服务，roll_ptr指针就是指向undo log的位置。      
 mysql每次修改前（insert/update/delete）都会写undo log日志，随着时间线的推前，多次修改后，就形成数据修改历史的链式结构，如图：
 
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-2.png)   
 
 数据的最开始由事务100的insert产生，insert也会写undo log，只不过它不需要记录旧值。    
 接着事务200开始执行update语句，此时会修改trx_id会200，并写入一条undo log，undo log会包含旧值，当事务需要回滚时就是用这个旧值来实现恢复。并且roll_ptr指针会指向这条undo log。  
@@ -82,11 +83,13 @@ mysql每次修改前（insert/update/delete）都会写undo log日志，随着�
 - 什么时候会生成事务id？start transaction就开始生成事务id吗？   
 需要注意的是，事务id是在事务内执行第一个操作语句（insert/update/delete）生成的一个全局递增的id，单纯的声明start transaction不会生成事务id。   
 - 当前读与快照读   
-当前读每次都是读取数据的最新版本，怎么保证每次都是最新版本呢？答案就是加锁，mysql中select... for update,select... lock in share mode都是加锁来实现当前读。  
+当前读每次都是读取数据的最新版本，怎么保证每次都是最新版本呢？答案就是加锁，mysql中select... for update,select... lock in share mode都是加锁来实现当前读。     
 快照读是允许读到数据的旧版本，普通的select语句就是快照读，快照在并发读写的场景下不需要加锁，性能较高。我们上面提到的读也是快照读。   
 
+在RR级别下，如果使用快照读，使用同一个一致性视图，可以解决幻读问题，但如果使用当前读，由于每次都读取最新记录，也就是强制使用新的一致性视图的话，还是会出现幻读。   
+
 对于上面提到的可见规则，单纯从文字理解起来比较费劲，我们通过例子来分析一下，起始数据还是上图中id=1,name=tom这条记录，重点分析图中红字读的部分，上面我们也说到RC,RR生成一致性视图的时机不同，这里分开说明。  
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-3.png)   
 
 #### 读提交（RC）
 **RC级别下，每次读都会生成一致性视图**   
@@ -94,7 +97,7 @@ T1时刻，事务200,300,400,500都开启事务
 T2时刻，事务200修改name为A
 T3时刻，事务300等待锁
 T4时刻，事务400,500并发读这行数据，此时版本链如下  
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-4.png)   
 
 生成一致性视图为：  
 - mids:[200,300]
@@ -108,7 +111,7 @@ T4时刻，事务400,500并发读这行数据，此时版本链如下
 T5时刻，事务200正常提交事务，事务300获取到锁，修改name为B       
 T6时刻，事务400等待锁  
 T7时刻，事务500读取数据，此时版本链如下  
-![image]()   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-5.png)   
 
 生成一致性视图为：  
 - mids:[300,400]
@@ -121,7 +124,7 @@ T7时刻，事务500读取数据，此时版本链如下
 
 T8时刻，事务300正常提交事务，事务400获取到锁，修改name为C     
 T9时刻，事务400读取数据，此时版本链如下  
-![image]()  
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-6.png)  
 
 生成一致性视图为：  
 - mids:[400]
