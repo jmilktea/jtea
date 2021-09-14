@@ -94,6 +94,7 @@ private String loadContent(File file) throws IOException {
 }
 ```   
 launch.script文件的内容在[这里](https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-tools/spring-boot-loader-tools/src/main/resources/org/springframework/boot/loader/tools/launch.script)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/images/sb-exe1.png)    
 代码比较多，但读起来还是比较简单，我们可以看到一些关键字，launch脚本默认回去解析jar包同名的.conf文件，里面配置的参数都会被解析出来，其中JAVA_OPTS参数会被当做java -jar的启动参数。   
 我们可以在构建应用时设置一些构建时的参数，通过embeddedLaunchScriptProperties参数设置
 ```
