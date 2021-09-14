@@ -89,7 +89,7 @@ mysql每次修改前（insert/update/delete）都会写undo log日志，随着�
 在RR级别下，如果使用快照读，使用同一个一致性视图，可以解决幻读问题，但如果使用当前读，由于每次都读取最新记录，也就是强制使用新的一致性视图的话，还是会出现幻读。   
 
 对于上面提到的可见规则，单纯从文字理解起来比较费劲，我们通过例子来分析一下，起始数据还是上图中id=1,name=tom这条记录，重点分析图中红字读的部分，上面我们也说到RC,RR生成一致性视图的时机不同，这里分开说明。  
-![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-3.png)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/mvcc-3-2.png)   
 
 #### 读提交（RC）
 **RC级别下，每次读都会生成一致性视图**   
