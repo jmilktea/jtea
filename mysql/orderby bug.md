@@ -13,7 +13,7 @@ SELECT*FROM t_table t WHERE c_uid=1878 AND STATUS IN(1,2) ORDER BY start_time LI
 explain SELECT*FROM t_table t WHERE c_uid=1878 AND STATUS IN(1,2) ORDER BY start_time LIMIT 1000             
 ```
 ![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/orderby-1.png)   
-与生产的唯一区别就是limit的数量不一样，生产每次只会查10条，难道limit数量10就会慢？？？，我们看下执行计划    
+与生产的唯一区别就是limit的数量不一样，生产每次只会查10条，难道limit数量10就会慢？？？我们看下执行计划    
 ```
 explain SELECT*FROM t_table t WHERE c_uid=1878 AND STATUS IN(1,2) ORDER BY start_time LIMIT 10             
 ```   
