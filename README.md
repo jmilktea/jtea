@@ -59,7 +59,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [MVCC原理](https://github.com/jmilktea/jmilktea/blob/master/mysql/MVCC%E5%8E%9F%E7%90%86.md)       
 [索引结构B+树]   
 [sql到底慢在哪里](https://github.com/jmilktea/jmilktea/blob/master/mysql/sql%E5%88%B0%E5%BA%95%E6%85%A2%E5%9C%A8%E5%93%AA%E9%87%8C.md)   
-[什么？order by 有bug？]
+[order by居然有bug?](https://github.com/jmilktea/jmilktea/blob/master/mysql/orderby%20bug.md)   
 
 ## 设计
 [编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5.md)    
@@ -128,4 +128,5 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 
 ## 面试  
 [双亲委派机制](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.md)   
-[jdk动态代理与cglib](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E4%B8%8Ecglib.md)  
+[jdk动态代理与cglib](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E4%B8%8Ecglib.md)   
+[并发编程CountDownLatch/CyclicBarrier/Semaphore]

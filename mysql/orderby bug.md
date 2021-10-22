@@ -12,19 +12,19 @@ SELECT*FROM t_table t WHERE c_uid=1878 AND STATUS IN(1,2) ORDER BY start_time LI
 ```
 explain SELECT*FROM t_table t WHERE c_uid=1878 AND STATUS IN(1,2) ORDER BY start_time LIMIT 1000             
 ```
-![image](1)   
-与生产的唯一区别就是limit的数量不一样，生产每次只会查10条，难道limit数量10就会慢？？？，我们看下执行计划    
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/orderby-1.png)   
+与生产的唯一区别就是limit的数量不一样，生产每次只会查10条，难道limit数量10就会慢？？？我们看下执行计划    
 ```
 explain SELECT*FROM t_table t WHERE c_uid=1878 AND STATUS IN(1,2) ORDER BY start_time LIMIT 10             
 ```   
-![image](2)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/mysql/images/orderby-2.png)  
 发现执行计划确认变了，在limit 10的情况下，mysql放弃了c_uid这个索引，选择了start_time这个索引，进而进行了type=index的索引扫描，我们知道索引扫描和表扫描是半斤八两，一个是扫整个表，一个是扫整个索引树，效率都非常低。
 
 **那为什么mysql会做出错误的选择?**    
-我们考虑是数据分布的问题，我们知道mysql优化器会根据数据的分布可能生成不同的执行计划，之前也遇到类似的情况，[参考这里]()，就算是相同的sql语句，mysql也可能会根据数据分布的情况生成不同的执行计划，这个执行是mysql认为最优的，但事实不一定是最优的。我们如果换一个cuid没那么多的数据，例如只有200个左右，这个时候limit 10,limit 100，就生成了一样的执行计划，这个是个大坑，很容易就踩到，也可以认为是mysql优化器的一个bug，因为它确实选错了。mysql优化器在遇到order by的时候，会对执行计划再进行一次判断，当它认为order by锁选择的索引要由于第一步选择的索引时，就会改变执行计划，这就导致的执行计划的改变，反而更加糟糕。order by导致索引选择错误有很多讨论，例如：https://bugs.mysql.com/bug.php?id=93845，https://developer.aliyun.com/article/51065        
+我们考虑是数据分布的问题，我们知道mysql优化器会根据数据的分布可能生成不同的执行计划，之前也遇到类似的情况，[参考这里](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E8%BF%99%E4%B9%88%E5%88%86%E9%A1%B5%E6%9F%A5%E6%95%B0%E6%8D%AE%E5%B1%85%E7%84%B6%E9%87%8D%E5%A4%8D%E4%BA%86.md)，就算是相同的sql语句，mysql也可能会根据数据分布的情况生成不同的执行计划，这个执行是mysql认为最优的，但事实不一定是最优的。我们如果换一个cuid没那么多的数据，例如只有200个左右，这个时候limit 10,limit 100，就生成了一样的执行计划，这个是个大坑，很容易就踩到，也可以认为是mysql优化器的一个bug，因为它确实选错了。mysql优化器在遇到order by的时候，会对执行计划再进行一次判断，当它认为order by锁选择的索引要由于第一步选择的索引时，就会改变执行计划，这就导致的执行计划的改变，反而更加糟糕。order by导致索引选择错误有很多讨论，例如：https://bugs.mysql.com/bug.php?id=93845，https://developer.aliyun.com/article/51065        
 总之，在数据库进行order by时要非常小心，很容易出事故     
 
-问题发生了，怎么解决好呢？   
+**问题发生了，怎么解决好呢？**     
 1.forec index强制走我们的索引，既然mysql优化器“不够完美”，我们就强制指定一下，force index后，mysql会直接选择这个索引，不过这对代码有一定的侵入性   
 2.业务改写，是否可以把所有数据都加载出来在内存排序，数据量不大的情况是可以的    
 3.mysql8，如果使用8的话，mysql已经知道这个问题，但是他没有修复好，而是提供一个参数禁止这个优化，参数为： prefer_ordering_index 来关闭首选排序索引这个优化过程      
@@ -61,7 +61,7 @@ SELECT * FROM INFORMATION_SCHEMA.OPTIMIZER_TRACE;
             }
           }
 ```    
-reconsidering_access_paths_for_index_ordering 就是问题所在，在这个步骤mysql改变了执行计划，选择了idx_start_time这个索引。
+**reconsidering_access_paths_for_index_ordering** 就是问题所在，在这个步骤mysql结合order by的索引重新考虑了执行计划，并且做出了改变，选择了idx_start_time这个索引。
 详细的步骤如下   
 ```
 "TRACE"

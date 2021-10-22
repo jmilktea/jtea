@@ -3,7 +3,7 @@
 有了网关，就可以将请求转发到对应服务，不过一般不会写死调用服务的地址，而是通过注册中心来实现，网关和服务间的调用不需要关注地址，统一由注册中心维护，这里使用阿里的[nacos](https://nacos.io/zh-cn/docs/concepts.html)来实现。nacos不只可以作为注册中心，还可以作为配置中心，一物两用，减少运维成本。   
 
 ## 实现图  
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/%E6%95%88%E6%9E%9C%E5%9B%BE.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/%E6%95%88%E6%9E%9C%E5%9B%BE.png)
 
 ## nacos server  
 1. 与eureka类似，我们需要启动一个注册中心server。[下载](https://github.com/alibaba/nacos/releases)nacos稳定版
@@ -11,8 +11,8 @@
 ```
 sh startup.sh -m standalone
 ```
-3. 访问 ip:8848/nacos，使用nacos/nacos 账号密码登录，如图可以看到nacos的主要功能是配置中心和注册中心
-![image](https://github.com/jmilktea/microservice/blob/master/spring%20service/gateway-nacos/nacos%E5%90%AF%E5%8A%A8.png)
+3. 访问 ip:8848/nacos，使用nacos/nacos 账号密码登录，如图可以看到nacos的主要功能是配置中心和注册中心  
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/nacos%E5%90%AF%E5%8A%A8.png)
 
 ## 接入nacos
 创建springboot服务，bootstrap.yml配置为：
@@ -49,8 +49,8 @@ spring:
         server-addr: nacosip:8848
         file-extension: yaml
 ```
-gateway配置也是在nacos中，其中路由规则配置为url以/order开头的将转发到order-service如下：
-![image](https://github.com/jmilktea/microservice/blob/master/spring%20service/gateway-nacos/gateway-service-config2.png)
+gateway配置也是在nacos中，其中路由规则配置为url以/order开头的将转发到order-service如下：  
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/gateway-service-config2.png)
 
 ## 效果  
 返回网关地址：http://localhost:8082/order/config/get 可以看到请求可以转发到order-service，修改config配置的值，可以再次刷新可以看到效果。注意这里需要结合@RefreshScope注解才能动态刷新。  
@@ -58,5 +58,5 @@ gateway配置也是在nacos中，其中路由规则配置为url以/order开头�
 
 ## 思考
 1.网关高可用  
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/gateway-ha2.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/gateway-ha2.png)
 
