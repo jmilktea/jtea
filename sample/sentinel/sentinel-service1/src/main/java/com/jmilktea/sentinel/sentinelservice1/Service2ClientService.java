@@ -14,7 +14,7 @@ public class Service2ClientService {
 	@Autowired
 	private Service2Client service2Client;
 
-	@SentinelResource("feign")
+	//@SentinelResource("feign")
 	public void test(Integer p) {
 		service2Client.test(p);
 	}
