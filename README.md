@@ -95,7 +95,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [基于upsource进行code review](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E5%9F%BA%E4%BA%8Eupsource%E8%BF%9B%E8%A1%8Ccode%20review.md)  
 
 ## 算法
-[使用TreeSet优化任务分配.md](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%BD%BF%E7%94%A8TreeSet%E4%BC%98%E5%8C%96%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D.md)  
+[使用TreeSet优化任务分配.md](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%BD%BF%E7%94%A8TreeSet%E4%BC%98%E5%8C%96%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D.md)   
+[限流算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95.md)   
 [时间轮算法]     
 [缓存淘汰算法]      
 
