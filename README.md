@@ -110,7 +110,8 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [string类型底层SDS](https://github.com/jmilktea/jmilktea/blob/master/redis/string%E7%B1%BB%E5%9E%8B%E5%BA%95%E5%B1%82SDS.md)  
 [redis geo地理空间](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%20geo%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4.md)  
 [zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)   
-[zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)  
+[zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
+[hash]
 
 ## 基础  
 [反射](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84.md)  
