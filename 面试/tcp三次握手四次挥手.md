@@ -4,8 +4,8 @@
 - 什么是半连接/全连接队列   
 
 tcp(传输控制协议)协议字段和三次握手和四次挥手的过程如下   
-![image](1)    
-![image](2)     
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/images/tcp-1.png)    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/images/tcp-2.png)     
 
 **三次握手**    
 开始server处于LISTEN监听状态，等待客户端连接的到来    
