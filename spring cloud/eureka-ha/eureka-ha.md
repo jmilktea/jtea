@@ -1,5 +1,5 @@
 ## 基本概念
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka.png)
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/eureka-ha/eureka.png)
 
 [服务注册]：服务启动时，会通过rest请求向配置的注册中心进行注册，告诉配置中心自己的名称和地址等信息，这些信息保存在eureka server的一个ConcurrentHashMap中。服务只会向第一个注册中心进行注册，如果失败，才继续向其它注册中心注册。
 
@@ -16,7 +16,7 @@
 [服务剔除]：eureka默认情况下会每60s检查一遍，把有90s没续约的服务剔除
 
 ## 存储机制
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-store.png)  
+![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/eureka-ha/eureka-store.png)  
 
 [registry]：是一个嵌套的ConcurrentHashMap，第一层key是服务名称，value是一个Map。第二层key是实例id，value 是一个记录ip,端口等信息的对象。eureka server ui显示的就是从registry读取
 
