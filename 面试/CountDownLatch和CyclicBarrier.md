@@ -133,7 +133,7 @@ sync是一个内部类，实现了AQS
         }
     }
 ```   
-在并发的情况下，sync使用CAS对计数进行-1，上面的for是个死循环，在并发大的时候CAS失败次数可能会比较高，消耗较多的cpu资源。关于CAS可以参考[这里]()   
+在并发的情况下，sync使用CAS对计数进行-1，上面的for是个死循环，在并发大的时候CAS失败次数可能会比较高，消耗较多的cpu资源。关于CAS可以参考[这里](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/cas.md)   
 当调用await时，会调用tryAcquireShared判断计数是否为0，如果否就会使用LockSupport.part将当前线程挂起，那么挂起后什么时候恢复执行呢？看到上面的releaseShared方法，tryReleaseShared方法在CAS成功后会判断计数是否为0，是则返回true，接着会执行doReleaseShared方法，内部会通过LockSupport.unpart将挂起的线程恢复。    
 
 上面的场景主线程等待多个线程执行完后再继续执行，还有一种场景是多个线程等待彼此都执行到某个状态后多个线程再一起继续执行。   
