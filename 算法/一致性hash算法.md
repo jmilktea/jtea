@@ -2,30 +2,30 @@
 hash算法在我们开发中非常常见，如java中的HashMap,redis中的hash数据类型，在nginx负载均衡策略中ip_hash可以根据ip hash路由到指定节点，都使用了hash算法。   
 hash算法在在分布式系统领域的应用非常广泛，如负载均衡策略、分库分表策略、缓存节点选择等。   
 
-![image](1)      
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash1.png)         
 如上图所示，通常我们会对一个key进行hash后取模，即可得到一个下标，通过这个下标即可访问对应的目标。一个好的hash算法计算出来的结果是冲突率是比较低的，这样取模后得到的结果也是相对均匀的，可以让数据较平均的分布。  
 hash算法的问题是当增删节点时，已有的数据需要大量的迁移。如下图所示    
-![image](2)    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash2.png)     
 如果节点的数据非常多，大量的迁移会给系统带来很大的压力，不仅涉及到数据的搬迁，原本访问不到的数据还需要重定向到正确的位置。假设上述是缓存的场景，就会出现大量的缓存数据的迁移，增加节点后就可能出现大量数据访问不到需要穿透到数据库或者重定向一次访问到新的节点，在数据量大的情况下，这非常消耗性能。     
 
 ## 一致性hash算法   
 一致性hash算法就是为了解决简单hash算法在增删节点下表现不佳的问题，算法保证在这种情况下，大部分数据还是在原来的位置，只需要迁移很少数的数据，降低对系统的影响。   
 一致性hash算法计算公式：hash(key) % 2^32。这样计算出来是一个0至2^32-1的整数，我们把这些整数在一个环上表示，环的每个点就是起始节点是0，终点是2^32-1的整数。     
 假设有A,B,C三个节点，我们通过计算后得到的一个整数，落到环上如图：   
-![image](3)    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash3.png)      
 
 对于每个数据也同样计算得到一个值，落在环上，那么怎么决定数据归属于那个节点呢？方式是顺时针找到第一个与它最接近的节点，这就是目标节点。如图data1,data4归属于节点A      
-![image](4)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash4.png)      
 
 假设现在需要扩充一个节点D,其hash计算值落在如图所示，此时data4顺时针与它最接近的节点是D,不是A了，数据需要迁移，从A迁移到D。但是data1,data2,data3不需要迁移，此时迁移的只是环上一部分数据，并不会大面积的变动，以此可以减少对系统的影响。从这里也可以看到，一致性hash并不是“强一致”，它的结果一样会变，只不过变动得比较小，表现比较稳定。   
-![image](5)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash5.png)     
 
 上述的效果看起来很不错，这是理想状态。实际上可能出现如下节点偏斜的效果，即节点在环上的距离很接近，导致大部分数据都分布在其中某个节点，这将导致数据分布非常不均匀，有的节点压力很大，有的节点很空闲。   
-![image](6)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash6.png)      
 
 我们无法保证hash算法每次都能计算出合理的位置，让节点可以很好的分布在hash环上，让数据可以均匀分布，也就是无法同个改进算法来解决偏斜这个问题。    
 这种情况我们使用**虚拟节点**来解决，虚拟节点的做法是每个节点虚拟出多个节点，环上的节点越多，数据分布就越均匀，同样计算的成本也会越高。    
-![image](7)     
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/images/consistent-hash7.png)        
 
 ## 应用    
 一致性hash算法在许多中间件也有应用，如xxljob的调度策略中就有一致性hash，dubbo的负载均衡策略也有一致性hash，接下来我们看下dubbo的一致性hash负载均衡hash算法。   
