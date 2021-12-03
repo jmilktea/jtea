@@ -99,7 +99,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [限流算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95.md)   
 [时间轮算法]     
 [缓存淘汰算法]    
-[一致性hash算法]   
+[一致性hash算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%B8%80%E8%87%B4%E6%80%A7hash%E7%AE%97%E6%B3%95.md)      
 
 ## redis
 [redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)   
