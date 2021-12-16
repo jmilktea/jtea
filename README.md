@@ -8,9 +8,9 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [spring容器初始化完成事件](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%E5%AE%B9%E5%99%A8%E5%88%9D%E5%A7%8B%E5%AE%8C%E6%88%90%E4%BA%8B%E4%BB%B6.md)  
 
 ## spring boot/cloud
-[spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-nacos/readme.md)  
-[spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-filter/gateway%20filter.md)    
-[eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/eureka-ha/eureka-ha.md)    
+[spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/readme.md)  
+[spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-filter/gateway%20filter.md)    
+[eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/eureka-ha/eureka-ha.md)    
 [feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/feign/feign.md)    
 [除了java-jar,还能这样运行你的springboot应用](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/springboot%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F.md)       
 
