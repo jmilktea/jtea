@@ -57,7 +57,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [使用p6spy监控应用sql](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%BD%BF%E7%94%A8p6spy%E7%9B%91%E6%8E%A7%E5%BA%94%E7%94%A8sql.md)  
 [这么分页查数据居然重复了](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E8%BF%99%E4%B9%88%E5%88%86%E9%A1%B5%E6%9F%A5%E6%95%B0%E6%8D%AE%E5%B1%85%E7%84%B6%E9%87%8D%E5%A4%8D%E4%BA%86.md)  
 [MVCC原理](https://github.com/jmilktea/jmilktea/blob/master/mysql/MVCC%E5%8E%9F%E7%90%86.md)       
-[索引结构B+树]   
+[深入理解索引](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E7%B4%A2%E5%BC%95.md)        
 [sql到底慢在哪里](https://github.com/jmilktea/jmilktea/blob/master/mysql/sql%E5%88%B0%E5%BA%95%E6%85%A2%E5%9C%A8%E5%93%AA%E9%87%8C.md)   
 [order by居然有bug?](https://github.com/jmilktea/jmilktea/blob/master/mysql/orderby%20bug.md)   
 
