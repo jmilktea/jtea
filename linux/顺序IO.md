@@ -46,7 +46,7 @@ rocketmq的设计参考了kafka，也使用顺序写对消息进行持久化
 ![image](https://github.com/jmilktea/jmilktea/blob/master/linux/images/%E9%A1%BA%E5%BA%8F-6.png)  
 源码：  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/linux/images/%E9%A1%BA%E5%BA%8F-3.png)  
-rocketmq使用java开发，主要是使用MappedByteBuffer对文件进行读写，它使用mmap的方式对地址进行映射，以减少数据拷贝的次数，这点我们在[零复制]()有所介绍。  
+rocketmq使用java开发，主要是使用MappedByteBuffer对文件进行读写，它使用mmap的方式对地址进行映射，以减少数据拷贝的次数，这点我们在[零复制](https://github.com/jmilktea/jmilktea/blob/master/linux/%E9%9B%B6%E5%A4%8D%E5%88%B6.md)有所介绍。  
 rocketmq默认使用MappedByteBuffer，而不是像kafka使用FileChannel。FileChannel并非直接写入PageCache，而是先写入内存，再写到PageCache，其force()方法可以通知系统把数据刷到磁盘。  
 FileChannel相比MappedByteBuffer多了一层写内存的动作，但FileChannel是基于block的操作，在数据比较大时仍然有优势（通常是4kb的整数倍时）。所以两者没有哪个是文件IO的银弹，可以简单认为前者在写入小数据到文件时具有一定优势，后者对数据大小比较大时基于块的操作效率比较好，通常我们的mq传输的数据应该尽可能小。   
 
