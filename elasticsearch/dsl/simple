@@ -1,0 +1,39 @@
+############################# part1 ###################################
+## 创建test_idx索引
+PUT /test_idx
+{
+  "settings": {
+    "number_of_shards": 1
+  }
+  , "mappings": {
+      "properties":{
+        "productName":{
+          "type":"text"
+        },
+        "productPrice":{
+          "type":"double"
+        }
+      }
+    }
+}
+
+## 查询test_idx详细信息
+GET /test_idx
+
+## 查看索引mapping
+GET /test_idx/_mapping
+
+## 添加一条记录到test_idex索引
+POST /test_idx/_doc/3
+{
+  "productName":"iphone",
+  "price":"8000"
+}
+
+## 查询test_idx所有记录
+GET /test_idx/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
