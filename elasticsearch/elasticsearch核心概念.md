@@ -103,9 +103,9 @@ GET product_index/_doc/_search
 介绍了es中的一些基本概念，方便后续的学习。   
 我们用一张图对上面的概念进行直观的总结，也与关系型数据库做一个比较        
 
-![image](1)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/images/es-base-1.png)   
 
-![image](2)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/images/es-base-2.png)   
  
 
 
