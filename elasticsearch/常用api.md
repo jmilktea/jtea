@@ -1,4 +1,5 @@
 本篇介绍在kibana上使用相关api对elasticsearch集群进行操作，相关api都可以在官网查询到[地址](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rest-apis.html)             
+所有示例都可以在[这里](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/dsl/simple)找到
 
 ## \_cat api      
 _cat api 与linux中的cat命令类似，允许我们对集群一些进行进行查看   
