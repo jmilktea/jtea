@@ -41,6 +41,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [倒排索引](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95.md)      
 [es/kibana/集群/cerebro搭建](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E6%90%AD%E5%BB%BA.md)   
 [分词](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/%E5%88%86%E8%AF%8D.md)   
+[常用api](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/%E5%B8%B8%E7%94%A8api.md)   
 
 ## linux  
 [基础命令](https://github.com/jmilktea/jmilktea/blob/master/linux/%E5%91%BD%E4%BB%A4.md)  
