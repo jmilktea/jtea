@@ -1,3 +1,6 @@
+############################# part0 test ###################################
+GET /_cluster/health
+
 ############################# part1 ###################################
 ## 创建test_idx索引
 PUT /test_idx
@@ -24,7 +27,7 @@ GET /test_idx
 GET /test_idx/_mapping
 
 ## 添加一条记录到test_idex索引
-POST /test_idx/_doc/3
+POST /test_idx/_doc
 {
   "productName":"iphone",
   "price":"8000"
@@ -37,3 +40,444 @@ GET /test_idx/_search
     "match_all": {}
   }
 }
+
+############################# part2 分词 ###################################
+GET _analyze
+{
+  "analyzer": "stop",
+  "text": "In 10 years, Technology will change"
+}
+GET _analyze
+{
+  "analyzer": "standard",
+  "text": "我爱北京天安门"
+}
+DELETE term_index
+#创建索引，每个字段指定analyzer
+PUT /term_index/
+{
+  "mappings": {
+    "properties": {
+      "content1" : {
+        "type": "text",
+        "analyzer": "standard"
+      },
+      "content2":{
+        "type": "text",
+        "analyzer": "stop"
+      }
+  }
+  }
+}
+#添加记录
+POST /term_index/_doc
+{
+  "content1":"In 10 years, Technology will change",
+  "content2":"In 10 years, Technology will change"
+}
+#standard分词，in可以搜索出来
+GET /term_index/_search
+{
+  "query": {
+    "match": {
+      "content1": "in"
+    }
+  }
+}
+#stop分词，in不会搜索出来
+GET /term_index/_search
+{
+  "query": {
+    "match": {
+      "content2": "in"
+    }
+  }
+}
+
+#使用hanlp分词
+GET _analyze 
+{
+  "analyzer": "hanlp",
+  "text": "我爱北京天安门"
+}
+GET _analyze 
+{
+  "analyzer": "hanlp",
+  "text": "给力,奥利给"
+}
+GET _analyze 
+{
+  "analyzer": "hanlp_standard",
+  "text": "给力,奥利给"
+}
+
+
+############################# part3 api ###################################
+GET _cat/health
+GET _cat/nodes
+GET _cat/allocation
+GET _cat/indices
+GET _cat/shards/test_idx
+GET _cat/segments/test_idx
+
+GET _cluster/health
+GET _nodes/LhQ6H8ayTMOXdqGwLceEBQ
+GET _nodes/plugins
+GET _cluster/settings
+GET _nodes/hot_threads
+
+DELETE idx_test_create
+PUT /idx_test_create
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 2, 
+    "refresh_interval": "30s"
+  },
+  "mappings": {
+    "properties": {
+      "title":{"type": "keyword"},
+      "content":{"type": "text"}
+    }
+  }
+}
+
+PUT /idx_test_create/_settings
+{
+  "index": {
+    "refresh_interval": "1s"
+  }
+}
+PUT /idx_test_create/_mappings
+{
+  "properties":{
+    "newColumn":{"type":"text"}
+  }
+}
+
+GET idx_test_create
+GET idx_test_create/_shard_stores
+GET term_index/_segments
+
+DELETE idx_test_create_template
+PUT /_template/idx_test_create_template
+{
+  "index_patterns":"idx_test_create*",
+  "mappings": {
+    "properties": {
+      "title":{"type": "keyword"},
+      "content":{"type": "text"},
+      "comment":{"type":"text","index": false}
+    }
+  }  
+}
+PUT idx_test_create_20220125
+GET idx_test_create_20220125
+
+DELETE idx_test_rollover-000001
+PUT /idx_test_rollover-000001
+{
+  "mappings": {
+    "properties": {
+     "content":{"type":"text"} 
+    }
+  },
+  "aliases": {
+    "idx_test_rollover": {}
+  }
+}
+POST /idx_test_rollover/_rollover
+{
+  "conditions": {
+    "max_docs":  1
+  }
+}
+POST /idx_test_rollover/_doc
+{
+  "content":"test2"
+}
+GET /idx_test_rollover/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#reindex
+GET idx_test_create
+PUT /idx_test_create_reindex
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 2, 
+    "refresh_interval": "30s"
+  },
+  "mappings": {
+    "properties": {
+      "title":{"type": "keyword"},
+      "content":{"type": "text"},
+      "comment":{"type":"text","index": true},
+      "newColumn":{"type": "text"}
+    }
+  }
+}
+POST _reindex
+{
+  "source": {
+    "index": "idx_test_create"
+  },
+  "dest": {
+    "index": "idx_test_create_reindex"
+  }
+}
+POST idx_test_create/_doc
+{
+  "content":"elasticsearch2"
+}
+GET idx_test_create/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "_source": ["title","content"]
+}
+
+GET idx_test_create_reindex/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#文档
+POST idx_test_create/_doc/1
+{
+  "title":"elasticsearch2",
+  "content":"elasticsearch book is..."
+}
+GET idx_test_create/_doc/1
+DELETE idx_test_create/_doc/1
+
+POST /idx_test_create/_bulk
+{"index":{"_id":1}}
+{"title":"elasticsearch1","content":"elasticsearch book is..."}
+{"index":{"_id":2}}
+{"title":"elasticsearch2","content":"elasticsearch book is..."}
+{"index":{"_id":3}}
+{"title":"elasticsearch3","content":"elasticsearch book is..."}
+
+POST /idx_test_create/_bulk
+{"delete":{"_id":1}}
+{"delete":{"_id":2}}
+{"delete":{"_id":3}}
+
+#match
+GET /idx_test_create/_search
+{
+  "query": {
+    "match": {
+      "content": "book mark"
+    }
+  }
+}
+GET /idx_test_create/_search
+{
+  "query": {
+    "match": {
+      "content": {
+        "query": "book mark",
+        "operator": "and"
+      }
+    }
+  }
+}
+#match_phrase
+GET /idx_test_create/_search
+{
+  "query": {
+    "match_phrase": {
+      "content":{
+        "query": "elasticsearch is"
+      }
+    }
+  }
+}
+GET /idx_test_create/_search
+{
+  "query": {
+    "match_phrase": {
+      "content":{
+        "query": "elasticsearch is",
+        "slop": 1
+      }
+    }
+  }
+}
+
+#term
+GET /idx_test_create/_search
+{
+  "query": {
+    "term": {
+      "content": "book cat"
+    }
+  }
+}
+
+#exists   
+GET /idx_test_create/_search
+{
+  "query": {
+    "exists": {
+      "field": "",
+    }
+  }
+}
+
+#bool
+GET /idx_test_create/_search   
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "content": "book"
+          }
+        },
+        {
+           "term": {
+            "title": {
+              "value": "elasticsearch1"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+GET /idx_test_create/_search   
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "content": "book"
+          }
+        },
+        {
+           "term": {
+            "title": {
+              "value": "elasticsearch1"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+#分页
+GET /idx_test_create/_search
+{
+  "query": {
+    "match": {
+      "content": "book"
+    }
+  },
+  "size": 3,
+  "from": 0,
+  "sort": [
+    {
+      "_id": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+#范围查询
+PUT idx_test_range
+{
+  "mappings": {
+    "properties": {
+      "age":{"type": "integer"}
+    }
+  }
+}
+POST idx_test_range/_doc/1
+{"age":15}
+POST idx_test_range/_doc/2
+{"age":25}
+
+
+GET idx_test_range/_search
+{
+  "query": {
+    "range": {
+      "age": {
+        "gte": 10,
+        "lte": 20
+      }
+    }
+  }
+}
+
+#wildcard
+GET idx_test_create/_search
+{
+  "query": {
+    "wildcard": {
+      "content": {
+        "value": "*stic*"
+      }
+    }
+  }
+}
+
+#集合查询   
+PUT idx_test_agg
+{
+  "mappings": {
+    "properties": {
+      "name":{"type": "text"},
+      "age":{"type": "integer"}
+    }
+  }
+}
+POST idx_test_agg/_bulk
+{"index":{"_id":1}}
+{"name":"tom","age":18}
+{"index":{"_id":2}}
+{"name":"jack","age":18}
+{"index":{"_id":3}}
+{"name":"tom","age":20}
+
+GET idx_test_agg/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET idx_test_agg/_search
+{
+  "query": {
+    "match": {
+      "name": "tom"
+    }
+  },
+  "aggs": {
+    "tom_avg": {
+      "avg": {
+        "field": "age"
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
