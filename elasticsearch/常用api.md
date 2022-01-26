@@ -1,6 +1,6 @@
 本篇介绍在kibana上使用相关api对elasticsearch集群进行操作，相关api都可以在官网查询到[地址](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rest-apis.html)             
 
-## _cat api      
+## \_cat api      
 _cat api 与linux中的cat命令类似，允许我们对集群一些进行进行查看   
 
 **查看集群信息**
@@ -9,6 +9,7 @@ GET /_cat/health
 ```
 该api可以查看集群的监控状况(green/yellow/red)，有多个节点，多少个数据节点，多少个分片，多少个主分片       
 说明：这种写法是kibana提供的，我们可以看到实际发送的请求实际指明了执行哪个路径和方法。另外输出的结果可能有很多列，没有说明表示什么意思，可以通过api点击右侧的小工具，选择Open Document会跳转到elastic官网的api说明文档。   
+![image](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/images/api-1.png)
 
 **查看节点信息**   
 ```
@@ -60,7 +61,7 @@ GET _nodes/name
 ```
 该api可以查看节点的详细信息，输出的内容非常多，例如还可以看到jvm的相关配置，从下面的图可以看到，对应的jdk版本是1.8，使用了ParNew和CMS垃圾收集器。   
 这个配置可以在es config 目录下的jvm.options中配置，对于jdk10或以上版本，es会选择G1收集器，通常我们会为es分配较高的内存，此时使用G1收集器是比较合适的。   
-![image](2)    
+![image](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/images/api-2.png)    
 
 **查看节点插件**   
 ```
