@@ -34,7 +34,7 @@ idea插件一个简单的demo，https://juejin.cn/post/6916053498480033806
 idea插件基于IntelliJ Platform开发，idea本身也是通过它开发出来。    
 首先需要安装Plugin DevKit插件，安装完成后，new project 时会出现IntelliJ Platform Plugin选项，用于创建插件开发工程。   
 工程目录与普通的spring项目类似，plugin.xml用于对插件进行一些描述，例如插件的名称、版本、作者、有哪些组件等。         
-![iamge](3)    
+![iamge](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/images/idea-gitlab-notify-3.png)    
 
 导包  
 不像普通项目直接通过pom导包，插件开发需要新建一个lib目录，将jar包放到该目录，然后右键Add as Library，这样工程才可以使用   
@@ -54,19 +54,19 @@ debug或者run，idea会弹出一个新窗口，该窗口就是包含了该插�
 windows下user.home就是当前用户目录。    
 
 3.下载插件    
-按上面开发打包好的插件，也可以在[这里下载idea-gitlab-notify]()体验，插件我们最终是打包成一个zip包   
+按上面开发打包好的插件，也可以在[这里下载idea-gitlab-notify](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/files/idea-gitlab-notify.zip)体验，插件我们最终是打包成一个zip包   
 
 4.安装插件    
 idea → setting → plugins → install plugin from disk   
 选择zip安装包   
 
 5.效果   
-![image](1)   
-![image](2)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/images/idea-gitlab-notify-1.png)   
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/images/idea-gitlab-notify-2.png)   
 当master有变更，或者发版日发现发版分支未合并master，idea就会做出如上通知。    
 notify通知会通知打印在event log日志、左下角提示语、右下角弹出框。   
 
-**源码**    
+## 源码   
 源码如下，可以基于此去扩展，实现更多想法和功能    
 ```
 public class MyComponent implements ProjectComponent {
