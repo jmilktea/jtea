@@ -1,7 +1,7 @@
 es的核心概念我们在[es核心概念](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5.md)这篇已经有一个初步的认识    
 这次我们学习一下es的写入原理，看看一个文档写入的完整过程    
 
-![image](1)    
+![image](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/images/es-write1.png)    
 
 如上图所示，节点2接收到客户端的写入请求，由于它是保存的是副本分片(只能处理读请求)，所以需要将请求转发给主分片的节点1。在es集群中，每个节点都知道主分片节点的信息。    
 上图我们只有一个主分片，在数据量比较大的时候，通常我们会创建多个主分片，它们分布在不同的节点上，具体是指定参数number_of_shards。    
@@ -82,7 +82,8 @@ index.translog.flush_threshold_size：512mb，默认是512m，超过这个大小
 index.translog.durability: request，默认是每次请求都持久化translog，这样可以保证数据不丢失。还可以选择async，异步写入translog，这样写入性能会更高，但有丢失数据的风险。        
 index.translog.sync_interval：5s，表示异步持久化translog的时间，如果期间发生重启，会有这个时间内丢失数据的风险。    
 
-![image](2)   
+flush过程     
+![image](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/images/es-write2.png)   
 
 **参考**    
 [es配置](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index.html)    
