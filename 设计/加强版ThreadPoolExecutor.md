@@ -24,14 +24,14 @@ public class EnhanceExecutor implements Executor {
 	}
 
 	public EnhanceExecutor(String name,
-						   MeterRegistry mr,
-						   int corePoolSize,
-						   int maximumPoolSize,
-						   long keepAliveTime,
-						   TimeUnit unit,
-						   BlockingQueue<Runnable> workQueue,
-						   ThreadFactory threadFactory,
-						   RejectedExecutionHandler handler) {
+			       MeterRegistry mr,
+			       int corePoolSize,
+			       int maximumPoolSize,
+			       long keepAliveTime,
+			       TimeUnit unit,
+			       BlockingQueue<Runnable> workQueue,
+			       ThreadFactory threadFactory,
+			       RejectedExecutionHandler handler) {
 		Assert.notNull(name, "name must not null");
 		this.name = name;
 		this.mr = mr;
@@ -52,7 +52,7 @@ name表示线程池的名称，多个线程收集时需要通过名称区分。M
 
 实现了Executor接口是为了可以使用spring @Async注解注入，其它的几个submit参数都是间接调用了ThreadPoolExecutor方法，这意味着我们可以想使用ThreadPoolExecutor一样来使用EnhanceExecutor。   
 ```
-    @Override
+        @Override
 	public void execute(Runnable command) {
 		poolExecutor.execute(command);
 	}
@@ -177,7 +177,7 @@ public static class ExecuteResult {
 		private Long expCount = 0L;
 		private Exception firstExp;
 		private Long avgExecuteTime;
-	}
+}
 ```
 
 ## 使用    
@@ -199,9 +199,9 @@ public static class ExecuteResult {
 ```
 接着就可以注入使用了
 ```
-	@Autowired
-	@Qualifier("myPool")
-	private EnhanceExecutor myPool;
+    @Autowired
+    @Qualifier("myPool")
+    private EnhanceExecutor myPool;
 
     int count = 100000;
     EnhanceExecutor.Instance instance = myPool.start(count);
@@ -219,4 +219,6 @@ public static class ExecuteResult {
 	log.info("execute result:{}", er);
 ```
 
+同时我们指标会actuctor收集，我们可以返回 /actuator/prometheus 接口看到上面的指标，接着可以使用promethus对这些指标进行收集，用grafana展示    
+![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/images/enhance-executor1.png)
 
