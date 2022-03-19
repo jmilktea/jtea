@@ -74,6 +74,7 @@ jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝�
 [分层设计](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 [mq多环境topic设计](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/mq%E5%A4%9A%E7%8E%AF%E5%A2%83topic%E8%AE%BE%E8%AE%A1.md)   
 [解决多环境下微服务实例乱窜](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E8%A7%A3%E5%86%B3%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9E%E4%BE%8B%E4%B9%B1%E7%AA%9C.md)  
+[加强版ThreadPoolExecutor](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor.md)       
 
 ## 代码片段
 [InputStream转String](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/inputstream2string.md)  
