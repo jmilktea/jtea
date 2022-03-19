@@ -1,7 +1,7 @@
 # 简介
-jmilktea 名称由来：jay milk tea，杰伦奶茶，相信周杰伦的粉丝都会熟悉这个味道。杰伦是音乐界的天才，但是技术上我们都不是天才，唯有努力，滴水穿石，积跬步、至千里。本仓库主要记录开发相关技术知识，微服务，中间件使用，设计模式，工具的使用，常见的问题和解决方案等，以使用和实战为主，都是在实际中抽离出来的，也包括一些个人笔记，方便以后快速查找。
+在我潮汕地区，茶是必不可少的，人们品尝就跟喝水一样平常，但茶却包含了很多学问和人生道理。茶之道，在于心境的平和，人生如茶，沉时坦然，浮时淡然，沉浮之间，淡然处之，可谓茶壶虽小，内涵乾坤。自古以来，以茶会友，以茶道来醒悟人生之道。可以说茶就好像国外的咖啡一样，而咖啡正是java的原意，这也是本仓库命名的由来。在技术的道路上，需要不断的醒悟和感悟，技术的远方是无止境的，但只要以平和的心态持之以恒，终能有所收获。
 
-# 目录      
+# 目录       
 ## spring/spring boot/cloud
 [spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)     
 [spring session统计登录人数](https://github.com/jmilktea/jmilktea/blob/master/spring/SpringSession%E7%BB%9F%E8%AE%A1%E7%99%BB%E5%BD%95%E4%BA%BA%E6%95%B0.md)  
