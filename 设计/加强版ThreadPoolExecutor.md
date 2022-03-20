@@ -110,6 +110,13 @@ public static class Instance {
 			this.name = name;
 			this.countDownLatch = new CountDownLatch(countDownSize);
 		}
+		
+		public void execute(Runnable task) {
+			execute(() -> {
+				task.run();
+				return true;
+			});
+		}
 
 		public void execute(Callable<Boolean> task) {
 			poolExecutor.execute(() -> {
