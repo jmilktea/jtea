@@ -11,11 +11,11 @@ rm -rf file 是一个危险的命令，容易删库到跑路。但在测试环�
 
 我们可以简单的复现这个问题
 1. df -h 查看当前磁盘空间，可以看到/目录已用7.6G  
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-1.png)  
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/rm-1.png)  
 2. 使用 dd if=/dev/zero of=file bs=1M count=1000 命令，创建一个1G的大文件，在使用1查看，可以看到已用8.6G  
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-2.png)  
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/rm-2.png)  
 3. 打开一个新的会话，使用 less file 查看该文件，此时 ps -ef | grep less 可以看到有一个进程正在查看文件  
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/images/rm-3.png)  
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/rm-3.png)  
 4. 使用rm file删除文件，ls 看到文件已经不存在了，此时用1查看空间，可以看到空间没有释放
 
 ## 解决方案
