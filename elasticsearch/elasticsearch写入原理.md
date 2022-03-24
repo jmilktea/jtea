@@ -34,8 +34,10 @@ POST /myindex/_refresh
 ```
 
 **一个疑问？**    
-对于refresh，生成segment，网上很多文章都喜欢将它描述为：这个过程不会立刻写入磁盘，而是先进入os cache（file system cache）。看到这个os cache我非常疑惑，怎么进入到os cache的？无论是es还是lucene都是使用java开发，java哪个api可以操作os cache？也没有找到相关文档说明。     
-当es执行refresh时，实际对应的是lucene的**flush**操作，lucene不是与es公用一块jvm内存，lucene使用的是堆外内存，es refresh生成segment是存储在这里，并没有持久化，网上文章说的os cache指的就是这块区域。es推荐将机器的一半内存留给lucene，[参考地址](https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html)        
+对于refresh，生成segment，网上很多文章都喜欢将它描述为：这个过程不会立刻写入磁盘，而是先进入os cache（有些地方也叫page cache或file system cache）。看到这个os cache我非常疑惑，怎么进入到os cache的？  
+上面说到的index buffer是用户级别的缓存，而os cache是操作系统内核级别的，为了减少磁盘的io，操作系统会在用户进程和磁盘之间在做一层缓存，也就是我们用free命令看到cache这个字段，这样可以减少磁盘io的次数，提升效率，操作系统会根据一定的策略将内存中的数据落盘。由于数据还是会在内存中一段时间，所以还是有可能丢失的。    
+当es执行refresh时，实际对应的是lucene的**flush**操作，lucene不是与es公用一块jvm内存，lucene使用的是堆外内存，es refresh生成segment是存储在这里，并没有立刻持久化，网上文章说的os cache指的就是这块区域，es推荐将机器的一半内存留给lucene，[参考地址](https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html)        
+lucene也是用java开发，在java nio中，使用ByteBuffer.allocateDirect()即可分配堆外内存，FileChannel和MMAP读写的内存都会经过os cache。   
 
 **段合并**    
 es refresh每秒就会生成一个segment，时间久了segment的数量就会非常多，查询的时候需要遍历所有的segment再将结果汇总，segment过多会影响查询性能。       

@@ -43,7 +43,7 @@
 [es写入原理](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E5%86%99%E5%85%A5%E5%8E%9F%E7%90%86.md)     
 
 ## linux  
-[基础命令](https://github.com/jmilktea/jmilktea/blob/master/linux/%E5%91%BD%E4%BB%A4.md)  
+[基础命令](https://github.com/jmilktea/jtea/blob/master/linux/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4.md)  
 [实操](https://github.com/jmilktea/jmilktea/blob/master/linux/%E5%AE%9E%E6%93%8D.md)   
 [系统](https://github.com/jmilktea/jmilktea/blob/master/linux/%E7%B3%BB%E7%BB%9F.md)   
 [五种IO模型](https://github.com/jmilktea/jmilktea/blob/master/linux/%E4%BA%94%E7%A7%8DIO%E6%A8%A1%E5%9E%8B.md)  
