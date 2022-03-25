@@ -41,6 +41,7 @@
 [分词](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/%E5%88%86%E8%AF%8D.md)   
 [常用api](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/%E5%B8%B8%E7%94%A8api.md)    
 [es写入原理](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E5%86%99%E5%85%A5%E5%8E%9F%E7%90%86.md)     
+[使用java访问es](https://github.com/jmilktea/jtea/blob/master/elasticsearch/%E4%BD%BF%E7%94%A8java%E8%AE%BF%E9%97%AEes.md)   
 
 ## linux  
 [基础命令](https://github.com/jmilktea/jtea/blob/master/linux/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4.md)  
@@ -94,6 +95,8 @@
 [zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)   
 [zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
 [hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)   
+
+## jvm
 
 ## java基础  
 [反射](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84.md)  
