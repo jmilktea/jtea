@@ -1,11 +1,11 @@
-在[常用api篇]()我们介绍一些基础的查询，本篇我们已springboot为例来使用java api来访问es，实现各种操作，这些例子都和常用api篇是对应的。    
+在[常用api篇](https://github.com/jmilktea/jtea/blob/master/elasticsearch/%E5%B8%B8%E7%94%A8api.md)我们介绍一些基础的查询，本篇我们已springboot为例来使用java api来访问es，实现各种操作，这些例子都和常用api篇是对应的。    
 
 es本身提供了两种rest api client用于交互，分别是：   
 Java Low Level REST Client：一种“低级”客户端，它封装了基础的功能并发一些请求响应的解析留给用户自己去实现。    
 Java High Level REST Client：一种高级客户端，做了较好的封装，可以用面向对象的编程方式实现与es交互，通常我们使用这种方式。    
 
 熟悉spring的朋友都知道，spring有一套spring data机制，用于抽象高层接口，在对各种数据源提供实现，例如spring-data-redis,spring-data-jpa，同样有spring-data-elasticsearch。    
-使用spring-data-elasticsearch会非常简单，spring提供了很好的封装，使用方便，7.0以前的版本，spring-data-elasticsearch是基于es TransportClient的封装(TCP的方式，访问的是9300端口)，后面这种访问方式被es废弃了，7.0以后的版本spring也是基于es提供的高级客户端实现。在使用的时候需要注意版本需要和es server保持一致，但有一个问题是spring-data-elasticsearch并不能紧跟es的节奏发布，例如现在es已经8.0了，最新的spring-data-elasticsearch还停留在7.x版本，所以如果能确保使用的es版本不会改变，可以使用spring提供的方式，否则更建议使用es官方提供的高级客户端。    
+使用spring-data-elasticsearch会非常简单，spring提供了很好的封装，使用方便，7.0以前的版本，spring-data-elasticsearch是基于es TransportClient的封装(TCP的方式，访问的是9300端口)，后面这种访问方式被es废弃了，7.0以后的版本spring也是基于es提供的高级客户端实现。在使用的时候需要注意版本需要和es server保持一致，但有一个问题是spring-data-elasticsearch并不能紧跟es的节奏发布，例如现在es已经8.0了，最新的spring-data-elasticsearch还停留在7.x版本，所以如果能确保使用的es版本不会改变，可以使用spring提供的方式，否则更建议使用es官方提供的高级客户端。以下所有代码都可以[在此找到](https://github.com/jmilktea/jtea/tree/master/sample/es)。   
 
 **准备**   
 导包，注意版本
@@ -53,7 +53,7 @@ PUT /idx_test_java_api
 }
 ```
 如下的api用到几个关键类和api关系如下：  
-![image](1)
+![image](https://github.com/jmilktea/jtea/blob/master/elasticsearch/images/es-java-api1.png)
 
 **新增数据**
 ```
@@ -181,10 +181,12 @@ GET /idx_test_java_api/_search
   }
 }
 ```
-同时我们注意到上面的查询结果都包含score，也就是es会对结果进行一个相关性评分，这需要消耗性能，如果我们不需就指定不进行评分。  
-使用的是constantScoreQuery查询     
+
+**不评分与查询指定字段**   
+我们注意到上面的查询结果都包含score，也就是es会对结果进行一个相关性评分，这需要消耗性能，如果我们不需就指定不进行评分，使用的是constantScoreQuery查询。     
+如果我们只需要查询某些字段而不是整个文档，可以通过fetchSource指定字段名称，如mysql中的select*，select字段名称。   
 ```
-searchSourceBuilder.query(QueryBuilders.constantScoreQuery(QueryBuilders.termQuery("title", "elasticsearch")));
+searchSourceBuilder.query(QueryBuilders.constantScoreQuery(QueryBuilders.termQuery("title", "elasticsearch"))).fetchSource(new String[]{"age"}, null);
 ``` 
 
 **bool**   
