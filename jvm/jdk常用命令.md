@@ -98,4 +98,4 @@ jmap -histo:live pid | head -10
 ```  
 该命令只显示当前堆排名前10的对象信息，其中输出[C表示char数组，[B表示byte数组,[I表示int数组     
 需要注意的是，jmap -dump,-histo 都会触发fullgc。    
-参考：[一次内存泄漏排查]()    
+参考：[一次内存泄漏排查](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%8E%92%E6%9F%A5.md)    
