@@ -25,7 +25,7 @@ public class HighcpuApplication {
 2.使用top命令找到占用高的进程，top命令默认就是按照cpu进行排序，如果要按照内存排序可以按下大写M
 ![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/javacpu100-1.png)
 
-3.找到占用cpu的线程 top -p 1849 -H  
+3.找到占用cpu的线程 top -p 1863 -H  
 ![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/javacpu100-2.png)
 
 4.将线程id转换为16进制 printf "%x\n" 1863 得到线程的16机制id为747  
