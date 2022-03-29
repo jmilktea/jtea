@@ -96,11 +96,12 @@
 [zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
 [hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)   
 
-## jvm
+## jvm   
+[jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
+[jdk常用命令](https://github.com/jmilktea/jtea/blob/master/jvm/jdk%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)   
 
 ## java基础  
 [反射](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E5%8F%8D%E5%B0%84.md)  
-[jvm常用参数](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
 [@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9F.md)  
 [java开发规范](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/java%E8%A7%84%E8%8C%83.md)   
 [什么？@Transactional又不生效了？](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E4%BB%80%E4%B9%88%EF%BC%9F%40Transactional%E5%8F%88%E4%B8%8D%E7%94%9F%E6%95%88%E4%BA%86%EF%BC%9F.md)   
