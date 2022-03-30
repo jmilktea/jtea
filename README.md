@@ -67,6 +67,7 @@
 [深入理解索引](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E7%B4%A2%E5%BC%95.md)        
 [sql到底慢在哪里](https://github.com/jmilktea/jmilktea/blob/master/mysql/sql%E5%88%B0%E5%BA%95%E6%85%A2%E5%9C%A8%E5%93%AA%E9%87%8C.md)   
 [order by居然有bug?](https://github.com/jmilktea/jmilktea/blob/master/mysql/orderby%20bug.md)       
+[buffer pool]
 
 ## 设计
 [编程相关的概念](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5.md)    
