@@ -19,7 +19,7 @@ public class BSevice {
 }
 ```    
 
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring/images/images/spring-circular1.png)    
 
 ## 原理分析       
 先回答这个问题：spring是如何解决循环依赖问题的？     
@@ -38,15 +38,15 @@ public class BSevice {
 三级缓存的代码在**DefaultSingletonBeanRegistry**类中，从名字可以看到这是个单例bean的注册表，从这里可以拿到单例bean信息。   
 三级缓存实际就是3个ConcurrentHashMap，如下：   
 ```
-    //一级缓存
+        //一级缓存
 	/** Cache of singleton objects: bean name to bean instance. */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
-    //二级缓存
-    /** Cache of early singleton objects: bean name to bean instance. */
+        //二级缓存
+        /** Cache of early singleton objects: bean name to bean instance. */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
-    //三级缓存
+        //三级缓存
 	/** Cache of singleton factories: bean name to ObjectFactory. */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 ```
@@ -77,8 +77,8 @@ public class BSevice {
 ```
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
 			throws BeanCreationException {        
-        // 实例化bean
-        // Instantiate the bean. 
+                // 实例化bean
+                // Instantiate the bean. 
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
@@ -88,7 +88,7 @@ public class BSevice {
 		}
 		final Object bean = instanceWrapper.getWrappedInstance();
 
-        // 解决循环依赖的关键步骤，使用缓存提前暴露bean   
+                // 解决循环依赖的关键步骤，使用缓存提前暴露bean   
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
@@ -97,17 +97,17 @@ public class BSevice {
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
-        // Initialize the bean instance.
+                // Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-            //填充属性
+                        //填充属性
 			populateBean(beanName, mbd, instanceWrapper);
-            //初始化bean
+                        //初始化bean
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {}
 
-        //检查校验   
+                //检查校验   
 		if (earlySingletonExposure) {
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
@@ -123,7 +123,7 @@ public class BSevice {
 						}
 					}
 					if (!actualDependentBeans.isEmpty()) {
-                        //循环依赖异常
+                                                //循环依赖异常
 						throw new BeanCurrentlyInCreationException();
 					}
 				}
@@ -191,7 +191,7 @@ BService填充属性后，回到主流程，执行initializeBean，进行初始�
 	}
 ```   
 跟踪如下   
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring/images/images/spring-circular2.png)    
 
 BService搞定了，就会重新回到AService的doCreateBean方法，接着走填充属性和初始化流程。       
 AService也搞定了，最后会执行一段检查程序，也就是检查一下BService依赖的AService和当前创建好的AService到底是不是同一个，如果不是会抛出异常。    
@@ -237,7 +237,7 @@ BService实例化，同样放到三级缓存，填充属性，发现需要AServi
 BService完成属性填充和初始化，放到一级缓存   
 AService完成属性填充和初始化，从二级缓存拿到代理对象，放到一级缓存，**关键：此时BService中的AService属性是动态代理对象，我们放到一级缓存的也是代理对象，是同一个**       
 
-**循环依赖条件**
+**循环依赖条件**   
 spring并没有，也没有办法解决所有场景下的循环依赖，它只解决了特定情况下的，这是有前提条件的。   
 1. 依赖的bean必须是单例   
 2. 依赖注入的方式必须不全是构造函数，且bean按bean name字母排序在前的(这是spring加载bean的顺序)，注入方式不能是构造函数       
@@ -284,7 +284,7 @@ public class BSevice {
 
 此外，上面doCreateBean方法中的检查校验，有一个allowRawInjectionDespiteWrapping变量，默认为false，从名字可以看出它表示是否允许注入原始对象，也就是我们本来是要注入代理对象的，能否允许注入原始对象，如果允许那么也不会出现循环依赖，但这会造成混乱，且不是代理对象，有些功能就没有了，一般情况下我们不建议这么做。要配置为true可以如下：   
 ```
-	@Component
+    @Component
     public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         @Override
         public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -293,7 +293,7 @@ public class BSevice {
     }
 ```
 
-到这里，我们已经可以回答开头的前3个问题了，对于问题4：   
+到这里，我们基本可以回答开头的前3个问题了，对于问题4：   
 **两个依赖bean都使用属性注入，其中一个bean的方法打上@Async注解，会出现循环依赖报错吗，换成@Transactional呢**       
 实际本篇本来是为了分析这个问题的，因为之前在开发过程中遇到过，但由于需要先分析原理，篇幅已经过长，所以放到下一篇吧。     
 对于该问题，我们可以看如下代码，启动后就会报循环依赖的错误，如果把@Async缓存@Transactional则不会。为什么呢？        
