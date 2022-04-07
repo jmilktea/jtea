@@ -4,6 +4,7 @@ import com.jmilktea.sample.demo.lru.LRUCache;
 import com.jmilktea.sample.demo.lru.LRULinkedHashMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
 import java.util.LinkedList;
 import java.util.Queue;
