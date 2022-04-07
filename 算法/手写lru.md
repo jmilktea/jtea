@@ -2,8 +2,8 @@ LRU(least recently used)最近最少使用算法，是一种常见的页面置�
 
 我们先看下LRU算法规则的定义，首先资源是有限的，所以在达到一定容量的时候，我们就需要清理那些不常用的资源，以腾出空间来使用。    
 最近最少使用的意思就是如果一个资源被使用（包括添加，修改，查询），那么它就应该被标记为最近使用过，也就是它的位置要改变。    
-如下图所示，我们依次添加1,2,3,4,5五个元素，越往后表示最近有使用，当再次访问1时，需要将1添加到5后面，表示1最近使用。   
-![image]()    
+如下图所示，假设容量为5，我们依次添加1,2,3,4,5五个元素，越往后表示最近有使用，当添加6时，超出了容量，此时对首元素1就会被移除。接着访问2，需要将2添加到最后面，表示最近使用。       
+![image](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/images/lru1.png)    
 
 **基于LinkedHashMap**    
 实际在java中LinkedHashMap已经对LRU进行实现，我们看下源码的备注   
@@ -66,7 +66,7 @@ public class LRULinkedHashMap<K, V> extends LinkedHashMap<K, V> {
 1.继承LinkedHashMap，在构造方法指定accessOrder为true   
 2.重写removeEldestEntry，当集合元素数量大于容量时，触发删除最早元素操作    
 
-**手写实现**
+**手写实现**   
 但有时候面试官会要求我们自己实现，也就是手写lru了，太卷了~幸好我们早有准备    
 可以参考LinkedHashMap双向链表的实现，这里我们也定义一个Node，用于保存元素   
 ```
@@ -193,13 +193,13 @@ moveNodeToTail表示将节点移到队尾，removeHeadNode表示移除队首节�
 ```
 初看这几个方法有点头晕，但实际非常简单。    
 我们以比较复杂的moveNodeToTail为例，假设现在有3个Node，其结构如下：  
-![image](2)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/images/lru2.png)   
 
 当我们需要把中间这个节点移到队尾时，第一步就是把它摘掉，然后把它前后的节点的pre,next指针连接起来  
-![image](3)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/images/lru3.png)   
 对应代码   
 ```
-	    node.next.pre = node.pre;
+	    	node.next.pre = node.pre;
 		if (node != head) {
 			//队首节点没有pre
 			node.pre.next = node.next;
@@ -207,7 +207,7 @@ moveNodeToTail表示将节点移到队尾，removeHeadNode表示移除队首节�
 ```
 
 接着把它添加到队尾，跟最后一个节点tail连接起来   
-![image](4)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/images/lru4.png)   
 对应代码
 ```
 		tail.next = node;
@@ -216,12 +216,12 @@ moveNodeToTail表示将节点移到队尾，removeHeadNode表示移除队首节�
 ```
 
 最后再把tail指向最后一个节点   
-![image](5)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/images/lru5.png)    
 对应代码   
 ```
 	tail = node;
 ```
-其它方法也都是思想，非常容易理解。我们还可以加一个方法来遍历链表   
+其它方法也都是思想，非常容易理解。我们可以加一个方法来遍历链表，相关代码在/sample/demo中可以找到。
 ```
 	public void foreach(BiConsumer<K, V> consumer) {
 		if (head == null) {

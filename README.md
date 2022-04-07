@@ -6,11 +6,13 @@
 [spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)     
 [spring session统计登录人数](https://github.com/jmilktea/jmilktea/blob/master/spring/SpringSession%E7%BB%9F%E8%AE%A1%E7%99%BB%E5%BD%95%E4%BA%BA%E6%95%B0.md)  
 [spring容器初始化完成事件](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%E5%AE%B9%E5%99%A8%E5%88%9D%E5%A7%8B%E5%AE%8C%E6%88%90%E4%BA%8B%E4%BB%B6.md)  
+[@Async循环依赖分析]   
 [spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/readme.md)  
 [spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-filter/gateway%20filter.md)    
 [eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/eureka-ha/eureka-ha.md)    
 [feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/feign/feign.md)    
 [除了java-jar,还能这样运行你的springboot应用](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/springboot%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F.md)       
+
 
 ## webflux   
 [错误处理](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.md)  
@@ -83,6 +85,7 @@
 [缓存淘汰算法]    
 [一致性hash算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%B8%80%E8%87%B4%E6%80%A7hash%E7%AE%97%E6%B3%95.md)      
 [比例分配算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E6%AF%94%E4%BE%8B%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95.md)    
+[手写lru](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/%E6%89%8B%E5%86%99lru.md)    
 
 ## redis
 [redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)   
