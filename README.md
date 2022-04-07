@@ -6,7 +6,7 @@
 [spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)     
 [spring session统计登录人数](https://github.com/jmilktea/jmilktea/blob/master/spring/SpringSession%E7%BB%9F%E8%AE%A1%E7%99%BB%E5%BD%95%E4%BA%BA%E6%95%B0.md)  
 [spring容器初始化完成事件](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%E5%AE%B9%E5%99%A8%E5%88%9D%E5%A7%8B%E5%AE%8C%E6%88%90%E4%BA%8B%E4%BB%B6.md)  
-[@Async循环依赖分析]   
+[spring循环依赖](https://github.com/jmilktea/jtea/blob/master/spring/spring%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96.md)      
 [spring cloud gateway + nacos](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-nacos/readme.md)  
 [spring cloud gateway filter](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/gateway-filter/gateway%20filter.md)    
 [eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/eureka-ha/eureka-ha.md)    
