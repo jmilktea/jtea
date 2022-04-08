@@ -77,8 +77,8 @@ public class BSevice {
 ```
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
 			throws BeanCreationException {        
-                // 实例化bean
-                // Instantiate the bean. 
+        // 实例化bean
+       // Instantiate the bean. 
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
@@ -88,7 +88,7 @@ public class BSevice {
 		}
 		final Object bean = instanceWrapper.getWrappedInstance();
 
-                // 解决循环依赖的关键步骤，使用缓存提前暴露bean   
+        // 解决循环依赖的关键步骤，使用缓存提前暴露bean   
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
@@ -97,17 +97,17 @@ public class BSevice {
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
-                // Initialize the bean instance.
+        // Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-                        //填充属性
+            //填充属性
 			populateBean(beanName, mbd, instanceWrapper);
-                        //初始化bean
+            //初始化bean，这里很关键，可能通过BeanPostProcessor改变bean     
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {}
 
-                //检查校验   
+        //检查校验   
 		if (earlySingletonExposure) {
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
@@ -123,7 +123,7 @@ public class BSevice {
 						}
 					}
 					if (!actualDependentBeans.isEmpty()) {
-                                                //循环依赖异常
+                        //循环依赖异常
 						throw new BeanCurrentlyInCreationException();
 					}
 				}
@@ -196,23 +196,33 @@ BService填充属性后，回到主流程，执行initializeBean，进行初始�
 BService搞定了，就会重新回到AService的doCreateBean方法，接着走填充属性和初始化流程。       
 AService也搞定了，最后会执行一段检查程序，也就是检查一下BService依赖的AService和当前创建好的AService到底是不是同一个，如果不是会抛出异常。    
 ```
-else if (!this.allowRawInjectionDespiteWrapping && hasDependentBean(beanName)) {
-	String[] dependentBeans = getDependentBeans(beanName);
-	Set<String> actualDependentBeans = new LinkedHashSet<>(dependentBeans.length);
-	for (String dependentBean : dependentBeans) {
-		if (!removeSingletonIfCreatedForTypeCheckOnly(dependentBean)) {
-			actualDependentBeans.add(dependentBean);
-		}
-	}
-	if (!actualDependentBeans.isEmpty()) {
-		throw new BeanCurrentlyInCreationException()
-    }
-}      
+		if (earlySingletonExposure) {
+			Object earlySingletonReference = getSingleton(beanName, false);
+			if (earlySingletonReference != null) {
+				if (exposedObject == bean) {
+					exposedObject = earlySingletonReference;
+				}
+				else if (!this.allowRawInjectionDespiteWrapping && hasDependentBean(beanName)) {
+					String[] dependentBeans = getDependentBeans(beanName);
+					Set<String> actualDependentBeans = new LinkedHashSet<>(dependentBeans.length);
+					for (String dependentBean : dependentBeans) {
+						if (!removeSingletonIfCreatedForTypeCheckOnly(dependentBean)) {
+							actualDependentBeans.add(dependentBean);
+						}
+					}
+					if (!actualDependentBeans.isEmpty()) {
+                        //循环依赖异常
+						throw new BeanCurrentlyInCreationException();
+					}
+				}
+			}
+		}  
 ```
 AService完成后，也像BService一样，添加到一级缓存，并从二三级缓存删除    
 
 至此核心逻辑已经分析完了，可能出现循环依赖的错误，也就是最后的那个检查可能会抛出BeanCurrentlyInCreationException，那为什么spring要做这个检查呢？不检查不就没事了...      
-如果我们的对象都是原始对象，那的确不会有问题，spring的核心是AOP，会包装我们的原始对象，生成动态代理对象！所以我们使用的bean可能是原始对象，也可能是动态代理对象，这不能乱。    
+如果我们的对象都是原始对象，那的确不会有问题。spring的核心是AOP，会包装我们的原始对象，生成动态代理对象！所以我们使用的bean可能是原始对象，也可能是动态代理对象，默认情况下使用的必须是同一个(allowRawInjectionDespiteWrapping可以改变这个行为，下面会说到)，这不能乱。    
+所以这里的检查逻辑是：获取earlySingletonReference，最后参数是false，表示不从三级缓存拿了，如果获取到，表示提前暴露的对象在缓存存在，即提前被别人依赖了，可能存在循环依赖，需要进一步检查。再次检查如果exposedObject没有改变，也就是initializeBean没有生成新的代理对象，那就没问题，直接赋值给exposedObject正常退出。否则继续检查依赖的bean，抛出存在循环依赖异常。      
 
 **那么为什么需要三级缓存，两级不可以吗？**    
 首先，使用三级缓存的目的是为了解决循环依赖问题，而且是在生成代理对象的情况下的循环依赖。    
