@@ -77,8 +77,8 @@ public class BSevice {
 ```
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
 			throws BeanCreationException {        
-        // 实例化bean
-       // Instantiate the bean. 
+        	// 实例化bean
+                // Instantiate the bean. 
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
@@ -88,7 +88,7 @@ public class BSevice {
 		}
 		final Object bean = instanceWrapper.getWrappedInstance();
 
-        // 解决循环依赖的关键步骤，使用缓存提前暴露bean   
+        	// 解决循环依赖的关键步骤，使用缓存提前暴露bean   
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
@@ -97,17 +97,17 @@ public class BSevice {
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
-        // Initialize the bean instance.
+        	// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-            //填充属性
+            		//填充属性
 			populateBean(beanName, mbd, instanceWrapper);
-            //初始化bean，这里很关键，可能通过BeanPostProcessor改变bean     
+            		//初始化bean，这里很关键，可能通过BeanPostProcessor改变bean     
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {}
 
-        //检查校验   
+        	//检查校验   
 		if (earlySingletonExposure) {
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
@@ -123,7 +123,7 @@ public class BSevice {
 						}
 					}
 					if (!actualDependentBeans.isEmpty()) {
-                        //循环依赖异常
+                        			//循环依赖异常
 						throw new BeanCurrentlyInCreationException();
 					}
 				}
@@ -211,7 +211,7 @@ AService也搞定了，最后会执行一段检查程序，也就是检查一下
 						}
 					}
 					if (!actualDependentBeans.isEmpty()) {
-                        //循环依赖异常
+                        			//循环依赖异常
 						throw new BeanCurrentlyInCreationException();
 					}
 				}
