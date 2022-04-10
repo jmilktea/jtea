@@ -82,7 +82,17 @@ public class ProxyAsyncConfiguration extends AbstractAsyncConfiguration {
 		this.advisor = advisor;
 	}
 ```
-可以看到上面的this.advisor实际是一个AsyncAnnotationAdvisor，它的getAdvice方法获取的Advice对象的构建如下   
+可以看到上面的this.advisor实际是一个AsyncAnnotationAdvisor，它的构造方法主要是构建Advice和Pointcut，Pointcut是切点接口，同时这里可以看到Async这个主角。这里翻译成大白话就是定义切点是满足Async注解标记，可以获取到Advice。    
+```
+	public AsyncAnnotationAdvisor(@Nullable Supplier<Executor> executor, @Nullable Supplier<AsyncUncaughtExceptionHandler> exceptionHandler) {
+		Set<Class<? extends Annotation>> asyncAnnotationTypes = new LinkedHashSet<>(2);
+		asyncAnnotationTypes.add(Async.class);
+		...
+		this.advice = buildAdvice(executor, exceptionHandler);
+		this.pointcut = buildPointcut(asyncAnnotationTypes);
+	}
+```
+重点看buildAdvice如下    
 ```
 	protected Advice buildAdvice(@Nullable Supplier<Executor> executor, @Nullable Supplier<AsyncUncaughtExceptionHandler> exceptionHandler) {
 		AnnotationAsyncExecutionInterceptor interceptor = new AnnotationAsyncExecutionInterceptor(null);
@@ -93,11 +103,14 @@ public class ProxyAsyncConfiguration extends AbstractAsyncConfiguration {
 ![image](https://github.com/jmilktea/jtea/blob/master/spring/images/images/async-circular2.png)    
 从AnnotationAsyncExecutionInterceptor的继承体系可以看出它就是一个MethodInterceptor，我们可以猜测最终方法的执行就是被这个Interceptor给代理了。        
 
-让我们先回到AsyncAnnotationBeanPostProcessor创建代理对象的位置    
+让我们先回到AsyncAnnotationBeanPostProcessor创建代理对象的位置，AsyncAnnotationAdvisor会设置到ProxyFactory。               
 ```
+...
+proxyFactory.addAdvisor(this.advisor);
+customizeProxyFactory(proxyFactory);
 return proxyFactory.getProxy(getProxyClassLoader());
 ```
-以jdk代理为例，最终调用的是JdkDynamicAopProxy的方法，它实现了InvocationHandler，所以这里传递的是this对象，最终会执行它的invoke方法。   
+以jdk代理为例，最终调用的是JdkDynamicAopProxy的方法，它实现了InvocationHandler，所以这里传递的是this对象，这里通过Proxy.newProxyInstance创建动态代理对象，至此代理对象生成完毕，后面方法执行会执行它的invoke方法了。   
 ```
 	@Override
 	public Object getProxy(@Nullable ClassLoader classLoader) {
@@ -106,7 +119,7 @@ return proxyFactory.getProxy(getProxyClassLoader());
 		return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
 	}
 ```
-invoke方法比较长，主要是拿到所有的拦截器链chian，也就是通过前面添加进去的Advisor，然后调用getAdvice拿到的Advice对象，然后传递给MethodInvocation执行。        
+invoke方法主要部分如下    
 ```
 // Get the interception chain for this method.
 List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
@@ -115,6 +128,7 @@ MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, meth
 // Proceed to the joinpoint through the interceptor chain.
 retVal = invocation.proceed();
 ```
+this.advised实际就是ProxyFactory对象，通过它可以拿到Advisor，接着就判断method是否满足Pointcut(代理类中可能有其它方法不需要异步的)，满足就获取对应的Advice添加到拦截链，并缓存在一个Map下次就直接取了，最后传递给MethodInvocation执行。      
 最终执行的是ReflectiveMethodInvocation.proceed方法，跟进这个方法可以发现它最终执行的是MethodInterceptor.invoke方法，就是上面的AnnotationAsyncExecutionInterceptor   
 ```
 //interceptorsAndDynamicMethodMatchers就是上一步传进来的chain
