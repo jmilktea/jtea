@@ -14,9 +14,19 @@ public class ASevice {
 
 	@Autowired
 	private BSevice bSevice;
+	@Autowired
+	private AsyncExecutor asyncExecutor;
 
 	//@Async //出现循环依赖
-	public void async(){
+	public void async() {
 		System.out.println(bSevice.toString());
+	}
+
+	@Service
+	class AsyncExecutor {
+		@Async
+		public void async() {
+			System.out.println(bSevice.toString());
+		}
 	}
 }
