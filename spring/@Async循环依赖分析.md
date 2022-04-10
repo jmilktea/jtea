@@ -52,11 +52,11 @@ public class ProxyAsyncConfiguration extends AbstractAsyncConfiguration {
 }
 ```
 我们看下AsyncAnnotationBeanPostProcessor的继承体系(idea类名右键选择Diagrams->Show Diagram)       
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring/images/images/async-circular1.png)    
 
 跟踪这个类，会发现它是在抽象基类AbstractAdvisingBeanPostProcessor，实现了postProcessAfterInitialization方法，其中 关键代码如下
 ```
-        if (isEligible(bean, beanName)) {
+        	if (isEligible(bean, beanName)) {
 			ProxyFactory proxyFactory = prepareProxyFactory(bean, beanName);
 			if (!proxyFactory.isProxyTargetClass()) {
 				evaluateProxyInterfaces(bean.getClass(), proxyFactory);
@@ -82,7 +82,7 @@ public class ProxyAsyncConfiguration extends AbstractAsyncConfiguration {
 		this.advisor = advisor;
 	}
 ```
-可以看到上面的this.advisor实际是一个AsyncAnnotationAdvisor，它的getAdvice方法用于获取Advice对象，如下   
+可以看到上面的this.advisor实际是一个AsyncAnnotationAdvisor，它的getAdvice方法获取的Advice对象的构建如下   
 ```
 	protected Advice buildAdvice(@Nullable Supplier<Executor> executor, @Nullable Supplier<AsyncUncaughtExceptionHandler> exceptionHandler) {
 		AnnotationAsyncExecutionInterceptor interceptor = new AnnotationAsyncExecutionInterceptor(null);
@@ -90,7 +90,7 @@ public class ProxyAsyncConfiguration extends AbstractAsyncConfiguration {
 		return interceptor;
 	}
 ```
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring/images/images/async-circular2.png)    
 从AnnotationAsyncExecutionInterceptor的继承体系可以看出它就是一个MethodInterceptor，我们可以猜测最终方法的执行就是被这个Interceptor给代理了。        
 
 让我们先回到AsyncAnnotationBeanPostProcessor创建代理对象的位置    
@@ -106,16 +106,23 @@ return proxyFactory.getProxy(getProxyClassLoader());
 		return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
 	}
 ```
-invoke方法比较长，我们只看它最终执行的位置是ReflectiveMethodInvocation.proceed方法，跟进这个方法可以发现它最终这些的是MethodInterceptor方法，这个就是上面说到的AnnotationAsyncExecutionInterceptor     
+invoke方法比较长，主要是拿到所有的拦截器链chian，也就是通过前面添加进去的Advisor，然后调用getAdvice拿到的Advice对象，然后传递给MethodInvocation执行。        
 ```
+// Get the interception chain for this method.
+List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+...
 MethodInvocation invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
 // Proceed to the joinpoint through the interceptor chain.
 retVal = invocation.proceed();
 ```
+最终执行的是ReflectiveMethodInvocation.proceed方法，跟进这个方法可以发现它最终执行的是MethodInterceptor.invoke方法，就是上面的AnnotationAsyncExecutionInterceptor   
 ```
+//interceptorsAndDynamicMethodMatchers就是上一步传进来的chain
+Object interceptorOrInterceptionAdvice = this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex); 
+...
 ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this)
 ```
-所以最终执行的是AnnotationAsyncExecutionInterceptor.invoke方法，这个方法就很明显了，它会把我们要执行方法扔给一个AsyncTaskExecutor线程池去执行，这就实现了@Async的异步功能。    
+所以最终执行的是**AnnotationAsyncExecutionInterceptor.invoke**方法，这个方法就很明显了，它会把我们要执行方法扔给一个AsyncTaskExecutor线程池去执行，这就实现了@Async的异步功能。    
 ```
 public Object invoke(final MethodInvocation invocation) throws Throwable {
         ...
