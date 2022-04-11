@@ -161,18 +161,18 @@ Object interceptorOrInterceptionAdvice = this.interceptorsAndDynamicMethodMatche
 有了前面的基础，结合[循环依赖原理]这一篇，我们几乎可以直接得出结论。下面@Async是如何引起循环依赖错误的，两个循环依赖的类如下：  
 ```
 @Service
-public class ASevice {
+public class AService {
 	@Autowired
-	private BSevice bSevice;
+	private BService bService;
 
 	@Async
 	public void async(){}
 }
 
 @Service
-public class BSevice {
+public class BService {
 	@Autowired
-	private ASevice aSevice;
+	private AService aService;
 }
 ```   
 启动服务就会报错，报错位置在AbstractAutowireCapableBeanFactory中doCreateBean最后的检查逻辑中，整个过程如下：
@@ -196,10 +196,10 @@ addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 1.可以定义一个内部类，把@Async方法放到内部类中，此时AService不会生成代理类，是内部类生成代理类    
 ```
 @Service
-public class ASevice {
+public class AService {
 
 	@Autowired
-	private BSevice bSevice;
+	private BService bService;
 	@Autowired
 	private AsyncExecutor asyncExecutor;
 
@@ -212,14 +212,18 @@ public class ASevice {
 	class AsyncExecutor {
 		@Async
 		public void async() {
-			System.out.println(bSevice.toString());
+			System.out.println(bService.toString());
 		}
 	}
 }
 ```
 2.使用@Lazy懒加载    
 在BService注入AService属性打上@Lazy注解，也不会报错了。   
-原因是spring在填充属性时，发现打了@Lazy注解就不会马上填充，那自然就不会出现不一致的情况，接着AService会完成初始化，代理对象放入容器中。等到BService使用时才加载AService就是代理对象了。      
+原因是spring在填充属性时，发现打了@Lazy注解会先生成一个“假”代理对象去填充，在实际执行时，通过这个假代理对象可以拿到实际的原始对象或代理对象，注意这里有“两层代理”的意思，之所以说是假，是因为@Lazy标记的是spring帮我们先生成代理对象，它与容器中(可以通过ApplicationContext观察)的bean不是同一个。大白话解释一下为什么不会报错：     
+AService填充属性，发现需要BService   
+BService填充属性，发现需要AService，但标记了@Lazy，此时提前生成一个假代理对象，完成BService初始化    
+AService初始化完成，生成真正的代理对象，最后检查，发现没有依赖它的(B依赖的是假的代理对象)，放入容器    
+BService执行AService方法，通过假代理对象可以拿到真的代理对象执行方法    
 
 此外，也应该尽量在设计上避免循环依赖。还有如果我们把AService重命名为CService，也不会出现错误，因为spring是默认是按照字母顺序加载bean的，如果是CService就是完成后才给代理对象给BService填充属性，也不会有不一致，所以有时候打了@Async没问题，重命名一个类名后就莫名其妙出现循环依赖就是这个原因。    
 
