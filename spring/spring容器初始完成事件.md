@@ -17,7 +17,8 @@ public class ContextBeanPostProcessor implements BeanPostProcessor {
 ```
 可以看到BeanPostProcessor还是处于单个bean的生命周期中，无法提供整个容器初始完成的事件。  
 
-SmartInitializingSingleton接口，实现这个接口，当所有单例的bean初始化完成时，会执行。如果我们只关注单例的bean，可以近似看成是整个容器都初始化完成了。  
+## SmartInitializingSingleton   
+实现这个接口，当所有单例的bean初始化完成时，会执行。如果我们只关注单例的bean，可以近似看成是整个容器都初始化完成了。  
 ```
 @Component
 public class ContextSmartInitializingSingleton implements SmartInitializingSingleton {  
