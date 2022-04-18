@@ -40,3 +40,17 @@ curl -X POST \
 实际情况可能参数比较长，命令就会比较难打，我们可以在postman把请求写出，然后导出curl命令  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/images/code.png)  
 ![image](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/images/curl.png)
+
+## -w 参数   
+-w 参数可以打印请求的一些重要参数，如：   
+- time_namelookup：DNS解析所消耗的时间    
+- time_connect：连接时间，建立TCP所消耗的实际，包括DNS解析的时间   
+- time_pretransfer：准备传输时间，从开始到准备发送第一个字节所消耗的时间   
+- time_starttransfer：开始传输时间，从发出请求到接收到第一个字节所消耗的时间   
+- time_total：总时间 
+- size_request：请求大小   
+示例   
+```
+curl -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_nslookup:%{time_namelookup}\ntime_total: %{time_total}\n" baidu.com
+```   
+在postman中点击响应的时间【Time】，也可以显示出请求详细的消耗时间。    
