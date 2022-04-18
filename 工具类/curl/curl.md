@@ -49,6 +49,7 @@ curl -X POST \
 - time_starttransfer：开始传输时间，从发出请求到接收到第一个字节所消耗的时间   
 - time_total：总时间 
 - size_request：请求大小   
+
 示例   
 ```
 curl -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_nslookup:%{time_namelookup}\ntime_total: %{time_total}\n" baidu.com
