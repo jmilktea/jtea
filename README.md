@@ -45,7 +45,7 @@
 [常用api](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/%E5%B8%B8%E7%94%A8api.md)    
 [es写入原理](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E5%86%99%E5%85%A5%E5%8E%9F%E7%90%86.md)     
 [使用java访问es](https://github.com/jmilktea/jtea/blob/master/elasticsearch/%E4%BD%BF%E7%94%A8java%E8%AE%BF%E9%97%AEes.md)   
-[es中的分页]    
+[es中的分页](https://github.com/jmilktea/jtea/blob/master/elasticsearch/es%E4%B8%AD%E7%9A%84%E5%88%86%E9%A1%B5.md)     
 
 ## linux  
 [基础命令](https://github.com/jmilktea/jtea/blob/master/linux/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4.md)  
