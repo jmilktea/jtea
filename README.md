@@ -151,7 +151,6 @@
 [jasypt加密配置文件](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/jasypt.md)  
 [ThreadLocal扩展](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/ThreadLocal%E6%89%A9%E5%B1%95.md)   
 [单元测试启动加速](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8%E5%8A%A0%E9%80%9F.md)  
-[InputStream转String](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/inputstream2string.md)  
 [apache-csv](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/apache-csv.md)    
 [文件压缩解压](https://github.com/jmilktea/jmilktea/blob/master/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/%E6%96%87%E4%BB%B6%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B.md)  
 
