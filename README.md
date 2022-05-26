@@ -13,6 +13,7 @@
 [eureka 原理/集群](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/eureka-ha/eureka-ha.md)    
 [feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/feign/feign.md)    
 [服务优雅下线](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/%E6%9C%8D%E5%8A%A1%E4%BC%98%E9%9B%85%E4%B8%8B%E7%BA%BF.md)    
+[动态创建bean托管到spring](https://github.com/jmilktea/jtea/blob/master/spring/%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BAbean%E6%89%98%E7%AE%A1%E5%88%B0spring.md)   
 [除了java-jar,还能这样运行你的springboot应用](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/springboot%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F.md)       
 
 ## webflux   
