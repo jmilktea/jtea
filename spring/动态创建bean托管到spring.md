@@ -138,7 +138,7 @@ public class MyMapperFactoryBean<T> implements FactoryBean<T> {
 		this.mapperClass = mapperClass;
 	}
 
-    @Override
+    	@Override
 	public boolean isSingleton() {
 		return true;
 	}
