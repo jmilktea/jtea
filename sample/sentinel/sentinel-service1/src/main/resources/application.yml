@@ -1,0 +1,26 @@
+
+
+feign:
+  sentinel:
+    enabled: true
+    default-rule: default
+    rules:
+      # global feign client
+      default:
+        - grade: 2 #根据异常数
+          count: 1 #出现多少次异常
+          timeWindow: 15 #到半开状态时间
+          statIntervalMs: 1000 #熔断时间
+          minRequestAmount: 1 #最少请求数
+  circuitbreaker:
+    enabled: true
+
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 9719
+
+server:
+  port: 8081

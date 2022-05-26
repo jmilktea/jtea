@@ -1,0 +1,11 @@
+feign.sentinel.enabled=true
+feign.sentinel.default-rule=default
+feign.sentinel.rules.default[0].grade=2
+feign.sentinel.rules.default[0].count=1
+feign.sentinel.rules.default[0].timeWindow=5
+#feign.sentinel.rules.default[0].statIntervalMs=5000
+feign.sentinel.rules.default[0].minRequestAmount=1
+feign.circuitbreaker.enabled=true
+spring.cloud.sentinel.transport.dashboard=localhost:8080
+spring.cloud.sentinel.transport.port=9719
+server.port=8081
