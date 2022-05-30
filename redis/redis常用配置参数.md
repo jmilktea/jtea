@@ -14,7 +14,19 @@ bind用于绑定本机的ip地址，一旦绑定了就只有通过该ip可以访
 - logfile ""  
 redis默认是将日志输出到/dev/null，也就是不会写到文件。可以设置一个路径保存日志，有时候方便查看问题
 
-################################ SNAPSHOTTING  主从 ################################  
+################################ SNAPSHOTTING ################################  
+- save   
+```
+save 900 1
+save 300 10
+save 60 10000
+```
+格式 save \<second> \<change> 表示多少秒有多少次修改就可以触发生成rdb文件        
+
+- dir ./   
+- dbfilename dump.rdb   
+rdb生成的目录和文件名称     
+
 - stop-writes-on-bgsave-error yes  
 这个参数表示当在保存rdb快照时，如果出错，是否要拒绝写入。什么意思呢，如果reids在保存rdb快照时，需要写硬盘，如果此时硬盘空间不足就会写入失败，那么设置为yes就表示redis也不允许客户端写入，为了保证数据的完整性，但读依然是可以的。如果设置为no，那么依然可以写入redis，但是可能会出现数据不一致的问题
 
@@ -43,10 +55,17 @@ redis允许客户端同时链接的数量，默认为10000，超过就会报错�
 ############################## APPEND ONLY MODE 备份 ###############################
 - appendonly no  
 是否启用aof持久化，默认是否。redis默认是使用rdb的方式持久化数据，rdb是以快照的形式保存数据，rdb的缺点是在redis挂掉的情况下，重启时会丢失一部分的数据，因为快照时隔断时间生成的
+- appendfilename "appendonly.aof"    
+aof文件的名称   
 - appendfsync everysec  
-使用aof时的写入方式，默认是每秒一次。设置为always会对每个命令都进行写入，这对数据的保障是最高的，但性能也是最低的
+使用aof时的写入方式，默认是每秒一次。设置为always会对每个命令都进行写入，这对数据的保障是最高的，但性能也是最低的   
+- auto-aof-rewrite-percentage 100   
+当aof文件大小超过上一次的100%时，执行aof重写   
+- auto-aof-rewrite-min-size 64mb   
+当aof文件大小超过64mb时，执行aof重写   
 - aof-use-rdb-preamble yes  
 混合使用aof和rdb的持久化方式。rdb和aof各有优缺点，redis4.0后提供了两种模式的混合，综合两种的优点
+
 
 ################################## SLOW LOG 日志 ###################################  
 - slowlog-log-slower-than 10000  
