@@ -100,7 +100,8 @@
 [redis geo地理空间](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%20geo%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4.md)  
 [zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)   
 [zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
-[hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)   
+[hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)    
+[持久化机制](https://github.com/jmilktea/jtea/blob/master/redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)    
 
 ## jvm   
 [jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
