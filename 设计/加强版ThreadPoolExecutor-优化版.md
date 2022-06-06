@@ -223,6 +223,14 @@ public class EEApolloListener {
 ```
 
 相关源码可以在这里：https://github.com/jmilktea/jtea/tree/master/sample/demo/src/main/java/com/jmilktea/sample/demo/enhance   
+
+**总结一下目前EnhanceExecutor的功能特性**      
+- 支持线程池相关参数指标监控   
+- 服务优雅下线线程池中断处理
+- 支持动态修改线程池参数
+- 支持作为spring bean注入
+- 封装/兼容jdk ThreadPoolTaskExecutor，支持统计任务处理情况    
+
 **参考**   
 [Java线程池实现原理及其在美团业务中的实践](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)    
 [hippo4j](https://github.com/mabaiwan/hippo4j)    
