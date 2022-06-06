@@ -64,6 +64,11 @@
             <artifactId>guava</artifactId>
             <version>30.1.1-jre</version>
         </dependency>
+        <dependency>
+            <groupId>com.ctrip.framework.apollo</groupId>
+            <artifactId>apollo-client</artifactId>
+            <version>1.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>
