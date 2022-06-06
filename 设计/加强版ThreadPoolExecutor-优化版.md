@@ -95,7 +95,7 @@ spring的ThreadPoolTaskExecutor也是对jdk ThreadPoolTaskExecutor的封装，�
 ```
 上图可以看到美团使用了ResizableCapacityLinkedBlockingQueue，但因为没有开源所以不知道它怎么实现的。   
 还有一个hippo4j，它是怎么实现的呢，翻看它的源码，确实有发现，原理比较简单，通过自己定义一个类继承LinkedBlockingQueue，然后通过反射修改capacity字段，同时也可以将字段暴露出来。当然也可以直接复制一下LinkedBlockingQueue代码，将capacity属性公开出来，这样就不用反射，效率更高。    
-我的实现如下，下面代码最后的if成立后，会反射调用signalNotFull方法，字面意思是发出队列未满的信号，这也是LinkedBlockingQueue的私有方法，它内部会不断的进行take/put元素，如果队列的容量扩大了，比当前队列元素还大，就发出队列未满信号，可以继续put元素。
+我的实现如下，下面代码最后的if成立后，会反射调用signalNotFull方法，字面意思是发出队列未满的信号，这也是LinkedBlockingQueue的私有方法，它内部会调用notFull一个Condition对象的signal方法去唤醒等待线程，在take和poll取走元素后，也会调用该方法。这里的意思是如果队列的容量扩大了，比队列现有元素还多，就发出队列未满信号，可以继续添加元素了。
 ```
 @Slf4j
 public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue<E> {
