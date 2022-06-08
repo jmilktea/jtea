@@ -57,7 +57,7 @@
 [顺序IO](https://github.com/jmilktea/jmilktea/blob/master/linux/%E9%A1%BA%E5%BA%8FIO.md)  
 
 ## mybatis
-[核心组件](https://github.com/jmilktea/jmilktea/blob/master/mybatis/%E6%A0%B8%E5%BF%83%E6%B5%81%E7%A8%8B%E5%92%8C%E5%AF%B9%E8%B1%A1.md)  
+[核心组件](https://github.com/jmilktea/jtea/blob/master/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6.md)    
 [springboot是如何集成mybatis的](https://github.com/jmilktea/jmilktea/blob/master/mybatis/springboot%E9%9B%86%E6%88%90mybatis%E5%8E%9F%E7%90%86.md)     
 
 ## mysql
