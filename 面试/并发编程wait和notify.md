@@ -46,7 +46,7 @@ RUNNABLE可以分为等待运行和正在运行两种，等待运行是等CPU真
 借用网上的一张图总结一下上面6种状态的关系     
 ![image](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/images/wait-notify-1.png)     
 
-wait/notify跟锁是紧密相关的，而java中的锁又是设计在对象头标志位的，任何对象都可以当做锁来使用，多线程就是竞争获取这个对象上的锁，相当于把使用者(线程)和资源(锁对象)分开，资源可以被多个线程使用，而线程也可以使用多个资源。wait/notify方法都是跟锁相关，所以设计在Obejct类中是合理的，这样当我们调用wait方法就知道在释放哪个锁资源，并把对应挂起的线程和它关联起来，notify/notifyAll也同理，可以通过这个锁对象找到一个或全部挂起的线程。    
+wait/notify跟锁是紧密相关的，而java中的锁又是设计在对象头标志位的，任何对象都可以当做锁来使用，多线程就是竞争获取这个对象上的锁，相当于把使用者(线程)和资源(锁对象)分开，资源可以被多个线程使用，而线程也可以使用多个资源。wait/notify方法都是跟锁相关，所以设计在Obejct类中是合理的，这样当我们调用wait方法就知道在释放哪个锁资源，并把对应挂起的线程和它关联起来，notify/notifyAll也同理，可以通过这个锁对象找到一个或全部挂起的线程恢复运行。    
 上面我们也提到wait/notify是搭配synchronized使用，那么如果不搭配呢，我们直接写    
 ```
 private final Object lock = new Object();
