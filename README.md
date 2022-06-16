@@ -113,6 +113,7 @@
 [什么？@Transactional又不生效了？](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E4%BB%80%E4%B9%88%EF%BC%9F%40Transactional%E5%8F%88%E4%B8%8D%E7%94%9F%E6%95%88%E4%BA%86%EF%BC%9F.md)   
 [cas](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/cas.md)   
 [java集合类型-Queue继承体系](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/Queue.md)    
+[happend before](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/happend%20before%E5%8E%9F%E5%88%99.md)   
 
 ## 问题排查   
 [java cpu占用高问题排查](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
