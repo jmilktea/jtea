@@ -63,13 +63,14 @@ int j = i + 1;  //3
 - 传递性规则：A happend before B，B happend before C，则 A happend before C。
 - 线程启动规则：主线程启动子线程的前的操作，对于子线程是可见的。   
 - 线程终止规则：子线程结束后，操作结果对于主线程是可见的。
-- 线程中断规则：对线程 interrupt 方法的调用 happens-before 被中断线程代码检测到中断事件。
+- 线程中断规则：对线程 interrupt 方法的调用 happens-before 被中断线程代码检测到中断事件。    
 - 对象终结规则：一个对象的构造函数执行的结束 happens-before 它的 finalize()方法。    
 
 **volatile**   
 volatile变量规则规定了对变量的更新操作，那么其它线程可以立刻看到，前面我们说到数据会存在线程的工作内存和主内存，那么它是怎么保证的呢？    
-volatile底层是通过内存屏障实现的，屏障这个词很形象，就是有一层阻碍，你想访问工作内存通过一个屏障挡住，过不去了，那么就只能去访问主内存了。可以简单的如下图理解：   
+volatile底层是lock前缀指令实现类似内存屏障的功能，这里涉及到内存屏障和cpu缓存一致性问题，有兴趣可以了解下。我们可以简单的如下图理解：   
 ![image](2)    
+附cpu缓存一致性协议[MESI动图](https://www.scss.tcd.ie/Jeremy.Jones/VivioJS/caches/MESIHelp.htm)
 
 **单例-懒汉模式**    
 ```
