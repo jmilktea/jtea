@@ -69,8 +69,8 @@ int j = i + 1;  //3
 **volatile**   
 volatile变量规则规定了对变量的更新操作，那么其它线程可以立刻看到，前面我们说到数据会存在线程的工作内存和主内存，那么它是怎么保证的呢？    
 volatile底层是lock前缀指令实现类似内存屏障的功能，这里涉及到内存屏障和cpu缓存一致性问题，有兴趣可以了解下。我们可以简单的如下图理解：   
-![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/hb-2.png)    
-附cpu缓存一致性协议[MESI动图](https://www.scss.tcd.ie/Jeremy.Jones/VivioJS/caches/MESIHelp.htm)
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/hb-3.png)    
+附cpu缓存一致性协议：[MESI动图](https://www.scss.tcd.ie/Jeremy.Jones/VivioJS/caches/MESIHelp.htm)
 
 **单例-懒汉模式**    
 ```
@@ -119,5 +119,5 @@ public class ApplicationConversionService extends FormattingConversionService {
 
 **总结**    
 happend before原则就是通过定义一些规则保证程序执行的有序性和可见性，只要我们的代码符合这些规则，就可以按照我们的预期得到结果，否则可能会有问题，特别是在多线程的场景下，具体有上面列举的8条规则。          
-如果面试被问到，典型的可以举volatile变量规则，并分析一下内存屏障，再通过单例懒汉模式可能出现的问题，结合spring boot ApplicationConversionService 源码分析，基本就没问题了。    
+如果面试被问到，典型的可以举volatile变量规则，底层通过lock实现类似内存屏障的功能，确保多线程间共享变量的可见性，再通过单例懒汉模式可能出现的问题，结合spring boot ApplicationConversionService 源码分析，基本就可以了。    
 
