@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,11 +40,14 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
 			countField.setAccessible(false);
 
 			if (capacity > count.get() && count.get() >= oldCapacity) {
-				superCls.getDeclaredMethod("signalNotFull").invoke(this);
+				Method signalNotFull = superCls.getDeclaredMethod("signalNotFull");
+				signalNotFull.setAccessible(true);
+				signalNotFull.invoke(this);
+				signalNotFull.setAccessible(false);
 			}
 			this.capacity = capacity;
 		} catch (Exception ex) {
-			log.error("Dynamic modification of blocking queue size failed.", ex);
+			log.error("dynamic modification of blocking queue size failed.", ex);
 			successFlag = false;
 		}
 

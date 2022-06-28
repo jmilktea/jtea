@@ -22,55 +22,77 @@ Gauge.builder("enhance.pool.queueRemainingCapacity", this, s -> workQueue.remain
 **线程池预热**    
 这是一个高频面试题，ThreadPoolTaskExecutor的corePoolSize并不会一开始就创建，创建好默认不会销毁，除非配置allowCoreThreadTimeout参数。所以一旦任务进来，需要逐渐的创建核心线程，创建线程是需要时间的，所以对于想要线程池创建好就把核心线程准备好，任务一进来就有线程处理，就需要使用线程池的预热功能。ThreadPoolTaskExecutor也提供了实现，prestartCoreThread预热一个核心线程和prestartAllCoreThreads预热全部核心线程，我们在构造函数允许配置线程池预热       
 ```
-public EnhanceExecutor(String name,
-		       MeterRegistry mr,
-		       int corePoolSize,
-		       boolean allowCoreThreadTimeOut,
-		       int preStartCoreThread,
-		       int maximumPoolSize,
-		       long keepAliveSecond,
-		       ResizableCapacityLinkedBlockingQueue<Runnable> workQueue,
-		       ThreadFactory threadFactory,
-		       EERejectedExecutionHandlerHolder.EERejectedExecutionHandlerCounter handler) {
-		Assert.notNull(name, "name must not null");
-		
+public class EnhanceExecutor implements ExecutorService, InitializingBean {
+
+	private String poolName;
+	private ThreadPoolExecutor poolExecutor;
+
+	@Autowired
+	private EeConfigProperties eeConfigProperties;
+	@Autowired
+	private MeterRegistry mr;
+
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   boolean allowCoreThreadTimeOut, int preStartCoreThread,
+						   BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, EeRejectedExecutionHandler handler) {
+		Assert.notNull(poolName, "name must not null");
+
+		this.poolName = poolName;
+		if (threadFactory == null) {
+			threadFactory = new ThreadFactoryBuilder().setNameFormat(poolName + "-%d").build();
+		}
+		if (handler == null) {
+			handler = new EeRejectedExecutionHandler.EeCallerRunsPolicy();
+		}
 		this.poolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveSecond, TimeUnit.SECONDS, workQueue, threadFactory, handler);
 		this.poolExecutor.allowCoreThreadTimeOut(allowCoreThreadTimeOut);
 		if (preStartCoreThread == 1) {
 			this.poolExecutor.prestartCoreThread();
-		} else if (preStartCoreThread > 1) {
+		} else if (preStartCoreThread == corePoolSize) {
 			this.poolExecutor.prestartAllCoreThreads();
 		}
+	}
 }
 ```
 
 **拒绝次数**    
-当线程池满后，就会根据maximumPoolSize判断是否继续开启线程处理任务，如果此时生产者还在继续添加任务，而队列依然是满的，那么就会触发线程池的拒绝策略，从上面的图可以看到美团的监控中有一个rejectCount表示拒绝的次数，而jdk的线程池本身没有这个数据，所以只能想办法自己获得。首先定义一个接口，包含一个拒绝次数的计数器，这里使用LongAdder提升并发效率          
+当线程池满后，就会根据maximumPoolSize判断是否继续开启线程处理任务，如果此时生产者还在继续添加任务，而队列依然是满的，那么就会触发线程池的拒绝策略，从上面的图可以看到美团的监控中有一个rejectCount表示拒绝的次数，而jdk的线程池本身没有这个数据，所以只能想办法自己获得。     
+首先定义一个接口继承RejectedExecutionHandler，包含一个获取拒绝次数的方法，通过一个抽象类实现它，在触发拒绝策略的时候计数+1，这里使用LongAdder提升并发效率，而具体的拒绝策略使用的还是jdk自带的。    
 ```
-	public interface EERejectedExecutionHandlerCounter extends RejectedExecutionHandler {
+public interface EeRejectedExecutionHandler extends RejectedExecutionHandler {
 
-		LongAdder REJECT_COUNTER = new LongAdder();
+	long getRejectCount();
 
-		default void increment() {
-			REJECT_COUNTER.add(1);
+	abstract class EeAbstractPolicy implements EeRejectedExecutionHandler {
+
+		private LongAdder rejectCounter = new LongAdder();
+
+		protected abstract void reject(Runnable r, ThreadPoolExecutor e);
+
+		@Override
+		public long getRejectCount() {
+			return rejectCounter.sum();
 		}
 
-		default long get() {
-			return REJECT_COUNTER.sum();
-		}
-	}
-```
-jdk自带的拒绝策略有CallerRunsPolicy，AbortPolicy，DiscardOldestPolicy，DiscardPolicy，我们可以继承它们，然后再实现上面的接口，就把计数和原来的策略结合起来了，举其中一个例子，只需要在触发拒绝策略的时候计数+1
-```
-    public static class EECallerRunsPolicy extends ThreadPoolExecutor.CallerRunsPolicy implements EERejectedExecutionHandlerCounter {
 		@Override
 		public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
-			increment();
-			super.rejectedExecution(r, e);
+			rejectCounter.add(1);
+			reject(r, e);
 		}
 	}
+
+	class EeCallerRunsPolicy extends EeAbstractPolicy {
+
+		private ThreadPoolExecutor.CallerRunsPolicy rejectExecutor = new ThreadPoolExecutor.CallerRunsPolicy();
+
+		@Override
+		protected void reject(Runnable r, ThreadPoolExecutor e) {
+			rejectExecutor.rejectedExecution(r, e);
+		}
+	}
+}
 ```
-接着和其它参数一样监控起来    
+这样就可以和其它参数一样监控起来    
 ```
 Gauge.builder("enhance.pool.rejectCount", this, s -> handler.get()).tags(tagName, name).register(mr);
 ```
@@ -108,7 +130,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
 		this.capacity = capacity;
 	}
 
-	public synchronized boolean setCapacity(Integer capacity) {
+	public synchronized boolean setCapacity(int capacity) {
 		boolean successFlag = true;
 		try {
 			Class superCls = this.getClass().getSuperclass();
@@ -125,11 +147,14 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
 			countField.setAccessible(false);
 
 			if (capacity > count.get() && count.get() >= oldCapacity) {
-				superCls.getDeclaredMethod("signalNotFull").invoke(this);
+				Method signalNotFull = superCls.getDeclaredMethod("signalNotFull");
+				signalNotFull.setAccessible(true);
+				signalNotFull.invoke(this);
+				signalNotFull.setAccessible(false);
 			}
 			this.capacity = capacity;
 		} catch (Exception ex) {
-			log.error("Dynamic modification of blocking queue size failed.", ex);
+			log.error("dynamic modification of blocking queue size failed.", ex);
 			successFlag = false;
 		}
 
@@ -140,95 +165,124 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
 
 **与apollo集成**     
 与apollo配置中心集成，需要监听配置，在配置修改的时候，如果修改的是线程池参数，调用相应方法设置。    
-这里的关键是怎么拿到ThreadPoolExecutor呢？EnhanceExecutor是作为bean注册到spring中的，要拿到它里面的线程池有两种做法：   
-1.从spring context中把EnhanceExecutor拿出来，例如apollo上配置的是 myPool.coreSize = 10，监听到修改时，需要从spring context看看有没有这个bean，有就修改对应的属性。这种做法可以对EnhanceExecutor bean名称做一些约定，例如bean名称都是：EnhanceExecutor-XXX，这样方便判断配置变化是不是线程池相关的。    
-2.将ThreadPoolExecutor保存到一个map，同样配置变动的时候判断一下是不是map里相关的，是的话就调用相应的方法设置。       
+这里的关键是怎么根据配置拿到ThreadPoolExecutor呢？EnhanceExecutor是作为bean注册到spring中的，bean的名称就是线程池的名称，我们可以约定配置的格式是ee.poolname.corePoolSize，这样就可以通过解析配置的key拿到poolname，接着从spring context拿到对应的bean，获取对应的线程池对象。    
+同时我们需要在程序启动，线程池初始化完成时候，判断如果apollo上有配置，就要使用apollo上的，上可以看到EnhanceExecutor实现了InitializingBean接口，在afterPropertiesSet方法会根据配置对线程池的属性进行刷新   
+```
+	@Override
+	public void afterPropertiesSet() {
+		refreshPool();
+		metrics();
+		registerShutdown();
+	}
 
-apollo上的配置变更不会很大，一个java程序也不会说存在很多个线程池，所以这里判断是很快的，这里以第二种方式代码为例：  
+	private void refreshPool() {
+		//config value
+		if (eeConfigProperties != null) {
+			EeConfigProperties.EeConfig eeConfig = eeConfigProperties.getConfig(poolName);
+			if (eeConfig != null) {
+				int corePoolSize = eeConfig.getCorePoolSize() != null ? eeConfig.getCorePoolSize() : poolExecutor.getCorePoolSize();
+				int maximumPoolSize = eeConfig.getMaximumPoolSize() != null ? eeConfig.getMaximumPoolSize() : poolExecutor.getMaximumPoolSize();
+				if (corePoolSize > maximumPoolSize) {
+					throw new BeanCreationException("create " + poolName + " error," +
+							"corePoolSize:" + corePoolSize + " great than maximumPoolSize:" + maximumPoolSize);
+				}
+				if (eeConfig.getCorePoolSize() != null) {
+					setCorePoolSize(eeConfig.getCorePoolSize());
+				}
+				if (eeConfig.getMaximumPoolSize() != null) {
+					setMaximumPoolSize(eeConfig.getMaximumPoolSize());
+				}
+				if (eeConfig.getKeepAliveSecond() != null) {
+					setKeepAliveSecond(eeConfig.getKeepAliveSecond());
+				}
+				if (eeConfig.getQueueCapacity() != null) {
+					setQueueCapacity(eeConfig.getQueueCapacity());
+				}
+			}
+		}
+	}
+```
+监听apollo配置变更    
 ```
 @Slf4j
-public EnhanceExecutor(String name,
-			MeterRegistry mr,
-			int corePoolSize,
-			boolean allowCoreThreadTimeOut,
-			int preStartCoreThread,
-			int maximumPoolSize,
-			long keepAliveSecond,
-			ResizableCapacityLinkedBlockingQueue<Runnable> workQueue,
-			ThreadFactory threadFactory,
-			EERejectedExecutionHandlerHolder.EERejectedExecutionHandlerCounter handler) {
-		Assert.notNull(name, "name must not null");
-		if (EnhanceExecutorContainer.MAP.containsKey(name)) {
-			throw new IllegalArgumentException(name + " pool has register");
-		}
-
-		this.poolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveSecond, TimeUnit.SECONDS, workQueue, threadFactory, handler);
-		this.poolExecutor.allowCoreThreadTimeOut(allowCoreThreadTimeOut);
-		if (preStartCoreThread == 1) {
-			this.poolExecutor.prestartCoreThread();
-		} else if (preStartCoreThread > 1) {
-			this.poolExecutor.prestartAllCoreThreads();
-		}
-
-		//register
-		EnhanceExecutorContainer.MAP.put(name, this);
-} 
-
-public class EnhanceExecutorContainer {
-
-	public static ConcurrentHashMap<String, EnhanceExecutor> MAP = new ConcurrentHashMap<>();
-}
-
-@Slf4j
 @Component
-public class EEApolloListener {
+public class EeApolloListener implements ApplicationContextAware {
+
+	private ApplicationContext applicationContext;
+
+	private static final String eeStartPrefix = "ee.";
+	private static final String corePoolSize = "corePoolSize";
+	private static final String maximumPoolSize = "maximumPoolSize";
+	private static final String keepAliveSecond = "keepAliveSecond";
+	private static final String queueCapacity = "queueCapacity";
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 
 	@ApolloConfigChangeListener
-	public void listen(ConfigChangeEvent configChangeEvent) {
-		if (EnhanceExecutorContainer.MAP.isEmpty()) {
-			return;
-		}
-		for (Map.Entry<String, EnhanceExecutor> entry : EnhanceExecutorContainer.MAP.entrySet()) {
-			//coreSize
-			ConfigChange coreSizeChange = configChangeEvent.getChange(entry.getKey() + ".coreSize");
-			if (coreSizeChange != null) {
-				String oldValue = String.valueOf(entry.getValue().getCorePoolSize());
-				log.info(entry.getKey() + " pool change coreSize from {} to {}", oldValue, coreSizeChange.getNewValue());
-				executeChange(() -> entry.getValue().setCorePoolSize(Integer.valueOf(coreSizeChange.getNewValue())),
-						entry.getKey(), "coreSize", oldValue, coreSizeChange.getNewValue());
-			}
-
-			//maximumSize...		
-			//keepAliveSecond...			
-
-			//queueCapacity
-			ConfigChange queueCapacityChange = configChangeEvent.getChange(entry.getKey() + ".queueCapacity");
-			if (queueCapacityChange != null) {
-				String oldValue = String.valueOf(entry.getValue().getQueueCapacity());
-				log.info(entry.getKey() + " pool change queueCapacity from {} to {}", oldValue, queueCapacityChange.getNewValue());
-				executeChange(() -> entry.getValue().setQueueCapacity(Integer.valueOf(queueCapacityChange.getNewValue())),
-						entry.getKey(), "queueCapacity", oldValue, queueCapacityChange.getNewValue());
+	public synchronized void listen(ConfigChangeEvent configChangeEvent) {
+		for (String changeKey : configChangeEvent.changedKeys()) {
+			try {
+				if (!changeKey.startsWith(eeStartPrefix)) {
+					continue;
+				}
+				String[] splitNames = changeKey.split("\\.");
+				if (splitNames.length != 3) {
+					//ee.poolName.fieldName=value
+					continue;
+				}
+				String poolName = splitNames[1];
+				EnhanceExecutor pool = applicationContext.getBean(poolName, EnhanceExecutor.class);
+				String poolField = splitNames[2];
+				String newValue = configChangeEvent.getChange(changeKey).getNewValue();
+				if (corePoolSize.equals(poolField)) {
+					//corePoolSize
+					executeChange(() -> pool.setCorePoolSize(Integer.valueOf(newValue)),
+							poolName, corePoolSize, String.valueOf(pool.getCorePoolSize()), newValue);
+				} else if (maximumPoolSize.equals(poolField)) {
+					//maximumPoolSize
+					executeChange(() -> pool.setMaximumPoolSize(Integer.valueOf(newValue)),
+							poolName, maximumPoolSize, String.valueOf(pool.getMaximumPoolSize()), newValue);
+				} else if (keepAliveSecond.equals(poolField)) {
+					//keepAliveSecond
+					executeChange(() -> pool.setKeepAliveSecond(Long.valueOf(newValue)),
+							poolName, keepAliveSecond, String.valueOf(pool.getKeepAliveSecond()), newValue);
+				} else if (queueCapacity.equals(poolField)) {
+					//queueCapacity
+					executeChange(() -> pool.setQueueCapacity(Integer.valueOf(newValue)),
+							poolName, queueCapacity, String.valueOf(pool.getQueueCapacity()), newValue);
+				} else {
+					log.warn("pool change {} fail,not support field");
+				}
+			} catch (BeansException ex) {
+				log.warn("pool change {} fail,the bean of EnhanceExecutor could not be found", changeKey, ex);
+			} catch (Exception ex) {
+				log.error("pool change {} error", changeKey, ex);
 			}
 		}
 	}
 
 	private void executeChange(Runnable runnable, String poolName, String fieldName, String oldValue, String newValue) {
+		log.info("{} change {} from {} to {}", poolName, fieldName, oldValue, newValue);
 		try {
 			runnable.run();
 		} catch (Exception ex) {
-			log.error("change {} poll {} from {} to {} error", poolName, fieldName, oldValue, newValue, ex);
+			log.error("{} change {} from {} to {} error", poolName, fieldName, oldValue, newValue, ex);
 		}
 	}
 }
+
 ```
 
 相关源码可以在这里：https://github.com/jmilktea/jtea/tree/master/sample/demo/src/main/java/com/jmilktea/sample/demo/enhance   
 
 **总结一下目前EnhanceExecutor的功能特性**      
 - 支持线程池相关参数指标监控   
-- 服务优雅下线线程池中断处理
-- 支持动态修改线程池参数
-- 支持作为spring bean注入
+- 服务优雅下线线程池中断处理    
+- 支持动态修改线程池参数     
+- 支持作为spring bean注入，使用spring Async异步注解    
 - 封装/兼容jdk ThreadPoolTaskExecutor，支持统计任务处理情况    
 
 **参考**   

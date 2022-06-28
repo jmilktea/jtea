@@ -1,131 +1,119 @@
 package com.jmilktea.sample.demo.enhance;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.jmilktea.sample.demo.shutdown.Shutdown;
+import com.jmilktea.sample.demo.shutdown.ShutdownRegistry;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.TimeoutException;
 
 /**
- * EnhanceExecutor实现了Executor接口，可以使用spring @Async注解开启异步
- * EnhanceExecutor会收集线程池相关指标，可以上报监控平台
- * 对于需要拿到本批次执行结果的，例如本次执行成功数量，平均执行时间，使用start方法
- * EnhanceExecutor支持ThreadPoolExecutor相关execute,submit方法
+ * Ee实现了Executor接口，可以使用spring @Async注解开启异步
+ * <p>Ee会收集线程池相关指标，可以上报监控平台
+ * <p>对于需要拿到本批次执行结果的，例如本次执行成功数量，平均执行时间，使用start方法
+ * <p>Ee支持ThreadPoolExecutor相关execute,submit方法
+ * <p>Ee支持核心线程过期，线程池预热
+ * <p>Ee支持apollo动态修改线程池核心参数
+ * <p>Ee支持打印日志trace id 和 span id
  *
  * @author huangyb1
  * @date 2022/2/25
  */
 @Slf4j
-public class EnhanceExecutor implements Executor {
+public class EnhanceExecutor implements ExecutorService, InitializingBean {
 
+	private String poolName;
 	private ThreadPoolExecutor poolExecutor;
 
-	public EnhanceExecutor(String name,
-						   MeterRegistry mr,
-						   int corePoolSize,
-						   int maximumPoolSize,
-						   long keepAliveSecond,
-						   ResizableCapacityLinkedBlockingQueue<Runnable> workQueue
-	) {
-		this(name, mr, corePoolSize, false, 0, maximumPoolSize, keepAliveSecond,
-				workQueue, Executors.defaultThreadFactory(), new EERejectedExecutionHandlerHolder.EEAbortPolicy());
+	@Autowired
+	private EeConfigProperties eeConfigProperties;
+	@Autowired
+	private MeterRegistry mr;
+
+	private EnhanceExecutor() {
 	}
 
-	public EnhanceExecutor(String name,
-						   MeterRegistry mr,
-						   int corePoolSize,
-						   int maximumPoolSize,
-						   long keepAliveSecond,
-						   ResizableCapacityLinkedBlockingQueue<Runnable> workQueue,
-						   ThreadFactory threadFactory) {
-		this(name, mr, corePoolSize, false, 0, maximumPoolSize, keepAliveSecond,
-				workQueue, threadFactory, new EERejectedExecutionHandlerHolder.EEAbortPolicy());
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   BlockingQueue<Runnable> workQueue) {
+		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, true, 0,
+				workQueue, null, null);
 	}
 
-	public EnhanceExecutor(String name,
-						   MeterRegistry mr,
-						   int corePoolSize,
-						   int maximumPoolSize,
-						   long keepAliveSecond,
-						   ResizableCapacityLinkedBlockingQueue<Runnable> workQueue,
-						   EERejectedExecutionHandlerHolder.EERejectedExecutionHandlerCounter handler) {
-		this(name, mr, corePoolSize, false, 0, maximumPoolSize, keepAliveSecond,
-				workQueue, Executors.defaultThreadFactory(), handler);
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
+		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, true, 0,
+				workQueue, threadFactory, null);
 	}
 
-	public EnhanceExecutor(String name,
-						   MeterRegistry mr,
-						   int corePoolSize,
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   BlockingQueue<Runnable> workQueue, EeRejectedExecutionHandler handler) {
+		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, true, 0,
+				workQueue, null, handler);
+	}
+
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
 						   boolean allowCoreThreadTimeOut,
-						   int maximumPoolSize,
-						   long keepAliveSecond,
-						   ResizableCapacityLinkedBlockingQueue<Runnable> workQueue,
-						   ThreadFactory threadFactory,
-						   EERejectedExecutionHandlerHolder.EERejectedExecutionHandlerCounter handler) {
-		this(name, mr, corePoolSize, allowCoreThreadTimeOut, 0, maximumPoolSize, keepAliveSecond,
+						   BlockingQueue<Runnable> workQueue) {
+		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, allowCoreThreadTimeOut, 0,
+				workQueue, null, null);
+	}
+
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   boolean allowCoreThreadTimeOut,
+						   BlockingQueue<Runnable> workQueue, EeRejectedExecutionHandler handler) {
+		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, allowCoreThreadTimeOut, 0,
+				workQueue, null, handler);
+	}
+
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   boolean allowCoreThreadTimeOut,
+						   BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, EeRejectedExecutionHandler handler) {
+		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, allowCoreThreadTimeOut, 0,
 				workQueue, threadFactory, handler);
 	}
 
-	public EnhanceExecutor(String name,
-						   MeterRegistry mr,
-						   int corePoolSize,
-						   boolean allowCoreThreadTimeOut,
-						   int preStartCoreThread,
-						   int maximumPoolSize,
-						   long keepAliveSecond,
-						   ResizableCapacityLinkedBlockingQueue<Runnable> workQueue,
-						   ThreadFactory threadFactory,
-						   EERejectedExecutionHandlerHolder.EERejectedExecutionHandlerCounter handler) {
-		Assert.notNull(name, "name must not null");
-		if (EnhanceExecutorContainer.MAP.containsKey(name)) {
-			throw new IllegalArgumentException(name + " pool has register");
-		}
+	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
+						   boolean allowCoreThreadTimeOut, int preStartCoreThread,
+						   BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, EeRejectedExecutionHandler handler) {
+		Assert.notNull(poolName, "name must not null");
 
+		this.poolName = poolName;
+		if (threadFactory == null) {
+			threadFactory = new ThreadFactoryBuilder().setNameFormat(poolName + "-%d").build();
+		}
+		if (handler == null) {
+			handler = new EeRejectedExecutionHandler.EeCallerRunsPolicy();
+		}
 		this.poolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveSecond, TimeUnit.SECONDS, workQueue, threadFactory, handler);
 		this.poolExecutor.allowCoreThreadTimeOut(allowCoreThreadTimeOut);
 		if (preStartCoreThread == 1) {
 			this.poolExecutor.prestartCoreThread();
-		} else if (preStartCoreThread > 1) {
+		} else if (preStartCoreThread == corePoolSize) {
 			this.poolExecutor.prestartAllCoreThreads();
 		}
-
-		//register
-		EnhanceExecutorContainer.MAP.put(name, this);
-
-		//metrics
-		String tagName = "enhance.pool.name";
-		Gauge.builder("enhance.pool.coreSize", this, s -> s.poolExecutor.getCorePoolSize()).tags(tagName, name).register(mr);
-		Gauge.builder("enhance.pool.maxSize", this, s -> s.poolExecutor.getMaximumPoolSize()).tags(tagName, name).register(mr);
-		Gauge.builder("enhance.pool.activeCount", this, s -> s.poolExecutor.getActiveCount()).tags(tagName, name).register(mr);
-		Gauge.builder("enhance.pool.poolSize", this, s -> s.poolExecutor.getPoolSize()).tags(tagName, name).register(mr);
-		Gauge.builder("enhance.pool.largestSize", this, s -> s.poolExecutor.getLargestPoolSize()).tags(tagName, name).register(mr);
-		Gauge.builder("enhance.pool.queueSize", this, s -> workQueue.size()).tags(tagName, name).register(mr);
-
-		//完成任务数
-		Gauge.builder("enhance.pool.completeCount", this, s -> s.poolExecutor.getCompletedTaskCount()).tags(tagName, name).register(mr);
-		//队列初始容量
-		Gauge.builder("enhance.pool.queueCapacity", this, s -> workQueue.getCapacity()).tags(tagName, name).register(mr);
-		//队列剩余容量
-		Gauge.builder("enhance.pool.queueRemainingCapacity", this, s -> workQueue.remainingCapacity()).tags(tagName, name).register(mr);
-		//拒绝数量
-		Gauge.builder("enhance.pool.rejectCount", this, s -> handler.get()).tags(tagName, name).register(mr);
 	}
 
-	public Instance start(int countDownSize) {
+	public ExecuteInstance start(int countDownSize) {
 		if (countDownSize < 0) {
 			throw new IllegalArgumentException("countDownSize must great than equal zero");
 		}
-		return new Instance(poolExecutor, countDownSize);
+		return new ExecuteInstance(poolExecutor, countDownSize);
 	}
 
 	@Override
@@ -133,16 +121,71 @@ public class EnhanceExecutor implements Executor {
 		poolExecutor.execute(command);
 	}
 
+	@Override
 	public Future<?> submit(Runnable task) {
 		return poolExecutor.submit(task);
 	}
 
+	@Override
 	public <T> Future<T> submit(Callable<T> task) {
 		return poolExecutor.submit(task);
 	}
 
+	@Override
 	public <T> Future<T> submit(Runnable task, T result) {
 		return poolExecutor.submit(task, result);
+	}
+
+	@Override
+	public void shutdown() {
+		poolExecutor.shutdown();
+	}
+
+	@Override
+	public List<Runnable> shutdownNow() {
+		return poolExecutor.shutdownNow();
+	}
+
+	@Override
+	public boolean isShutdown() {
+		return poolExecutor.isShutdown();
+	}
+
+	@Override
+	public boolean isTerminated() {
+		return poolExecutor.isTerminated();
+	}
+
+	@Override
+	public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+		return poolExecutor.awaitTermination(timeout, unit);
+	}
+
+	@Override
+	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
+		return poolExecutor.invokeAll(tasks);
+	}
+
+	@Override
+	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException {
+		return poolExecutor.invokeAll(tasks, timeout, unit);
+	}
+
+	@Override
+	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
+		return poolExecutor.invokeAny(tasks);
+	}
+
+	@Override
+	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+		return poolExecutor.invokeAny(tasks, timeout, unit);
+	}
+
+	@Override
+	public void afterPropertiesSet() {
+		refreshPool();
+		metrics();
+		registerShutdown();
 	}
 
 	public int getCorePoolSize() {
@@ -166,114 +209,70 @@ public class EnhanceExecutor implements Executor {
 	}
 
 	public void setKeepAliveSecond(long keepAliveSecond) {
-		poolExecutor.setKeepAliveTime(keepAliveSecond, TimeUnit.SECONDS);
+		if (keepAliveSecond > 0) {
+			poolExecutor.setKeepAliveTime(keepAliveSecond, TimeUnit.SECONDS);
+		}
 	}
 
 	public int getQueueCapacity() {
-		return ((ResizableCapacityLinkedBlockingQueue) poolExecutor.getQueue()).getCapacity();
+		if (poolExecutor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
+			return ((ResizableCapacityLinkedBlockingQueue) poolExecutor.getQueue()).getCapacity();
+		}
+		return 0;
 	}
 
 	public void setQueueCapacity(int capacity) {
-		((ResizableCapacityLinkedBlockingQueue) poolExecutor.getQueue()).setCapacity(capacity);
+		if (capacity > 0 && poolExecutor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
+			((ResizableCapacityLinkedBlockingQueue) poolExecutor.getQueue()).setCapacity(capacity);
+		}
 	}
 
-	public static class Instance {
-
-		/**
-		 * pool
-		 */
-		private ThreadPoolExecutor poolExecutor;
-
-		/**
-		 * execute
-		 */
-		private CountDownLatch countDownLatch;
-		private LongAdder totalExecuteTime = new LongAdder();
-		private LongAdder successCounter = new LongAdder();
-		private LongAdder failCounter = new LongAdder();
-		private LongAdder expCounter = new LongAdder();
-		private Exception firstExp;
-
-		private final static Object EXP_LOCK = new Object();
-
-		private Instance() {
-		}
-
-		private Instance(ThreadPoolExecutor poolExecutor, int countDownSize) {
-			this.poolExecutor = poolExecutor;
-			this.countDownLatch = new CountDownLatch(countDownSize);
-		}
-
-		public void execute(Runnable task) {
-			execute(() -> {
-				task.run();
-				return true;
-			});
-		}
-
-		public void execute(Callable<Boolean> task) {
-			poolExecutor.execute(() -> {
-				boolean result = false;
-				long startTime = System.currentTimeMillis();
-				try {
-					result = task.call();
-				} catch (Exception e) {
-					expCounter.increment();
-					if (firstExp == null) {
-						synchronized (EXP_LOCK) {
-							if (firstExp == null) {
-								firstExp = e;
-							}
-						}
-					}
-					log.error("Instance execute error", e);
-				} finally {
-					if (result) {
-						successCounter.increment();
-					} else {
-						failCounter.increment();
-					}
-					countDownLatch.countDown();
-					totalExecuteTime.add(System.currentTimeMillis() - startTime);
+	private void refreshPool() {
+		//config value
+		if (eeConfigProperties != null) {
+			EeConfigProperties.EeConfig eeConfig = eeConfigProperties.getConfig(poolName);
+			if (eeConfig != null) {
+				int corePoolSize = eeConfig.getCorePoolSize() != null ? eeConfig.getCorePoolSize() : poolExecutor.getCorePoolSize();
+				int maximumPoolSize = eeConfig.getMaximumPoolSize() != null ? eeConfig.getMaximumPoolSize() : poolExecutor.getMaximumPoolSize();
+				if (corePoolSize > maximumPoolSize) {
+					throw new BeanCreationException("create " + poolName + " error," +
+							"corePoolSize:" + corePoolSize + " great than maximumPoolSize:" + maximumPoolSize);
 				}
-			});
-		}
-
-		public ExecuteResult await() {
-			try {
-				countDownLatch.await();
-			} catch (InterruptedException e) {
-				log.error("countDown await error", e);
+				if (eeConfig.getCorePoolSize() != null) {
+					setCorePoolSize(eeConfig.getCorePoolSize());
+				}
+				if (eeConfig.getMaximumPoolSize() != null) {
+					setMaximumPoolSize(eeConfig.getMaximumPoolSize());
+				}
+				if (eeConfig.getKeepAliveSecond() != null) {
+					setKeepAliveSecond(eeConfig.getKeepAliveSecond());
+				}
+				if (eeConfig.getQueueCapacity() != null) {
+					setQueueCapacity(eeConfig.getQueueCapacity());
+				}
 			}
-			return getExecuteResult();
-		}
-
-		private Long calAvgExecuteTime() {
-			long totalCount = successCounter.sum() + failCounter.sum();
-			if (totalCount == 0) {
-				return 0L;
-			}
-			//总时间 / 总次数
-			return totalExecuteTime.sum() / totalCount;
-		}
-
-		private ExecuteResult getExecuteResult() {
-			ExecuteResult executeResult = new ExecuteResult();
-			executeResult.setSuccessCount(successCounter.sum());
-			executeResult.setFailCount(failCounter.sum());
-			executeResult.setExpCount(expCounter.sum());
-			executeResult.setAvgExecuteTime(calAvgExecuteTime());
-			executeResult.setFirstExp(firstExp);
-			return executeResult;
 		}
 	}
 
-	@Data
-	public static class ExecuteResult {
-		private Long successCount = 0L;
-		private Long failCount = 0L;
-		private Long expCount = 0L;
-		private Exception firstExp;
-		private Long avgExecuteTime;
+	private void metrics() {
+		if (mr != null) {
+			String tagName = "enhance.pool.name";
+			Gauge.builder("enhance.pool.corePoolSize", this, s -> poolExecutor.getCorePoolSize()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.maximumPoolSize", this, s -> poolExecutor.getMaximumPoolSize()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.activeCount", this, s -> poolExecutor.getActiveCount()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.poolSize", this, s -> poolExecutor.getPoolSize()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.largestPoolSize", this, s -> poolExecutor.getLargestPoolSize()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.completeTaskCount", this, s -> poolExecutor.getCompletedTaskCount()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.queueSize", this, s -> poolExecutor.getQueue().size()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.queueRemainingCapacity", this, s -> poolExecutor.getQueue().remainingCapacity()).tags(tagName, poolName).register(mr);
+			Gauge.builder("enhance.pool.rejectCount", this, s -> ((EeRejectedExecutionHandler) poolExecutor.getRejectedExecutionHandler()).getRejectCount()).tags(tagName, poolName).register(mr);
+			if (poolExecutor.getQueue() instanceof ResizableCapacityLinkedBlockingQueue) {
+				Gauge.builder("enhance.pool.queueCapacity", this, s -> ((ResizableCapacityLinkedBlockingQueue) poolExecutor.getQueue()).getCapacity()).tags(tagName, poolName).register(mr);
+			}
+		}
+	}
+
+	private void registerShutdown() {
+		ShutdownRegistry.register(new Shutdown(s -> this.poolExecutor.shutdown()));
 	}
 }

@@ -1,5 +1,7 @@
 package com.jmilktea.sample.demo.controller;
 
+import com.jmilktea.sample.demo.bytebuddy.TimeClass;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -9,7 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-	public void testDeleteFile() {
-
+	@RequestMapping(value = "/bytebuddy")
+	public void testByteBuddy() throws InterruptedException {
+		TimeClass timeClass = new TimeClass();
+		timeClass.test();
+		timeClass.test2();
 	}
 }
