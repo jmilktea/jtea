@@ -1,8 +1,8 @@
 package com.jmilktea.sample.demo.enhance;
 
+import com.al.risk.collection.shutdown.Shutdown;
+import com.al.risk.collection.shutdown.ShutdownRegistry;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.jmilktea.sample.demo.shutdown.Shutdown;
-import com.jmilktea.sample.demo.shutdown.ShutdownRegistry;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
@@ -68,22 +68,19 @@ public class EnhanceExecutor implements ExecutorService, InitializingBean {
 	}
 
 	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
-						   boolean allowCoreThreadTimeOut,
-						   BlockingQueue<Runnable> workQueue) {
+						   boolean allowCoreThreadTimeOut, BlockingQueue<Runnable> workQueue) {
 		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, allowCoreThreadTimeOut, 0,
 				workQueue, null, null);
 	}
 
 	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
-						   boolean allowCoreThreadTimeOut,
-						   BlockingQueue<Runnable> workQueue, EeRejectedExecutionHandler handler) {
+						   boolean allowCoreThreadTimeOut, BlockingQueue<Runnable> workQueue, EeRejectedExecutionHandler handler) {
 		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, allowCoreThreadTimeOut, 0,
 				workQueue, null, handler);
 	}
 
 	public EnhanceExecutor(String poolName, int corePoolSize, int maximumPoolSize, long keepAliveSecond,
-						   boolean allowCoreThreadTimeOut,
-						   BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, EeRejectedExecutionHandler handler) {
+						   boolean allowCoreThreadTimeOut, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, EeRejectedExecutionHandler handler) {
 		this(poolName, corePoolSize, maximumPoolSize, keepAliveSecond, allowCoreThreadTimeOut, 0,
 				workQueue, threadFactory, handler);
 	}
@@ -102,18 +99,15 @@ public class EnhanceExecutor implements ExecutorService, InitializingBean {
 		}
 		this.poolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveSecond, TimeUnit.SECONDS, workQueue, threadFactory, handler);
 		this.poolExecutor.allowCoreThreadTimeOut(allowCoreThreadTimeOut);
-		if (preStartCoreThread == 1) {
-			this.poolExecutor.prestartCoreThread();
-		} else if (preStartCoreThread == corePoolSize) {
+		if (preStartCoreThread >= corePoolSize) {
 			this.poolExecutor.prestartAllCoreThreads();
+		} else if (preStartCoreThread >= 1) {
+			this.poolExecutor.prestartCoreThread();
 		}
 	}
 
-	public ExecuteInstance start(int countDownSize) {
-		if (countDownSize < 0) {
-			throw new IllegalArgumentException("countDownSize must great than equal zero");
-		}
-		return new ExecuteInstance(poolExecutor, countDownSize);
+	public ExecuteInstance getInstance() {
+		return new ExecuteInstance(this);
 	}
 
 	@Override
