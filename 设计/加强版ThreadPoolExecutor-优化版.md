@@ -283,7 +283,8 @@ public class EeApolloListener implements ApplicationContextAware {
 - 服务优雅下线线程池中断处理    
 - 支持动态修改线程池参数     
 - 支持作为spring bean注入，使用spring Async异步注解    
-- 封装/兼容jdk ThreadPoolTaskExecutor，支持统计任务处理情况    
+- 封装/兼容jdk ThreadPoolTaskExecutor，支持统计任务处理情况   
+- 支持线程池任务执行情况统计 
 
 **参考**   
 [Java线程池实现原理及其在美团业务中的实践](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)    
