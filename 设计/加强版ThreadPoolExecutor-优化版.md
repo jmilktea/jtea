@@ -202,7 +202,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends LinkedBlockingQueue
 		}
 	}
 ```
-监听apollo配置变更    
+监听apollo配置变更，首先判断变更的key是不是我们关注的，是的话按照约定的格式解析，得到poolName也就是bena name，接着从ApplicationContext获取bean，修改其内部的线程池对应的属性。     
 ```
 @Slf4j
 @Component
