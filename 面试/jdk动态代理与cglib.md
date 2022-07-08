@@ -61,7 +61,7 @@ jdk动态代理主要使用InvocationHandler接口和Proxy类来实现，Invocat
 	}
 ```
 需要注意的是网上几乎所有的示例代码都将这里的InvocationRequestHandler命名为Proxy，这是不合理的，它不是一个真正的Proxy，而是作为参数传递给Proxy，由Proxy去触发。我们上面的命名是准确的，没有Proxy类，因为它是动态生成的，我们通过ProxyFactory去生成它。  
-Proxy.newProxyInstance第二个参数传递的是interface，也就是target所实现的接口，所以这种方式下我们的类是需要有实现接口的，如果把上面RequestHandler接口相关定义去掉，那么运行起来就会报错，提示
+Proxy.newProxyInstance第二个参数传递的是interface，生成的代理类会实现这个接口，这个参数可以直接是target实现的接口类型，也可以是继承了这个类型的接口类型，所以这种方式下我们的类是需要有实现接口的，如果把上面RequestHandler接口相关定义去掉，那么运行起来就会报错，提示
 ```
 java.lang.ClassCastException: com.sun.proxy.$Proxy20 cannot be cast to SimpleTests$SimpleRequestHandler    
 ```
