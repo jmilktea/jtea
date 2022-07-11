@@ -2,14 +2,16 @@ mysql有没有解决幻读问题，在网上的答案比较多，有的斩钉截
 
 首先什么是幻读，就是在事务内的两次读，读到不同的行集。举个栗子：   
 ```
-start transaction;
 -- 假设现在有id：1,5,10,15
+
+start transaction;
 -- 第一次读返回1,5,10
 select * from t_table where id between 1 and 10;
 
 -- 第二次读返回1,5,6,10
 select * from t_table where id between 1 and 10;
 ```
+
 假设上述的情况在第一次读后，另一个事务往表里插入一条id=6的记录，若第二次读比第一次读返回的结果了一条6的记录，这条记录就称为幻行，这种情况就称为幻读。     
 有的同学可能会混淆不可重复读和幻读，因为本质上两者都是多次读取到不一样的结果，但是幻读侧重于行集，读到的数据多了或少了，这一点我们这[MVCC原理]()这一篇也有提及，MVCC原理这一篇也推荐阅读，读完后会更好理解本篇的内容。    
 另外我们也可以看mysql官网对幻读的描述：[Phantom Rows](https://dev.mysql.com/doc/refman/8.0/en/innodb-next-key-locking.html)    
@@ -41,12 +43,12 @@ INSERT INTO `t_test` (`id`, `age`, `name`, `id_num`) VALUES (5, 15, 'jack', 'jac
 INSERT INTO `t_test` (`id`, `age`, `name`, `id_num`) VALUES (15, 22, 'lucy', 'lucy000');
 ```    
 
-首先我们使用快照读，如图：   
-![image](1)    
+例子1，首先我们使用快照读，如图：   
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/phantom-row1.png)    
 这两次读的结果是一样的，不会出现幻读，原因是我们再MVCC原理篇分析的，在RR下，对于快照读，一致性视图只会生成一次，所以第一次读到什么后面读到的都是一样的。
 
-我们使用当前读，如图：   
-![image](2)    
+例子2，我们使用当前读，如图：   
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/phantom-row2.png)    
 可以看到session2阻塞了，并不能插入数据，所以session1的两次读也都能读到一样的结果。那么session2为什么会阻塞呢？这就是next-key lock的作用。    
 **next-key lock** 是间隙锁和行锁的组合，是RR下加锁的基本单位，引用下[极客时间《MySQL 实战 45 讲》](https://time.geekbang.org/column/article/75659)中next-key lock加锁规则的总结：   
 原则 1：加锁的基本单位是 next-key lock，next-key lock 是前开后闭区间。    
@@ -59,8 +61,8 @@ INSERT INTO `t_test` (`id`, `age`, `name`, `id_num`) VALUES (15, 22, 'lucy', 'lu
 但由于上面提到的bug，会继续向后寻找到第一个不满足条件的数据，会对(5,15]加锁。这个问题在mysql8.0高版本已经被修复。    
 session2 insert id=2的数据，所以会阻塞，既然数据都插不进去了，那么session1的多次读自然都是读到同一个结果。       
 
-那如果是快照读和当前读混用呢，如图：    
-![image](3)    
+例子3，那如果是快照读和当前读混用呢，如图：    
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/phantom-row3.png)    
 这种情况下就出现幻读了，因为当前读并不从上一个查询的一致性视图读取，而是读取最新的数据，所以出现不一致的情况，从这个角度来说，mysql并没有完全解决幻读。     
 
 **总结**    
