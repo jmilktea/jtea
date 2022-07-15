@@ -13,7 +13,11 @@ ThreadLocal设计上为每个线程维护一份线程私有数据，它可以避
 ThreadLocal本身只是个“壳”，其操作的都是它的一个内部类ThreadLocalMap，一个类似HashMap的结构，但它不实现Map接口，ThreadLocalMap内部维护了一个Entry数组，存放实际的数据，Entry的key就是ThreadLocal对象本身，value是要存放的值，每次读写数据，就是通过TheradLocal对象计算hashcode，定位到数组的下标操作。Entry是一个继承了WeakReference<ThreadLocal<?>>的类，作为key的ThreadLocal对象会被设置为弱引用。    
 ```
 public class ThreadLocal<T> {
+
     static class ThreadLocalMap {
+
+	private Entry[] table;
+
         static class Entry extends WeakReference<ThreadLocal<?>> {
             /** The value associated with this ThreadLocal. */
             Object value;
@@ -34,7 +38,7 @@ Thread线程类内部有一个threadLocals属性，就是该线程对应的Threa
     ThreadLocal.ThreadLocalMap threadLocals = null;
 ```
 
-我们看下ThreadLocal.set源码     
+我们看下ThreadLocal.set方法源码     
 ```
     public void set(T value) {
         Thread t = Thread.currentThread();
@@ -47,10 +51,11 @@ Thread线程类内部有一个threadLocals属性，就是该线程对应的Threa
 ```
 非常好理解，拿到当前线程，拿到当前线程的ThreadLocalMap，把当前ThreadLocal作为key，和value传递给ThreadMap保存。    
 用一张图来表示一下三者的关系，如下：   
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/images/thread-local1.png)    
 
 ## TheradLocal的应用    
 有时候面试官会问你在哪些场景使用过ThreadLocal，看你到底有没有真正使用过，记住我如下例子就行啦。(以下代码都是默写的伪代码~)    
+
 **spring动态数据源**   
 有些时候需要在一次方法内操作不同数据源，这个时候就涉及到多数据源的切换。我们会定义一个AbstractRoutingDataSource用来决定选哪个数据源    
 ```
@@ -82,7 +87,7 @@ public class DynamicDataSourceHolder {
 
 }
 ```
-接着可以定义一个注解和切面，在方法执行前判断拿到这个注解标记的数据源，将值设置到ThreadLocal，这样在方法执行的时候可以拿到对应的数据源，实现数据源切换，伪代码如下：     
+接着可以定义一个注解和切面，在方法执行前判断拿到这个注解标记的数据源，将值设置到ThreadLocal，并在DynamicDataSource决定使用哪个数据时获取到，实现数据源切换，伪代码如下：     
 ```
 public @interface DS {
     String name();
@@ -191,10 +196,10 @@ System.gc();
 对于ThreadLocal来说，它里面的Entry继承了WeakReference<ThreadLocal>，会把key也就是ThreadLocal对象设置为弱引用。那为什么要这么做呢？    
 上面的例子我们刚提到，当你忘记remove的时候，使用弱引用可以防止内存泄漏，ThreadLocal也是出于这目的。假设key不是弱引用，开发者忘记remove，那么key就发生内存泄漏，只能等到Thread对象销毁时才回收，在一些使用线程池的场景下，Thread会一直复用，就会导致内存一直回收不了。 
 ```
-    public void test() {
+    	public void test() {
 		inner();
 		System.gc();	
-        //Thread.currentThread.threadLocals	        
+        	//Thread.currentThread.threadLocals	        
 	}
 
 	private void inner() {
@@ -204,50 +209,50 @@ System.gc();
 
 	class TestClass {
 		
-        ThreadLocal threadLocal = new ThreadLocal();
+        	ThreadLocal threadLocal = new ThreadLocal();
 
 		public void set(Object value) {
 			threadLocal.set(value);
 		}
 	}
 
-    //更简单的例子
-    public void test() {
+    	//更简单的例子
+    	public void test() {
 		ThreadLocal threadLocal = new ThreadLocal();
-        threadLocal.set(new User());
-        threadLocal = null;
+        	threadLocal.set(new User());
+        	threadLocal = null;
 		System.gc();	
-        //Thread.currentThread.threadLocals	        
-	}
+        	//Thread.currentThread.threadLocals	        
+    	}
 ```
 如上代码，往ThreadLocal放了一个User对象，此时ThreadLocalMap就维护一个key为threadLocal，value为User的Entry，当inner方法执行完，threadLocal已经不可达，但它的内存区域还被Entry引用着，并且没法再访问到，如果是强引用，就出现内存泄漏。如果是弱引用，在gc后，我们观察Thread.currentThread.threadLocals就可以发现，它的referent变成了null，被回收了。但作为value的User对象是强引用，不会被回收。到这里有些面试官就会问，为什么value不也设置为弱引用呢？     
 
 如下代码：
 ```    
-    public void test() {
+    	public void test() {
 		TestClass testClass = inner();
 		System.gc();	
-        User user = testClass.get();    
+        	User user = testClass.get();    
 	}
 
 	private void inner() {
-        User user = new User();
+        	User user = new User();
 		TestClass testClass = new TestClass();
 		testClass.set(user);
-        return testClass;
+        	return testClass;
 	}
 
 	class TestClass {
 		
-        ThreadLocal threadLocal = new ThreadLocal();
+        	ThreadLocal threadLocal = new ThreadLocal();
 
 		public void set(User user) {
 			threadLocal.set(user);
 		}
 
-        public User get() {
-            reteurn threadLocal.get();
-        }
+        	public User get() {
+            		reteurn threadLocal.get();
+        	}
 	}
 ```
 这里我们返回了TestClass，threadLocal对象就还被引用着，我们假设value如果是弱引用，那value在inner方法后就没有强引用了，gc后会被回收，会后再获取会拿到一个null，这显然是不合理的。   
@@ -297,7 +302,7 @@ this是子线程，parent是父线程，也是当前线程，这里会判断父�
 
 ## ThreadLocal可以做哪些优化    
 能问到这里证明离offer已经不远了，基本很多面试官也不会问到这个层面。    
-回到ThreadLocal原理部分，它实际操作的是ThreadLocalMap，通过当前ThreadLocal的hashcode，计算Entry数组的下标，这个hashcode new ThreadLocal()时通过一个全局的AtomicInteger累加0x61c88647得到。  
+回到ThreadLocal原理部分，它实际操作的是ThreadLocalMap，通过当前ThreadLocal的hashcode，计算Entry数组的下标，这个hashcode是new ThreadLocal()时通过一个全局的AtomicInteger累加0x61c88647得到。  
 跟hashmap的原理类似，通过hashcode计算下标，可能会出现hash冲突，hashmap使用链表+红黑树的方式解决hash冲突。而ThreadLocal使用**线性探测法解决。**    
 线性探测法的做法是，当出现hash冲突时，探测下一个位置，看看是否可以放入，可以就放入，否则继续往下一个位置探测。问题就出现在这里，当出现较多hash冲突时，相当于链表的遍历不断的探测，效率较低，可能ThreadLocal的作者认为ThreadLocal的设计上它不会存放太多数据吧。    
 那怎么优化呢？既然出现hash冲突影响效率，那干脆就不处理了，使用一个递增为1的AtomicInteger，每个ThreadLocal对应一个下标，这样就不会有冲突了，O(1)的查询速度，但是会占用较多空间，是一种空间换时间的思想。    
