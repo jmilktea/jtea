@@ -140,7 +140,7 @@
 [tcp三次握手四次挥手](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/tcp%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.md)   
 [CountDownLatch和CyclicBarrier](https://github.com/jmilktea/jmilktea/blob/master/%E9%9D%A2%E8%AF%95/CountDownLatch%E5%92%8CCyclicBarrier.md)   
 [并发编程wait和notify](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8Bwait%E5%92%8Cnotify.md)    
-[ThreadLocal](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/ThreadLocal.md)   
+[面试再也不怕问ThreadLocal了](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/ThreadLocal.md)   
 
 ## 其它
 [druid加密](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/druid%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86.md)  
