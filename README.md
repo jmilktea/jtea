@@ -134,11 +134,7 @@
 [git tag](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/git%20tag.md)  
 [jmeter](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/jmeter/jmeter.md)  
 [curl](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/curl/curl.md)  
-[idea插件汇总](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)  
-[p3c插件](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/p3c.md)  
-[yapiupload插件](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/yapiupload.md)   
-[jrebel](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/jrebel.md)   
-[基于upsource进行code review](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E5%9F%BA%E4%BA%8Eupsource%E8%BF%9B%E8%A1%8Ccode%20review.md)   
+[idea插件汇总](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E6%8F%92%E4%BB%B6.md)    
 [写一个idea插件通知你gitlab远端分支变更了](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/idea/%E5%86%99%E4%B8%80%E4%B8%AAidea%E6%8F%92%E4%BB%B6%E9%80%9A%E7%9F%A5%E4%BD%A0gitlab%E8%BF%9C%E7%AB%AF%E5%88%86%E6%94%AF%E5%8F%98%E6%9B%B4%E4%BA%86.md)   
 [git hook解决多仓库代码合规问题](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/githook%E8%A7%A3%E5%86%B3%E4%BB%A3%E7%A0%81%E5%90%88%E8%A7%84%E9%97%AE%E9%A2%98.md)
 
