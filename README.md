@@ -14,7 +14,7 @@
 [feign](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/feign/feign.md)    
 [服务优雅下线](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/%E6%9C%8D%E5%8A%A1%E4%BC%98%E9%9B%85%E4%B8%8B%E7%BA%BF.md)    
 [动态创建bean托管到spring](https://github.com/jmilktea/jtea/blob/master/spring/%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BAbean%E6%89%98%E7%AE%A1%E5%88%B0spring.md)   
-[除了java-jar,还能这样运行你的springboot应用](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/springboot%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F.md)       
+[除了java-jar,还能这样运行你的springboot应用](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/springboot%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F.md) 
 
 ## webflux   
 [错误处理](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.md)  
@@ -79,7 +79,7 @@
 [mq多环境topic设计](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/mq%E5%A4%9A%E7%8E%AF%E5%A2%83topic%E8%AE%BE%E8%AE%A1.md)   
 [解决多环境下微服务实例乱窜](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E8%A7%A3%E5%86%B3%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9E%E4%BE%8B%E4%B9%B1%E7%AA%9C.md)  
 [加强版ThreadPoolExecutor](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor.md)        
-[加强版ThreadPoolExecutor-优化版](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor-%E4%BC%98%E5%8C%96%E7%89%88.md)    
+[加强版ThreadPoolExecutor升级](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor%E5%8D%87%E7%BA%A7.md)    
 
 ## 算法
 [使用TreeSet优化任务分配.md](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%BD%BF%E7%94%A8TreeSet%E4%BC%98%E5%8C%96%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D.md)   
