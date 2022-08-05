@@ -12,18 +12,21 @@
 -XX:+PrintGCDetails | 打印gc日志  
 -XX:+PrintGCDateStamps | 打印gc时间  
 -Xloggc | gc路径
--XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms，jvm会根据这个时间调整堆大小，让gc时间尽可能在这个时间内
--XX:+UseG1GC | 使用g1回收器
 -XX:ParallelGCThreads | 并行gc时使用的线程数，默认是2  
 -XX:+ParallelRefProcEnabled | 并行处理Reference对象，默认是false，应开启
 -XX:NewRatio | 老年代:新生代，默认值是 2:1
--XX:SurvivorRatio | 两个survivor:eden，默认值是2:8
+-XX:SurvivorRatio | 两个survivor:eden，默认值是1:1:8
 -XX:MaxTenuringThreshold | 默认值是15，进入老年代的年龄
--XX:+UseCMSCompactAtFullCollection | 每次 full gc后对内存进行压缩，可以避免内存碎片问题（内存碎片问题没有了，停顿时间变长了）
--XX:CMSFullGCsBeforeCompaction | 多少次full gc后才对老年代进行压缩
--XX:+UseCMSInitiatingOccupancyOnly | 使用设定的阈值开始cms gc
--XX:CMSInitiatingOccupancyFraction | 达到这个百分比即开始cms gc（由于是并发标记，所以需预留内存）
 -XX:+DisableExplicitGC | 明确禁止使用system.gc  
+**cms**
+-XX:+UseCMSInitiatingOccupancyOnly | 使用设定的阈值开始cms gc
+-XX:CMSInitiatingOccupancyFraction | 达到这个百分比即开始cms gc（由于是并发标记，所以需预留内存），UseCMSInitiatingOccupancyOnly开启这个参数才生效
+-XX:CMSScavengeBeforeRemark | cms重新标记阶段是否先进行一次minor gc,减少gc root扫描，jdk8默认值是false
+-XX:+UseCMSCompactAtFullCollection | full gc后对内存进行整理，jdk8默认值是true。
+-XX:CMSFullGCsBeforeCompaction | 与UseCMSCompactAtFullCollection搭配使用，多少次full gc后才对老年代进行整理。jdk8默认值是0，表示每次full gc后对内存进行整理。
+**g1**
+-XX:+UseG1GC | 使用g1收集器，jdk9开始默认使用g1收集器
+-XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms
 **其它**|
 -XX:+HeapDumpOnOutOfMemoryError | 开启oom head dump  
 -XX:HeapDumpPath|dump文件路径  
