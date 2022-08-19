@@ -22,7 +22,7 @@
 -XX:+DisableExplicitGC | 明确禁止使用system.gc  
 **parallel gc**
 -XX:+UseAdaptiveSizePolicy | 开启自适应调节，不需要设置新生代eden，survivor比例，新生晋升老年代年龄，jvm会根据监控动态调整，默认true
--XX:MaxGCPauseMillis | 期望gc最大停顿时间，默认0，即不限制
+-XX:MaxGCPauseMillis | 期望gc最大停顿时间，默认0，即不限制。只对parallel scavenge有效。
 -XX:GCTimeRatio | 期望用户代码运行时间占总时间比率，默认99，即gc时间控制在1%
 **cms**
 -XX:+UseConcMarkSweepGC | 开启cms收集器，默认是不开启
