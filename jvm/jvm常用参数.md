@@ -25,7 +25,7 @@
 -XX:MaxGCPauseMillis | 期望gc最大停顿时间，默认0，即不限制。只对parallel scavenge有效。
 -XX:GCTimeRatio | 期望用户代码运行时间占总时间比率，默认99，即gc时间控制在1%
 **cms**
--XX:+UseConcMarkSweepGC | 开启cms收集器，默认是不开启
+-XX:+UseConcMarkSweepGC | 开启cms收集器，默认是不开启。新生代会开启ParNew，老年代备用Serial Old。
 -XX:+UseCMSInitiatingOccupancyOnly | 使用设定的阈值开始cms gc
 -XX:CMSInitiatingOccupancyFraction | 达到这个百分比即开始cms gc（cms是并发清理，需预留内存），UseCMSInitiatingOccupancyOnly开启这个参数才生效
 -XX:CMSScavengeBeforeRemark | cms重新标记阶段是否先进行一次minor gc,减少gc root扫描，默认值是false
