@@ -7,6 +7,8 @@
 -Xms: | 指定jvm初始堆大小  
 -Xmx: | 指定jvm最大可用内存  
 -Xmn：| 设置新生代内存大小
+-XX:NewRatio | 老年代:新生代，默认值是 2:1
+-XX:SurvivorRatio | eden和survivor比值，默认是8，即eden:s0:s1=1:1:8
 -XX:MetaspaceSize | 元数据空间初始大小
 -XX:MaxMetaspaceSize | 元数据空间最大大小  
 -XX:MaxDirectMemorySize | 最大堆外内存  
@@ -19,8 +21,6 @@
 -XX:GCLogFileSize | gc log滚动大小，超过这个大小就会写入下一个文件，最小是8kb
 -XX:ParallelGCThreads | 并行gc时使用的线程数，默认是cpu核数
 -XX:+ParallelRefProcEnabled | 并行处理Reference对象，默认是false，应开启
--XX:NewRatio | 老年代:新生代，默认值是 2:1
--XX:SurvivorRatio | eden和survivor比值，默认是8，即eden:s0:s1=1:1:8
 -XX:MaxTenuringThreshold | 默认值是15，进入老年代的年龄。cms默认是6。
 -XX:+DisableExplicitGC | 明确禁止使用system.gc  
 **parallel gc**
