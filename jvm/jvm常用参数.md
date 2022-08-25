@@ -20,7 +20,7 @@
 -XX:ParallelGCThreads | 并行gc时使用的线程数，默认是cpu核数
 -XX:+ParallelRefProcEnabled | 并行处理Reference对象，默认是false，应开启
 -XX:NewRatio | 老年代:新生代，默认值是 2:1
--XX:SurvivorRatio | 两个survivor:eden，默认值是1:1:8
+-XX:SurvivorRatio | eden和survivor比值，默认是8，即eden:s0:s1=1:1:8
 -XX:MaxTenuringThreshold | 默认值是15，进入老年代的年龄。cms默认是6。
 -XX:+DisableExplicitGC | 明确禁止使用system.gc  
 **parallel gc**
