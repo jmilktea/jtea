@@ -15,7 +15,7 @@
 -XX:+PrintGCDateStamps | 打印gc时间  
 -Xloggc | gc log日志路径   
 -XX:UseGCLogFileRotation | 是否开启gc log文件滚动输出，前提是配置了-Xloggc
--XX:NumberOfGCLogFiles | gc log滚动输出文件个数，会生成<filename>.0,<filename>.1,<filename>.n-1文件
+-XX:NumberOfGCLogFiles | gc log滚动输出文件个数，会生成filename.0,filename.1,filename.n-1文件
 -XX:GCLogFileSize | gc log滚动大小，超过这个大小就会写入下一个文件，最小是8kb
 -XX:ParallelGCThreads | 并行gc时使用的线程数，默认是cpu核数
 -XX:+ParallelRefProcEnabled | 并行处理Reference对象，默认是false，应开启
