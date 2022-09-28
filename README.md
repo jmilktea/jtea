@@ -107,6 +107,7 @@
 ## jvm   
 [jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
 [jdk常用命令](https://github.com/jmilktea/jtea/blob/master/jvm/jdk%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)   
+[TLAB堆内存中的线程私有区域](https://github.com/jmilktea/jtea/blob/master/jvm/TLAB%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%8C%BA%E5%9F%9F.md)   
 
 ## java基础  
 [@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9F.md)  
