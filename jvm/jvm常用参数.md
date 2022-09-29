@@ -37,6 +37,13 @@
 **g1**
 -XX:+UseG1GC | 使用g1收集器，jdk9开始默认使用g1收集器
 -XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms
+**TLAB**   
+-XX:+UseTLAB | 开启TLAB机制，默认是开启
+-XX:TLABWasteTargetPercent | TLAB占用eden区大小，默认是1%
+-XX:TLABSize | 设置TLAB大小，默认是0，jvm自动调节
+XX:+ResizeTLAB | 开启TLAB自动调节，默认是开启
+-XX:TLABRefillWasteFraction | TLAB最大浪费空间，默认是64，表示TLAB大小的1/64   
+-XX+PringTLAB | gc日志打印TLAB信息，默认是不打印
 **其它**|
 -XX:+HeapDumpOnOutOfMemoryError | 开启oom head dump  
 -XX:HeapDumpPath|dump文件路径  
