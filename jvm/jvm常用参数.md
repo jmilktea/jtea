@@ -1,4 +1,4 @@
-jvm参数总共有几百个，没人能全部记下来，下面主要收集我们平时开发和面试常见的。
+jvm参数总共有几百个，没人能全部记下来，下面主要收集我们平时开发和面试常见的。     
 这些参数主要基于jdk8，参考oracle官方文档：https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html
 
 参数 | 解释
