@@ -1,3 +1,4 @@
+jvm参数总共有几百个，没人能全部记下来，下面主要收集我们平时开发和面试常见的。
 这些参数主要基于jdk8，参考oracle官方文档：https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html
 
 参数 | 解释
@@ -6,7 +7,7 @@
 -Xss: | 指定线程栈大小，默认是1M  
 -Xms: | 指定jvm初始堆大小  
 -Xmx: | 指定jvm最大可用内存  
--Xmn：| 设置新生代内存大小
+-Xmn：| 设置新生代内存大小，设置这个参数会覆盖NewRatio参数
 -XX:NewRatio | 老年代:新生代，默认值是 2:1
 -XX:SurvivorRatio | eden和survivor比值，默认是8，即eden:s0:s1=1:1:8
 -XX:MetaspaceSize | 元数据空间初始大小
@@ -48,6 +49,8 @@ XX:+ResizeTLAB | 开启TLAB自动调节，默认是开启
 -XX:+HeapDumpOnOutOfMemoryError | 开启oom head dump  
 -XX:HeapDumpPath|dump文件路径  
 -XX:ErrorFile|jvm crash 路径   
+-XX:+DoEscapeAnalysis | 开启逃逸分析，默认就是开启。
+-XX:+EliminateAllocations | 开启标量替换，默认就是开启。
 **gc工具**|
 [perfma](https://opts.console.perfma.com/) | 参数查询，解释，优化  
 [fastthread](https://fastthread.io),[gceasy](https://gceasy.io/)|在线，文件大了上传很慢
