@@ -13,7 +13,7 @@ jdk bin目录下为我们提供了许多实用工具，包括命令行工具，�
 查看jvm进程信息   
 - jinfo pid：显示jvm进程的全部属性，包括系统属性和jvm属性，系统属性包括jdk的版本，jre的路径，运行程序的用户等等，jvm属性包含默认的参数以及我们指定的启动参数，在这里也可以看到当前jvm使用的是哪种gc收集器，例如我本地环境的输出-XX:+UseParallelGC，表示新生代使用Paralle Scavenge收集器，老年代使用Parallel Old收集器，这是jdk8默认的设置。   
 - jinfo -flags pid：相比jifno pid不会输出系统属性    
-- jinfo -flag：还可以不启动服务动态的设置某些jvm参数，但不是所有参数都可以动态设置，这个感觉用处不大。   
+- jinfo -flag：查看jvm参数，如:jinfo -flag UseG1GC pid 查看UseG1GC参数的设置
 
 ## jstat   
 查看jvm统计信息，主要是gc相关的    
