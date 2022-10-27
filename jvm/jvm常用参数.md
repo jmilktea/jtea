@@ -1,5 +1,8 @@
 jvm参数总共有几百个，没人能全部记下来，下面主要收集我们平时开发和面试常见的。     
-这些参数主要基于jdk8，参考oracle官方文档：https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html
+这些参数主要基于jdk8，参考oracle官方文档：https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html    
+-开头参数：表示标准参数，如-D,-jar。   
+-X开头参数：表示非标准参数，不是所以虚拟机都支持它们，也可能会发生变化。   
+-XX开头参数：表示非标准不稳定参数，与-X类似，不是所有虚拟机都支持，也可能会发生变化，相比-X更加不稳定。    
 
 参数 | 解释
 ---|---
@@ -41,8 +44,10 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -XX:CMSFullGCsBeforeCompaction | 与UseCMSCompactAtFullCollection搭配使用，多少次full gc后才对老年代进行整理。jdk8默认值是0，表示每次full gc后对内存进行整理。
 -XX:ParallelCMSThreads | 设置cms并发线程数，默认是（cpu核数+3）/ 4
 **g1 gc**
--XX:+UseG1GC | 使用g1收集器，jdk9开始默认使用g1收集器
--XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms
+-XX:+UseG1GC | 使用g1收集器，jdk9开始默认使用g1收集器       
+-XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms   
+-XX:G1HeapRegionSize | g1 region的个数，1~32m之间，2的整数倍，默认根据堆大小自动计算   
+-XX:InitiatingHeapOccupancyPercent | 老年代达到这个阈值就开始mixed gc，默认45%   
 **TLAB**   
 -XX:+UseTLAB | 开启TLAB机制，默认是开启
 -XX:TLABWasteTargetPercent | TLAB占用eden区大小，默认是1%
