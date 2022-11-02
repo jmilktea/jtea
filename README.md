@@ -72,7 +72,8 @@
 [sql到底慢在哪里](https://github.com/jmilktea/jmilktea/blob/master/mysql/sql%E5%88%B0%E5%BA%95%E6%85%A2%E5%9C%A8%E5%93%AA%E9%87%8C.md)   
 [order by居然有bug?](https://github.com/jmilktea/jmilktea/blob/master/mysql/orderby%20bug.md)       
 [mysql到底有没有解决幻读问题](https://github.com/jmilktea/jtea/blob/master/mysql/mysql%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB%E9%97%AE%E9%A2%98.md)    
-[buffer pool]
+[buffer pool]    
+[我又遇到order by的坑了](https://github.com/jmilktea/jtea/blob/master/mysql/%E6%88%91%E5%8F%88%E9%81%87%E5%88%B0order%20by%E7%9A%84%E5%9D%91%E4%BA%86.md)    
 
 ## 设计   
 [分层设计](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
