@@ -59,6 +59,7 @@ XX:+ResizeTLAB | 开启TLAB自动调节，默认是开启
 -XX:ErrorFile|jvm crash 路径   
 -XX:+DoEscapeAnalysis | 开启逃逸分析，默认就是开启。
 -XX:+EliminateAllocations | 开启标量替换，默认就是开启。
+-XX:+UseCompressedOops | 开启指针压缩，默认就是开启。
 **gc工具**|
 [perfma](https://opts.console.perfma.com/) | 参数查询，解释，优化  
 [fastthread](https://fastthread.io),[gceasy](https://gceasy.io/)|在线，文件大了上传很慢
