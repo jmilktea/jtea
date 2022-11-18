@@ -12,8 +12,8 @@ git -keygen -t rsa -C "yourname@xxx.com"
 ```
 生成成功后在你的用户目录.ssh目录下会有两个文件，如我的 C:\Users\myname\.ssh 下有 id_rsa 和 id_rsa.pub   
 
-2. 已gitlab为例，使用你的账号登录gitlab，打开User Settings -> SSh Keys菜单，将1种的id_rsa.pub内容拷贝到Key输入框，title随便填，Add Key添加   
-![image](1)    
+2. 以gitlab为例，使用你的账号登录gitlab，打开User Settings -> SSh Keys菜单，将1种的id_rsa.pub内容拷贝到Key输入框，title随便填，Add Key添加   
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/images/git-ssh1.png)    
 
 3. 验证，输入如下命令验证，如成功会有Welcome to...的输出    
 ```
@@ -54,7 +54,7 @@ ssh-keygen -t ed25519 -C "yourname@xxx.com"
 host和hostname对应托管平台的地址。同理使用ssh -T git@github.com 验证第二个配置。    
 
 如果我们使用idea，菜单Git -> Manage Remotes 输入不同仓库的远端地址就可以在同一个工程下，管理多个平台仓库了。      
-![image](2)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/images/git-ssh2.png)   
 
 
 
