@@ -68,9 +68,8 @@ int j = i + 1;  //3
 
 **volatile**   
 volatile变量规则规定了对变量的更新操作，那么其它线程可以立刻看到最新的值，前面我们说到数据会存在线程的工作内存和主内存，那么它是怎么保证的呢？    
-java底层在对volatile变量进行写操作后，会使用cpu lock前缀指令将数据写会主内存，保证可见性。同时会对volatile变量的读写加入内存屏障，保证顺序性。这里涉及到cpu缓存一致性和内存屏障问题，有兴趣可以了解下。我们可以简单的如下图理解：   
-![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/hb-3.png)    
-附cpu缓存一致性协议：[MESI动图](https://www.scss.tcd.ie/Jeremy.Jones/VivioJS/caches/MESIHelp.htm)
+java底层在对volatile变量进行写操作后，会使用cpu lock前缀指令将数据写会主内存，保证可见性。同时会对volatile变量的读写加入内存屏障，保证顺序性。这里涉及到cpu缓存一致性和内存屏障问题，这里不深入分析，有兴趣可以学习下，附cpu缓存一致性协议：[MESI动图](https://www.scss.tcd.ie/Jeremy.Jones/VivioJS/caches/MESIHelp.htm)。   
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/hb-3.png)   
 
 **单例-懒汉模式**    
 ```
