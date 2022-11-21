@@ -67,7 +67,7 @@ int j = i + 1;  //3
 - 对象终结规则：一个对象的构造函数执行的结束 happens-before 它的 finalize()方法。    
 
 **volatile**   
-volatile变量规则规定了对变量的更新操作，那么其它线程可以立刻看到，前面我们说到数据会存在线程的工作内存和主内存，那么它是怎么保证的呢？    
+volatile变量规则规定了对变量的更新操作，那么其它线程可以立刻看到最新的值，前面我们说到数据会存在线程的工作内存和主内存，那么它是怎么保证的呢？    
 volatile底层是lock前缀指令实现类似内存屏障的功能，这里涉及到内存屏障和cpu缓存一致性问题，有兴趣可以了解下。我们可以简单的如下图理解：   
 ![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/hb-3.png)    
 附cpu缓存一致性协议：[MESI动图](https://www.scss.tcd.ie/Jeremy.Jones/VivioJS/caches/MESIHelp.htm)
@@ -95,8 +95,12 @@ volatile底层是lock前缀指令实现类似内存屏障的功能，这里涉�
 2.实例化对象，属性初始化    
 3.将分配的内存地址赋值给对象，此时对象不为null    
 
-如果2,3发生指令重排，那么就是一个不为null，但是没有初始化好对象，此时另一个线程在第一个if判断不为null就返回，执行后面的逻辑，就可能出错了。平时按照上面的写法可能不会出现问题，但谁能知道哪一天就抽风出bug了呢，解决方式就是要用到happend before中的volatile变量规则，instance要用volatile修饰。   
-口说无凭，我们可以看下spring boot的源码ApplicationConversionService，这是spring boot的字段转换器，它就是一个单例，可以看到sharedInstance就是用volatile修饰的，源码如下：    
+如果2,3发生指令重排，那么就是一个不为null，但是没有初始化好对象，此时另一个线程在第一个if判断不为null就返回，执行后面的逻辑，就可能出错了。    
+解决方式就是要用到happend before中的volatile变量规则，instance用volatile修饰，按照volatile变量规则，对这个变量的修改会先发生于对这个变量的读取，所以能读取到一个完整的对象。    
+上面这个这也是网上大部分的解释，但仍给我留下一个疑问。如果instance = new Signleton() 会发生这个问题，那么我们平时在普通方法new对象为什么不需要关注这个问题呢？   
+假如我们只是单纯写一行Object obj = new Object()，后续没有对obj对象进行使用，不只可能会发生重排序，编译器甚至会完全去掉这一行无用的代码。后续obj有使用的话，按照上面8个原则中的第一个程序次序规则，new过程发生重排序，结果也是先行发生于对obj的使用，所以不会有问题。   
+
+所以单例懒汉模式实例变量需要加volatile修饰，口说无凭，我们可以看下spring boot的源码ApplicationConversionService，这是spring boot的字段转换器，它就是一个单例，可以看到sharedInstance就是用volatile修饰的，源码如下：    
 ```
 public class ApplicationConversionService extends FormattingConversionService {
 
