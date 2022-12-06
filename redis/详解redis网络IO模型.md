@@ -20,25 +20,22 @@
 以一个最简单例子，现在有两个客户端需要连接、发送数据到我们的服务端，看下服务端在各种IO模型下是如何接收、读取请求的。   
 
 **阻塞IO(Blocking IO)**    
-如图：   
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-1.png)    
 假设服务端只开启一个线程处理请求，第一个请求到来，开始调用内核read函数，然后就会发生阻塞，第二个请求到来时服务端将无法处理，只能等第一个请求读取完成。这种方式的缺点很明显，每次只能处理一个请求，无法发挥cpu多核优势，性能低下。    
-![image](1-1)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-1-1.png)    
 
 为了解决这个问题，我们可以引入多线程，这样就可以同时处理多个请求了，但服务端可能同时有成千上万的请求需要处理，随之而来的是线程数膨胀，频繁创建、销毁线程带来的性能影响，当然我们可以使用线程池，但服务能处理的总体数量就会受限于线程池线程数量。    
-![image](1-2)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-1-2.png)    
 
 **非阻塞IO(NON-Blocking IO)**    
-如图：   
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-2.png)    
 相比阻塞IO，非阻塞IO会立即返回，调用者不会阻塞，此时可以做一些其它事情，例如处理其它请求。但是非阻塞IO需要主动轮询是否有数据需要处理，且这种轮询需要从用户态切换到内核态这，假如没有数据产生就会有很多空轮询，白白浪费cpu资源。   
 
 阻塞IO、非阻塞IO，要么需要开启更多线程去处理IO，要么需要从用户态切换到内核态轮询IO事件，那么有没有一种机制，用户程序只需要将请求提交给内核，由内核用少量的线程去监听，有事件就通知用户程序呢？这就是IO多路复用。    
 
-**IO多路复用(IO Multiplexing)**    
-如图：   
-![image](3)    
-IO多路复用机制是指一个线程处理多个IO流，多路是指网络连接，复用指的是同一个线程。     
+**IO多路复用(IO Multiplexing)**      
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-3.png)    
+**IO多路复用机制是指一个线程处理多个IO流，多路是指网络连接，复用指的是同一个线程。**         
 如果简单从图上看IO多路复用相比阻塞IO似乎并没有什么高明之处，假设服务只处理少量的连接，那么相比阻塞IO确实没有太大的提升，但如果连接数非常多，差距就会立竿见影。    
 首先IO多路复用会提交一批需要监听的文件句柄（socket也是一种文件句柄）到内核，由内核开启一个线程负责监听，把轮询工作交给内核，当有事件发生时，由内核通知用户程序。这不需要用户程序开启更多的线程去处理连接，也不需要用户程序切换到内核态去轮询，用一个线程就能处理大量网络IO请求。    
 redis底层采用的就是IO多路复用模型，实际上基本所有中间件在处理网络IO这一块都会使用到IO多路复用，如kafka,rocketmq等，所以本次学习之后对其它中间件的理解也是很有帮助的。    
@@ -92,42 +89,39 @@ epoll_wait用于等待事件的发生，当有有事件触发，就只返回对�
 
 ## reactor模式     
 前面我们介绍的IO多路复用是操作系统的底层实现，借助IO多路复用我们实现了一个线程就可以处理大量网络IO请求，那么接收到这些请求后该如何高效的响应，这就是reactor要关注的事情，reactor模式是基于事件的一种设计模式。在reactor中分为3中角色：    
-**reactor**：负责监听和分发事件    
-**acceptor**：负责处理连接事件    
-**handler**：负责处理请求，读取数据，写回数据    
+**Reactor**：负责监听和分发事件    
+**Acceptor**：负责处理连接事件    
+**Handler**：负责处理请求，读取数据，写回数据    
 
 从线程角度出发，reactor又可以分为单reactor单线程，单reactor多线程，多reactor多线程3种。   
 
 **单reactor单线程**   
-如图：  
-![image](4)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-4.png)    
 处理过程：reactor负责监听连接事件，当有连接到来时，通过acceptor处理连接，得到建立好的socket对象，reactor监听scoket对象的读写事件，读写事件触发时，交由handler处理，handler负责读取请求内容，处理请求内容，响应数据。    
 可以看到这种模式比较简单，读取请求数据，处理请求内容，响应数据都是在一个线程内完成的，如果整个过程响应都比较快，可以获得比较好的结果。缺点是请求都在一个线程内完成，无法发挥多核cpu的优势，如果处理请求内容这一块比较慢，就会影响整体性能。   
 
-**单reactor多线程**    
-如图：   
-![image](5)    
+**单reactor多线程**     
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-5.png)    
 既然处理请求这里可能由性能问题，那么这里可以开启一个线程池来处理，这就是单reactor多线程模式，请求连接、读写还是由主线程负责，处理请求内容交由线程池处理，相比之下，多线程模式可以利用cpu多核的优势。单仔细思考这里依然有性能优化的点，就是对于请求的读写这里依然是在主线程完成的，如果这里也可以多线程，那效率就可以进一步提升。   
 
 **多reactor多线程**    
-如图：   
-![image](6)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-6.png)    
 多reactor多线程下，mainReactor接收到请求交由acceptor处理后，mainReactor不再读取、写回网络数据，直接将请求交给subReactor线程池处理，这样读取、写回数据多个请求之间也可以并发执行了。    
 
 ## redis网络IO模型    
 redis网络IO模型底层使用IO多路复用，通过reactor模式实现的，在redis 6.0以前属于单reactor单线程模式。如图：   
-![image](7)   
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-7.png)   
 
 在linux下，IO多路复用程序使用epoll实现，负责监听服务端连接、socket的读取、写入事件，然后将事件丢到事件队列，由事件分发器对事件进行分发，事件分发器会根据事件类型，分发给对应的事件处理器进行处理。我们以一个get key简单命令为例，一次完整的请求如下：   
 
-![image](8)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-8.png)    
 请求首先要建立TCP连接(TCP3次握手)，过程如下：   
 redis服务启动，主线程运行，监听指定的端口，将连接事件绑定命令应答处理器。    
 客户端请求建立连接，连接事件触发，IO多路复用程序将连接事件丢入事件队列，事件分发器将连接事件交由命令应答处理器处理。    
 命令应答处理器创建socket对象，将ae_readable事件和命令请求处理器关联，交由IO多路复用程序监听。    
 
 连接建立后，就开始执行get key请求了。如下：   
-![image](9)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-9.png)    
 客户端发送get key命令，socket接收到数据变成可读，IO多路复用程序监听到可读事件，将读事件丢到事件队列，由事件分发器分发给上一步绑定的命令请求处理器执行。   
 命令请求处理器接收到数据后，对数据进行解析，执行get命令，从内存查询到key对应的数据，并将ae_writeable写事件和响应处理器关联起来，交由IO多路复用程序监听。      
 客户端准备好接收数据，命令请求处理器产生ae_writeable事件，IO多路复用程序监听到写事件，将写事件丢到事件队列，由事件分发器发给命令响应处理器进行处理。   
@@ -136,11 +130,11 @@ redis服务启动，主线程运行，监听指定的端口，将连接事件绑
 reids 6.0以前网络IO的读写和请求的处理都在一个线程完成，尽管redis在请求处理基于内存处理很快，不会称为系统瓶颈，但随着请求数的增加，网络读写这一块存在优化空间，所以redis 6.0开始对网络IO读写提供多线程支持。需要知道的是，redis 6.0对多线程的默认是不开启的，可以通过 io-threads 4 参数开启对网络写数据多线程支持，如果对于读也要开启多线程需要额外设置 io-threads-do-reads yes 参数，该参数默认是no，因为redis认为对于读开启多线程帮助不大，但如果你通过压测后发现有明显帮助，则可以开启。    
 
 redis 6.0多线程模型思想上类似单reactor多线程和多reactor多线程，但不完全一样，这两者handler对于逻辑处理这一块都是使用线程池，而redis命令执行依旧保持单线程。如下：   
-![image](10)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-10.png)    
 
 可以看到对于网络的读写都是提交给线程池去执行，充分利用了cpu多核优势，这样主线程可以继续处理其它请求了。  
 开启多线程后多redis进行压测结果可以[参考这里](https://itnext.io/benchmarking-the-experimental-redis-multi-threaded-i-o-1bb28b69a314)，如下图可以看到，对于简单命令qps可以达到20w左右，相比单线程有一倍的提升，性能提升效果明显，对于生产环境如果大家使用了新版本的redis，现在7.0也出来了，建议开启多线程。    
-![image](11)  
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/redis-io-11.png)  
 
 ## 总结   
 本篇我们学习redis单线程具体是如何单线程以及在不同版本的区别，通过网络IO模型知道IO多路复用如何用一个线程处理监听多个网络请求，并详细了解3种reactor模型，这是在IO多路复用基础上的一种设计模式。最后学习了redis单线程、多线程版本是如何基于reactor模型处理请求。其中IO多路复用和reactor模型在许多中间件都有使用到，后续再接触到就不陌生了。   
