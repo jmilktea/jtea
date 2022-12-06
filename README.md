@@ -91,7 +91,8 @@
 [比例分配算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E6%AF%94%E4%BE%8B%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95.md)    
 [手写lru](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/%E6%89%8B%E5%86%99lru.md)    
 
-## redis
+## redis   
+[详解redis网络IO模型](https://github.com/jmilktea/jtea/blob/master/redis/%E8%AF%A6%E8%A7%A3redis%E7%BD%91%E7%BB%9CIO%E6%A8%A1%E5%9E%8B.md)   
 [redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)   
 [resp协议](https://github.com/jmilktea/jmilktea/blob/master/redis/resp%E5%8D%8F%E8%AE%AE.md)  
 [redis定时任务](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.md)   
