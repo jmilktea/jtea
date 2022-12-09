@@ -36,7 +36,7 @@ redo log按名字理解它就是重做日志，也就是在某种情况下，根
 
 **redo log环形结构**     
 redo log采用环形写入思路，假设配置redo log有4个文件，环形结构如下：     
-![image](mysql-log-redolog-ring)   
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/mysql-log-redolog-ring.png)   
 
 其中write position表示写入位置，redo log每次都从这个位置往后写。check point表示检查位置，当写到check point的时候表示所有空间都写完了，需要从check point开始往后清理腾出空间才能继续写，write position和check point之间的空白位置就是可写入空间。     
 
