@@ -154,6 +154,7 @@
 [ThreadLocal扩展](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/ThreadLocal%E6%89%A9%E5%B1%95.md)   
 [单元测试启动加速](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8%E5%8A%A0%E9%80%9F.md)  
 [如何优雅的统计方法执行时间](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4.md)    
+[如何做好code reivew](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BDcode%20reivew.md)   
 
 ## 一些总结    
 - 蝴蝶效应   
