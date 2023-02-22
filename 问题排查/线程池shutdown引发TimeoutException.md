@@ -26,7 +26,7 @@ futures.forEach(
 
 后来结合日志的时间线，重新梳理。上面的线程池是我们自己封装的线程池，支持监控、apollo动态修改线程池参数，日志跟踪traceId打印，执行任务统计，服务下线线程退出等功能，这很像[美团技术团队](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)提到的线程池，不过我们基于自己的需求进行封装，使用起来更简单、轻量。     
 在[服务优雅下线](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/%E6%9C%8D%E5%8A%A1%E4%BC%98%E9%9B%85%E4%B8%8B%E7%BA%BF.md)这篇，我们写到   
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-1.png)    
 
 在服务下线前该线程池会响应一个event bus消息，然后执行线程池的shutdown方法，本意是服务下线时，线程池不再接收新的任务，并触发拒绝策略。那会不会是这里出现问题呢？    
 结合上面的代码，当线程池shutdown后，执行CallerRunsPolicy策略，再submit应该就会阻塞。这就是我们平时理解的，当队列满了，就继续开启线程至maximumPoolSize，如果线程数已经达到maximumPoolSize，并且队列也满了，此时就触发解决策略。    
@@ -70,8 +70,8 @@ futures.forEach(
 			}
 		});
         
-        //加了这一行
-        threadPoolExecutor.shutdown();
+        	//加了这一行
+        	threadPoolExecutor.shutdown();
 
 		//这里不会阻塞了...
 		threadPoolExecutor.submit(() -> {
@@ -99,7 +99,7 @@ futures.forEach(
 			}
 		});
         
-        //加了这一行
+        	//加了这一行
 		threadPoolExecutor.shutdown();
 
 		//这里不会阻塞了...
@@ -110,12 +110,12 @@ futures.forEach(
 			}
 		});
         
-        //这里会发生什么？
+        	//这里会发生什么？
 		future.get(10, TimeUnit.SECONDS);
 ```
 
 结果是超时了，报了TimeoutException，如下图：  
-![image](3)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-3.png)    
 
 我们的问题得以复现，但future.get为什么会超时呢？正常情况下，它是实现阻塞调用线程的，又是如何在线程拿到执行结果时返回执行的，这就需要我们对Future的原理有所理解了。
 
@@ -123,18 +123,18 @@ futures.forEach(
 Future字面意思是未来的意思，很符合语意。当我们使用异步执行任务的时候，在未来某个时刻想知道任务执行是否完成、获取任务执行结果，甚至取消任务执行，就可以使用Future。   
 Future是一个接口，FutureTask是它的一个实现类，同时实现了Future和Runnable接口，也就是说FutureTask即可以作为Runnable执行，也可以通过它拿到结果。    
 ThreadPollExecutor.submit的源码如下，newTaskFor就是创建一个FutureTask。    
-![image](4)
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-4.png)
 
 假如任务提交后还没执行完，我们看它是如何实现阻塞的，带超时时间的get()方法源码如下：
-![image](5)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-5.png)    
 代码中判断如果state > COMPLETING，就直接调用report，也就是直接返回。state是个私有成员遍历，它可能有以下值，大于1表示是任务终态直接返回。   
-![image](6)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-6.png)    
 否则就进入awaitDone()方法，代码如下：  
-![image](7)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-7.png)    
 该方法是个无条件for循环，但它绝不是通过消耗cpu不断检查某个状态来获取结果，这样效率太低了。   
 按照“正常”调用(我们只考虑最简单场景，不要受一些异常或不重要的分支干扰，以免越陷越深)，这个for循环会进入3次，分别就是上图打断点的3个位置。   
 第一个位置会创建一个WaitNode节点，WaitNode保护一个Thread和一个next，很明显它会构成一个链表。  
-![image](8)
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-8.png)
 第二个位置会尝试用CAS的方式将它将这个节点添加到链表头部，如果添加失败，就会继续for循环，一直到添加成功。添加成功就会进入第三个断点位置。   
 第三个位置会调用LockSupport.parkNanos(this, nanos)，阻塞当前线程。
 
@@ -146,8 +146,8 @@ ok，知道Future.get()怎么实现阻塞的，我们看下当任务执行完，
 我们还是主要看“正常”执行的流程，执行完会走到set方法，做两个事情：   
 1.将state状态设置为NOMAL，表示任务正常执行完成。    
 2.执行finishCompletion方法，遍历waiters链表所有节点，每个节点对应一个线程，将线程取出来，执行LockSupport.unpark(t)恢复线程执行。    
-![image](9)   
-![image](10)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-9.png)   
+![image]([10](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-10.png))    
 
 ## 总结   
 通过源码分析我们知道，当调用Future.get()线程阻塞时，它的恢复是靠FutureTask.run()恢复的，也就是我们提交的任务被执行后恢复。   
