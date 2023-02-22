@@ -82,6 +82,7 @@ futures.forEach(
 		});
 ```
 为什么会这样呢，我们跟踪下源码，发现它确实会走到拒绝策略，但在CallerRunsPolicy拒绝策略里面有一个判断，如果线程池不是shutdown的，就直接调用Runnable的run方法，这里使用的是调用者线程，所以调用者线程会阻塞，如果线程池是shutdown的，就什么也不做，相当于任务丢弃了。    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-2.png)
 
 按照这个说法，如果我在最后使用Future接收一下submit的返回值，然后调用Future.get方法，会发生什么？
 ```
@@ -134,8 +135,8 @@ ThreadPollExecutor.submit的源码如下，newTaskFor就是创建一个FutureTas
 该方法是个无条件for循环，但它绝不是通过消耗cpu不断检查某个状态来获取结果，这样效率太低了。   
 按照“正常”调用(我们只考虑最简单场景，不要受一些异常或不重要的分支干扰，以免越陷越深)，这个for循环会进入3次，分别就是上图打断点的3个位置。   
 第一个位置会创建一个WaitNode节点，WaitNode保护一个Thread和一个next，很明显它会构成一个链表。  
-![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-8.png)
-第二个位置会尝试用CAS的方式将它将这个节点添加到链表头部，如果添加失败，就会继续for循环，一直到添加成功。添加成功就会进入第三个断点位置。   
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-8.png)  
+第二个位置会尝试用CAS的方式将它将这个节点添加到链表头部，如果添加失败，就会继续for循环，一直到添加成功。添加成功就会进入第三个断点位置。    
 第三个位置会调用LockSupport.parkNanos(this, nanos)，阻塞当前线程。
 
 **这里为什么是一个链表呢？** 原因很简单，我们将任务提交后，可以在多个线程等这个任务的结果，也就是在多个线程调用get()方法，那么每一次就会创建一个WaitNode，并形成一个链表。   
@@ -145,9 +146,9 @@ ok，知道Future.get()怎么实现阻塞的，我们看下当任务执行完，
 回到上面线程池的submit方法，FutureTask作为一个Runnable传递给线程池execute，那么最终就会执行它的run()方法。     
 我们还是主要看“正常”执行的流程，执行完会走到set方法，做两个事情：   
 1.将state状态设置为NOMAL，表示任务正常执行完成。    
-2.执行finishCompletion方法，遍历waiters链表所有节点，每个节点对应一个线程，将线程取出来，执行LockSupport.unpark(t)恢复线程执行。    
 ![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-9.png)   
-![image]([10](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-10.png))    
+2.执行finishCompletion方法，遍历waiters链表所有节点，每个节点对应一个线程，将线程取出来，执行LockSupport.unpark(t)恢复线程执行。    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/shutdown-11.png)    
 
 ## 总结   
 通过源码分析我们知道，当调用Future.get()线程阻塞时，它的恢复是靠FutureTask.run()恢复的，也就是我们提交的任务被执行后恢复。   
