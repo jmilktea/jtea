@@ -162,7 +162,7 @@ class TransCallbackService {
 @Service
 class MqHandleService {
 	public void handleUserRegister() {
-        //从threadlocal获取id，再处理各种事情
+        	//从threadlocal获取id，再处理各种事情
 		mq.send(topic, threadLocal.get());
 	}
 }
