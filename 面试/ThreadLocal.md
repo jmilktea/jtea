@@ -308,7 +308,7 @@ this是子线程，parent是父线程，也是当前线程，这里会判断父�
 那怎么优化呢？既然出现hash冲突影响效率，那干脆就不处理了，使用一个递增为1的AtomicInteger，每个ThreadLocal对应一个下标，这样就不会有冲突了，O(1)的查询速度，但是会占用较多空间，是一种空间换时间的思想。    
 
 实际这种做法就是netty中FastThreadLocal的实现，netty中提供了FastThreadLocal，FastThreadLocalMap，InternalThreadLocalMap，它们需要搭配使用，否则会退化为jdk的ThreadLocal。    
-每个FasrThreadLocal都有一个递增唯一的index，放入InternalThreadLocalMap时不会有冲突，查询效率也高。通过index直接定位到下标，不需要hash，在扩容的时候直接搬到新数组对应下标，也不需要rehash，扩容速度快。同时由于不会出现冲突，所以不需要保持ThreadLocal的引用，也就没有上面弱引用和内存泄漏的问题。    
+每个FastThreadLocal都有一个递增唯一的index，放入InternalThreadLocalMap时不会有冲突，查询效率也高。通过index直接定位到下标，不需要hash，在扩容的时候直接搬到新数组对应下标，也不需要rehash，扩容速度快。同时由于不会出现冲突，所以不需要保持ThreadLocal的引用，也就没有上面弱引用和内存泄漏的问题。    
 通过netty的FastThreadLocal来回答这个问题，有理有据，有兴趣的可以去研究一下它的源码。         
 
 
