@@ -95,7 +95,6 @@
 [详解redis网络IO模型](https://github.com/jmilktea/jtea/blob/master/redis/%E8%AF%A6%E8%A7%A3redis%E7%BD%91%E7%BB%9CIO%E6%A8%A1%E5%9E%8B.md)   
 [redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)   
 [resp协议](https://github.com/jmilktea/jmilktea/blob/master/redis/resp%E5%8D%8F%E8%AE%AE.md)  
-[redis定时任务](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.md)   
 [redis单机和集群搭建](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%8D%95%E6%9C%BA%E5%92%8C%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.md)  
 [缓存和数据库一致性问题](https://github.com/jmilktea/jmilktea/blob/master/redis/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98.md)   
 [分布式锁](https://github.com/jmilktea/jmilktea/blob/master/redis/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)   
