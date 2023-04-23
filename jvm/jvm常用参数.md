@@ -13,6 +13,7 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -Xmn：| 设置新生代内存大小，设置这个参数会覆盖NewRatio参数
 -XX:NewRatio | 老年代:新生代，默认值是 2:1
 -XX:SurvivorRatio | eden和survivor比值，默认是8，即eden:s0:s1=1:1:8
+-XX:TargetSurvivorRatio | 与动态年龄相关，期望survivor(s0或s1)可利用百分比，默认是50
 -XX:MetaspaceSize | 元数据空间初始大小
 -XX:MaxMetaspaceSize | 元数据空间最大大小  
 -XX:MaxDirectMemorySize | 最大堆外内存  
