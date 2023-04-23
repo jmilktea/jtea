@@ -40,7 +40,7 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -XX:+UseConcMarkSweepGC | 开启cms收集器，默认是不开启。新生代会自动开启ParNew，老年代备用Serial Old。
 -XX:+UseCMSInitiatingOccupancyOnly | 使用设定的阈值开始cms 
 -XX:CMSInitiatingOccupancyFraction | 达到这个百分比即开始cms gc（cms是并发清理，需预留内存），默认是92%，UseCMSInitiatingOccupancyOnly开启这个参数才生效
--XX:CMSScavengeBeforeRemark | cms重新标记阶段是否先进行一次minor gc,减少gc root扫描，默认值是false
+-XX:CMSScavengeBeforeRemark | cms重新标记阶段是否先进行一次minor gc,以减少该阶段要扫描的新生代对象数量，默认值是false
 -XX:+UseCMSCompactAtFullCollection | full gc后对内存进行整理，默认值是true。
 -XX:CMSFullGCsBeforeCompaction | 与UseCMSCompactAtFullCollection搭配使用，多少次full gc后才对老年代进行整理。jdk8默认值是0，表示每次full gc后对内存进行整理。
 -XX:ParallelCMSThreads | 设置cms并发线程数，默认是（cpu核数+3）/ 4
