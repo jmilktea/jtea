@@ -99,3 +99,58 @@ jmap -histo:live pid | head -10
 该命令只显示当前堆排名前10的对象信息，其中输出[C表示char数组，[B表示byte数组,[I表示int数组     
 需要注意的是，jmap -dump,-histo 都会触发fullgc。    
 参考：[一次内存泄漏排查](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%8E%92%E6%9F%A5.md)    
+
+## jcmd
+jdk7后新增的一个多功能命令行工具，上面的命令很多功能都可以用jcmd代替
+- jcmd -l：查看所有jvm进程，相当于jps -l
+- jcmd pid GC.class_histogram：查看类统计信息，相当于jmap -histo
+- jcmd pid Thread.print：查看线程信息，相当于jstack 
+- jcmd pid GC.heap_dump ./highmem.hprof：导出jvm堆信息，相当于jmap -dump
+- jcmd pid GC.run：执行一次System.gc()
+- jcmd pid VM.version：查看jvm版本
+- jcmd pid VM.native_memory：查看jvm内存信息
+
+```
+jcmd 23602 VM.native_memory scale=MB
+```
+[Native Memory Tracking](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/nmt-8.html)，可以查看jvm进程内存跟踪，可以查看堆、栈、class、代码缓存、gc、常量池等内存占用信息。   
+启动命令需要加上：-XX:NativeMemoryTracking=[summary | detail]，开启后会有5%-10%的性能损失，生产环境使用时需注意。     
+有时候我们会发现java进程实际占用的内存要比设置的堆内存要高很多，这是因为除了堆java进程还有很多占用内存的地方，NMT就可以帮助我们分析，如下示例输出：
+```
+Native Memory Tracking:
+
+Total: reserved=1787MB, committed=588MB
+-                 Java Heap (reserved=256MB, committed=256MB)
+                            (mmap: reserved=256MB, committed=256MB) 
+ 
+-                     Class (reserved=1147MB, committed=138MB)
+                            (classes #22418)
+                            (malloc=9MB #43687) 
+                            (mmap: reserved=1138MB, committed=129MB) 
+ 
+-                    Thread (reserved=45MB, committed=45MB)
+                            (thread #148)
+                            (stack: reserved=44MB, committed=44MB)
+ 
+-                      Code (reserved=255MB, committed=65MB)
+                            (malloc=11MB #16115) 
+                            (mmap: reserved=244MB, committed=53MB) 
+ 
+-                        GC (reserved=15MB, committed=15MB)
+                            (malloc=6MB #396) 
+                            (mmap: reserved=9MB, committed=9MB) 
+ 
+-                  Compiler (reserved=1MB, committed=1MB)
+                            (malloc=1MB #1950) 
+ 
+-                  Internal (reserved=35MB, committed=35MB)
+                            (malloc=35MB #34550) 
+ 
+-                    Symbol (reserved=28MB, committed=28MB)
+                            (malloc=26MB #264859) 
+                            (arena=3MB #1)
+ 
+-    Native Memory Tracking (reserved=6MB, committed=6MB)
+                            (tracking overhead=6MB)
+
+```
