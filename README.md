@@ -31,8 +31,6 @@
 [canal简介](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/canal%E7%AE%80%E4%BB%8B.md)  
 [canal quick start](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/quick%20start.md)   
 [canal server ha](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/canal%20server%20ha.md)   
-[kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
-[kafka错误日志问题](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98.md)      
 [apache common pool2](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/apache%20common%20pool2.md)    
 [熔断-hystrix](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%86%94%E6%96%AD/hystrix.md)  
 [熔断-resilience4j](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%86%94%E6%96%AD/resilience4j.md)     
@@ -104,6 +102,11 @@
 [zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
 [hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)    
 [持久化机制](https://github.com/jmilktea/jtea/blob/master/redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)    
+
+## kafka
+[kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
+[kafka错误日志问题](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98.md)      
+[kafka分区分配策略](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5.md)   
 
 ## jvm   
 [jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
