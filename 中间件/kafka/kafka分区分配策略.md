@@ -1,7 +1,7 @@
 # 前言
 现有主流消息中间件都是生产者-消费者模型，主要角色都是：Producer -> Broker -> Consumer，上手起来非常简单，但仍有需要知识点需要我们关注，才能避免一些错误的使用情况，或者使用起来更加高效，例如本篇要讲的kafka分区分配策略。   
 在开始前我们先简单回顾一下kafka消息存储设计，如下图：    
-![image](1)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-1.png)   
 
 topic是一个逻辑概念，一个topic可以包含多个partition，partition才是物理概念，kafka将partition存储在broker磁盘上。如图，test_topic只有一个partition，那么在broker上就会一个test_topic-0的文件夹。在partition内部，kafka为方便管理和高效处理消息，进一步将消息的存储划分为多个segment，segment也是个逻辑概念，一个segment下主要包含：.log消息日志文件，存储实际消息的地方，.index索引文件，.timeindex时间索引文件。segment是滚动的，当达到配置的大小或者时间，kafka就会重新创建一个新的segment，并且会在一定的时间后将过期的segment删除。    
 
@@ -20,7 +20,7 @@ rebalance的发生不是个好事情，kafka需要重新计算分区信息，重
 
 # 4种分区分配策略    
 分区分配策略作用是将所有topic的partition按照一定规则分配给消费者，主要有4种分区分配策略，它们都实现了ConsumerPartitionAssignor接口。
-![iamge](2)   
+![iamge](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-2.png)   
 
 分区的分配很容易会想到是有kafka server端计算和分配的，但其实不是，是由consumer端进行，consumer会选出一个协调者，根据分配策略计算出结果然后同步给所有的参与者，所以上面的代码是在kafka-client包下的。
 
@@ -33,18 +33,18 @@ T1：P10,P11
 ```
 有两个消费者C0,C1，那么range分配结果如下：
 ```
-C0：P00，P10
-C1：P01，P11
+C0：P00,P10
+C1：P01,P11
 ```
 看起来很顺畅，也很均衡，但如果T0新增一个P02呢，那么分配就会如下：
 ```
-C0：P00，P01，P10
-C1：P02，P11
+C0：P00,P01,P10
+C1：P02,P11
 ```
 看起来也还好，毕竟两个人分3个苹果，会有人多一个。那如果T1也新增一个P12呢，那么分配就会如下：
 ```
-C0：P00，P01，P10，P11
-C1：P02，P12
+C0：P00,P01,P10,P11
+C1：P02,P12
 ```
 看起来好像不怎么好了，C0又多了一个分区，如果有更多的topic有这种情况，那么C0的压力无疑会比C1大很多。   
 这是由于range分配是按照每个topic来计算的，这可能会导致consumer的分配不均匀。     
@@ -58,18 +58,18 @@ T1：P10,P11
 ```
 有两个消费者C0,C1，那么循环分配结果如下：
 ```
-C0：P00，P10
-C1：P01，P11
+C0：P00,P10
+C1：P01,P11
 ```
 如果T0新增一个P02呢，那么分配就会如下：
 ```
-C0：P00，P02，P10
-C1：P01，P11
+C0：P00,P02,P10
+C1：P01,P11
 ```
 如果T1也新增一个P12呢，那么分配就会如下：
 ```
-C0：P00，P02，P11
-C1：P01，P10，P12
+C0：P00,P02,P11
+C1：P01,P10,P12
 ```
 和range不同这里每个消费者分到的分区数还是相等的。按照循环分配逻辑，消费者分配到分区数偏差不会超过1。
 
@@ -84,40 +84,41 @@ T2：P20,P21,P22
 ```
 有3个消费者C0,C1,C2，那么roundrobin分配结果如下：
 ```
-C0：P00，P10，P20
-C1：P01，P11，P21
-C2：P02，P12，P22
+C0：P00,P10,P20
+C1：P01,P11,P21
+C2：P02,P12,P22
 ```
 假设C2下线了，触发了rebalance，roundrobin重新分配结果如下：
 ```
-C0：P00，P02，P11，P20，P22
-C1：P01，P10，P12，P21
+C0：P00,P02,P11,P20,P22
+C1：P01,P10,P12,P21
 ```
 可以看到T0,T1的也重新分配了，有4个partition重新分配了。如果使用sticky分配，结果就会是：
 ```
-C0：P00，P10，P20，P20，P22
-C1：P01，P11，P21，P21，
+C0：P00,P10,P20,P20,P22
+C1：P01,P11,P21,P21，
 ```
 可以看到，T0，T1的没有任何变化，还是原来的消费者，这就是粘性的含义。
 
 ## CooperativeStickAssignor    
 上面的3种分配策略使用的都是eager协议，eager协议的特点是整个rebalance会"stop the world"，消费者会放弃当前的分区，关闭连接，资源清理，然后静静等待分配结果。    
-CooperativeStickAssignor是2.4版本开始提供的，使用的cooperative协议，在sticky的基础上，优化rebalance过程，可以从RebalanceProtocol源码中看到这两个协议的解释：
-![image](3)   
+CooperativeStickAssignor是2.4版本开始提供的，使用的cooperative协议，在sticky的基础上，优化rebalance过程，可以从RebalanceProtocol源码中看到这两个协议的解释：   
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-3.png)   
 
 ConsumerPartitionAssignor接口默认就指定了eager协议，如图：
-![image](4)
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-4.png)  
+
 CooperativeStickAssignor重写了这个协议，使用cooperative，如图：
-![image](5)
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-5.png)   
 
 还是上面的例子，假设C2下线了，触发了rebalance，使用sticky分配，结果就会是：
 ```
-C0：P00，P10，P20，P20，P22
-C1：P01，P11，P21，P21，
+C0：P00,P10,P20,P20,P22
+C1：P01,P11,P21,P21，
 ```
 看起来和sticky并没有什么区别，毕竟它们都是sticky，但实际过程上有很大的差别，sticky会先放弃所有的分区，清理数据，然后再重新分配，整个过程较复杂耗时，而coopertive则比较轻量，首先会将原来的分区分配给原来的持有者，再rebalance重新分配P20,P21,P22分区。   
 关于eager、cooperative协议可以参考这篇文章：https://www.cnblogs.com/listenfwind/p/14146727.html
 
 # 总结
 这4种分区分配策略是可以配置的，客户端通过partition.assignment.strategy参数进行设置，默认是RangeAssignor。   
-![image](6)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-6.png)   
