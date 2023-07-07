@@ -15,15 +15,28 @@ topic是一个逻辑概念，一个topic可以包含多个partition，partition�
 3. 消费者数发生了变化
 4. 消费者消费速度太慢，超过限制时间
 
-举个例子，我们滚动发版，必然有的应用要先下线，再重新上线，这个时候对于kafka来说消费者就发生了变化，就会发生rebalance，rebalance也是按照我们配置的分区分配策略进行重新分配。       
-rebalance的发生不是个好事情，kafka需要重新计算分区信息，重新分配，清理资源，当你的集群比较大的时候，rebalance可能会影响性能。     
-
-# 4种分区分配策略    
-分区分配策略作用是将所有topic的partition按照一定规则分配给消费者，主要有4种分区分配策略，它们都实现了ConsumerPartitionAssignor接口。
+举个例子，我们滚动发版，必然有的应用要先下线，再重新上线，这个时候对于kafka来说消费者就发生了变化，就会发生rebalance，rebalance也是按照我们配置的分区分配策略进行重新分配。          
+分区分配策略作用是将所有topic的partition按照一定规则分配给消费者，主要有4种分区分配策略，它们都实现了ConsumerPartitionAssignor接口，也可以实现该接口自定义分区分配算法。   
+   
 ![iamge](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-2.png)   
 
-分区的分配很容易会想到是有kafka server端计算和分配的，但其实不是，是由consumer端进行，consumer会选出一个协调者，根据分配策略计算出结果然后同步给所有的参与者，所以上面的代码是在kafka-client包下的。
+分区的分配很容易会想到是有kafka server端计算和分配的，但其实不是，当触发分区分配时，kafka会从consumer中挑选一个作为leader，leader根据客户端配置的分配策略计算分区结果，然后发送回给kafka，再由kafka同步给其它的consumer follower。    
 
+举个例子，新增了一个消费者，rebalance过程大致如下：   
+该消费者发送一个请求告诉kafka，要加入消费者组。    
+kafka将消费者组状态切换到准备rebalance，关闭和消费者的所有链接，等待它们重新加入。   
+客户端重新申请加入，kafka从消费者组中挑选一个作为leader，其它的作为follower。    
+kafka将一些元信息同步给所有消费者。   
+follower不断发送请求给kafka，请求它们的partition。   
+leader根据分区分配策略计算分区结果，并将结果返回给kafka。   
+kafka将计算结果返回给follower。  
+所有消费者根据分区结果开始消费消息。    
+
+![image](7)   
+
+注意，rebalance的发生不是个好事情，kafka需要重新计算分区信息，重新分配，清理资源，当你的集群比较大的时候，频繁rebalance可能会影响性能。     
+
+# 4种分区分配策略    
 ## RangeAssignor   
 范围分配，按照每个topic的partition数计算出每个消费者应该分配的分区数量，然后分配。   
 假设有2个topic，每个topic有2个分区，如下：
