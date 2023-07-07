@@ -32,7 +32,7 @@ leader根据分区分配策略计算分区结果，并将结果返回给kafka。
 kafka将计算结果返回给follower。  
 所有消费者根据分区结果开始消费消息。    
 
-![image](7)   
+![iamge](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-7.png)    
 
 注意，rebalance的发生不是个好事情，kafka需要重新计算分区信息，重新分配，清理资源，当你的集群比较大的时候，频繁rebalance可能会影响性能。     
 
