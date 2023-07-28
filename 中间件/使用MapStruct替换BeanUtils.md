@@ -39,7 +39,7 @@ mapstruct是一个基于java注解处理器，用于生成类型安全且高性�
 3.功能丰富。mapstruct的功能非常丰富，例如支持深拷贝，指定各种拷贝行为。   
 4.使用简单。你所需要做的就是定义接口和拷贝的行为，mapstruct会在编译期生成实现类。    
 
-## 示例
+**示例**   
 和学习其它组件一样，我们先用起来，准备两个类，SourceData，TargetData属性完全一样，其中TestData是另一个类。     
 ```
 public class SourceData {
