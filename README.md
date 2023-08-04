@@ -60,7 +60,7 @@
 [springboot是如何集成mybatis的](https://github.com/jmilktea/jmilktea/blob/master/mybatis/springboot%E9%9B%86%E6%88%90mybatis%E5%8E%9F%E7%90%86.md)     
 
 ## mysql
-[锁简介](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E9%94%81.md)  
+[锁简介]([https://github.com/jmilktea/jmilktea/blob/master/mysql/%E9%94%81.md](https://github.com/jmilktea/jtea/blob/master/mysql/%E9%94%81%E7%AE%80%E4%BB%8B.md))  
 [数据库开发规范](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)   
 [mysql三种log](https://github.com/jmilktea/jmilktea/blob/master/mysql/mysql%E4%B8%89%E7%A7%8Dlog.md)   
 [一条危险的update语句](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%B8%80%E6%9D%A1%E5%8D%B1%E9%99%A9%E7%9A%84update%E8%AF%AD%E5%8F%A5.md)   
