@@ -187,7 +187,7 @@ java: Can't map property "Long createTime" to "String createTime". Consider to d
 **忽略指定字段**    
 忽略字段可以使用Mapping注解的ignore属性，如下：
 ```
-@Mapping(target = "id", mappingControl = DeepClone.class)
+@Mapping(target = "id", ignore = true)
 ```
 
 如果我想忽略某些字段，并且复用起来，就像我们的场景应用，可以定义一个IgnoreFixedField注解，然后打在方法上
