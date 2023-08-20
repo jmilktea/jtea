@@ -102,7 +102,8 @@
 [zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)   
 [zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
 [hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)    
-[持久化机制](https://github.com/jmilktea/jtea/blob/master/redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)    
+[持久化机制](https://github.com/jmilktea/jtea/blob/master/redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)      
+[使用Pipeline提升性能](https://github.com/jmilktea/jtea/blob/master/redis/Pipeline.md)   
 
 ## kafka
 [kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
