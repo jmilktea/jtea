@@ -22,57 +22,58 @@ pineline将一批命令打包一起执行，但不保证他们的原子性，不
 这和我们平时操作数据库的思想是一样的，单个查询转换为批量查询，单个插入转换为批量插入，同样需要注意是，批量虽好，但不能一次过多，否则处理起来比较久，反而得不偿失。    
 更多的知识可参考官方文档：https://redis.io/docs/manual/pipelining/   
 
-我们使用springboot 2.x版本，使用spring-boot-starter-data-redis，它给我们默认集成的redis client是lettuce。在使用一个不熟悉或比较新的东西的时候，本人有一个习惯，会先google一下，例如：“RedisTemplate pipeline 注意事项”，“RedisTemplate pipeline 坑”，看看有没有前人踩过坑，借鉴一下。这次也一样，google之后果然发现有点坑，例如[这篇](https://emacsist.github.io/2019/07/30/spring-data-redis%E4%B8%8Elettuce-%E4%BD%BF%E7%94%A8-pipeline-%E6%97%B6%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/) 提到的Spring Data Redis与Lettuce使用pipeline时，实际命令并不是一起执行的，有时是单条执行，有时是合并几条执行。       
-![image](1)    
+我们使用springboot 2.x版本，使用spring-boot-starter-data-redis，它给我们默认集成的redis client是lettuce。在使用一个不熟悉或比较新的东西的时候，本人有一个习惯，会先google一下，例如：“RedisTemplate pipeline 注意事项”，“RedisTemplate pipeline 坑”，看看有没有前人踩过坑，借鉴一下。这次也一样，google之后果然发现有点坑，例如[这篇](https://emacsist.github.io/2019/07/30/spring-data-redis%E4%B8%8Elettuce-%E4%BD%BF%E7%94%A8-pipeline-%E6%97%B6%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/)提到的Spring Data Redis与Lettuce使用pipeline时，实际命令并不是一起执行的，有时是单条执行，有时是合并几条执行。       
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/pipeline-1.png)    
 
 我们自己写下测试代码如下：    
 ```
-        redisTemplate.executePipelined(new SessionCallback<Object>() {
-			@Override
-			public Object execute(RedisOperations operations) throws DataAccessException {
-				for (int i = 0; i < 100; i++) {
-					operations.opsForValue().set("testPipeline2" + i, i, 1, TimeUnit.MINUTES);
-				}
-				return null;
-			}
-		});
+redisTemplate.executePipelined(new SessionCallback<Object>() {
+
+	@Override
+	public Object execute(RedisOperations operations) throws DataAccessException {
+		for (int i = 0; i < 100; i++) {
+			operations.opsForValue().set("testPipeline2" + i, i, 1, TimeUnit.MINUTES);
+		}
+		return null;
+	}
+});
 ```
 在set位置打个断点，然后到redis server使用monitor命令观察，看命令到底是不是一条一条给过来的。monitor命令会将server执行的命令都打印出来，生产环境慎用。   
 按照上面的分析，正常情况下这些命令应该是一起发送到server端一起执行的，不会断断续续，但实际我们观察确实不是一起给过来，断断续续的，如下：   
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/pipeline-2.png)    
 
 我们把lettuce替换成jedis看看。   
 ```
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <exclusions>
-                <exclusion>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-redis</artifactId>
+	<exclusions>
+		<exclusion>
                     <groupId>io.lettuce</groupId>
                     <artifactId>lettuce-core</artifactId>
                 </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
+	</exclusions>
+</dependency>
+<dependency>
+	<groupId>redis.clients</groupId>
+	<artifactId>jedis</artifactId>
+</dependency>
 ```
 还是执行上面的代码，打断点，使用jedis可以观察到，每次循环monitor都不会观察到有命令执行，直到最后才一批给过来。   
-![image](3)   
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/pipeline-3.png)   
 
 但我们不想直接替换lettuce为jedis，一个是它是spring boot默认集成的，拥有更好的性能，二是替换后不知道其它功能有没有影响，那怎么办呢？    
 我们项目还使用redission分布式锁，其实redission也是一个redis client，理论上它应该实现所有client的功能，pipeline自然也有实现。    
 我们使用redission如下：   
 ```
-        RBatch batch = redissonClient.createBatch();
-		for (int i = 0; i < 100; i++) {
-			batch.getBucket("testBatch" + i).setAsync(i, 1, TimeUnit.MINUTES);
-		}
-		batch.execute();
+RBatch batch = redissonClient.createBatch();
+for (int i = 0; i < 100; i++) {
+	batch.getBucket("testBatch" + i).setAsync(i, 1, TimeUnit.MINUTES);
+}
+batch.execute();
 ```
 这次我们把断点打在execute位置，看看是不是execute时才一起提交到server执行，答案显然是的。   
-![image](4)    
+![image](https://github.com/jmilktea/jtea/blob/master/redis/images/pipeline-4.png)    
 
 接下来我们简单测试一下性能差距，分别是单个请求，使用lettuce，使用jedis，使用redission，执行10000次，耗时如下：    
 单个请求：73029ms   
