@@ -227,5 +227,5 @@ public static class ExecuteResult {
 ```
 
 同时我们指标会actuctor收集，我们可以返回 /actuator/prometheus 接口看到上面的指标，接着可以使用promethus对这些指标进行收集，用grafana展示    
-![image](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/images/enhance-executor1.png)
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/enhance-executor1.png)
 
