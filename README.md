@@ -76,10 +76,13 @@
 [buffer pool]    
 [我又遇到order by的坑了](https://github.com/jmilktea/jtea/blob/master/mysql/%E6%88%91%E5%8F%88%E9%81%87%E5%88%B0order%20by%E7%9A%84%E5%9D%91%E4%BA%86.md)    
 
-## 设计  
+## 场景设计  
 [分层设计](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 [mq多环境topic设计](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/mq%E5%A4%9A%E7%8E%AF%E5%A2%83topic%E8%AE%BE%E8%AE%A1.md)   
 [解决多环境下微服务实例乱窜](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E8%A7%A3%E5%86%B3%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9E%E4%BE%8B%E4%B9%B1%E7%AA%9C.md)  
+
+## 设计模式
+[在同事的代码中学习-责任链模式](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%9C%A8%E5%90%8C%E4%BA%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%AD%A6%E4%B9%A0-%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.md)
 
 ## 算法
 [使用TreeSet优化任务分配.md](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%BD%BF%E7%94%A8TreeSet%E4%BC%98%E5%8C%96%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D.md)   
@@ -125,9 +128,6 @@
 [happend before](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/happend%20before%E5%8E%9F%E5%88%99.md)   
 [java内省机制](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/Java%E5%86%85%E7%9C%81%E6%9C%BA%E5%88%B6.md)    
 [并发工具类Phaser](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BBPhaser.md)   
-
-## 设计模式
-[在同事的代码中学习-责任链模式](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%9C%A8%E5%90%8C%E4%BA%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%AD%A6%E4%B9%A0-%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.md)
 
 ## 问题排查   
 [java cpu占用高问题排查](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
