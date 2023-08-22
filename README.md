@@ -26,6 +26,52 @@
 [map&flatMap](https://github.com/jmilktea/jmilktea/blob/master/webflux/map%E5%92%8CflatMap.md)  
 [源码分析](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md)     
 
+## java基础  
+[@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9F.md)  
+[java开发规范](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/java%E8%A7%84%E8%8C%83.md)   
+[什么？@Transactional又不生效了？](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E4%BB%80%E4%B9%88%EF%BC%9F%40Transactional%E5%8F%88%E4%B8%8D%E7%94%9F%E6%95%88%E4%BA%86%EF%BC%9F.md)   
+[cas](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/cas.md)   
+[java集合类型-Queue继承体系](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/Queue.md)    
+[happend before](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/happend%20before%E5%8E%9F%E5%88%99.md)   
+[java内省机制](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/Java%E5%86%85%E7%9C%81%E6%9C%BA%E5%88%B6.md)    
+[并发工具类Phaser](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BBPhaser.md)   
+
+## jvm   
+[jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
+[jdk常用命令](https://github.com/jmilktea/jtea/blob/master/jvm/jdk%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)   
+[TLAB堆内存中的线程私有区域](https://github.com/jmilktea/jtea/blob/master/jvm/TLAB%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%8C%BA%E5%9F%9F.md)   
+[三色标记法](https://github.com/jmilktea/jtea/blob/master/jvm/%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B3%95.md)   
+
+## mysql
+[锁简介](https://github.com/jmilktea/jtea/blob/master/mysql/%E9%94%81%E7%AE%80%E4%BB%8B.md)      
+[数据库开发规范](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)   
+[mysql三种log](https://github.com/jmilktea/jmilktea/blob/master/mysql/mysql%E4%B8%89%E7%A7%8Dlog.md)   
+[一条危险的update语句](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%B8%80%E6%9D%A1%E5%8D%B1%E9%99%A9%E7%9A%84update%E8%AF%AD%E5%8F%A5.md)   
+[使用p6spy监控应用sql](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%BD%BF%E7%94%A8p6spy%E7%9B%91%E6%8E%A7%E5%BA%94%E7%94%A8sql.md)  
+[这么分页查数据居然重复了](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E8%BF%99%E4%B9%88%E5%88%86%E9%A1%B5%E6%9F%A5%E6%95%B0%E6%8D%AE%E5%B1%85%E7%84%B6%E9%87%8D%E5%A4%8D%E4%BA%86.md)  
+[MVCC原理](https://github.com/jmilktea/jmilktea/blob/master/mysql/MVCC%E5%8E%9F%E7%90%86.md)       
+[深入理解索引](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E7%B4%A2%E5%BC%95.md)        
+[sql到底慢在哪里](https://github.com/jmilktea/jmilktea/blob/master/mysql/sql%E5%88%B0%E5%BA%95%E6%85%A2%E5%9C%A8%E5%93%AA%E9%87%8C.md)   
+[order by居然有bug?](https://github.com/jmilktea/jmilktea/blob/master/mysql/orderby%20bug.md)       
+[mysql到底有没有解决幻读问题](https://github.com/jmilktea/jtea/blob/master/mysql/mysql%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB%E9%97%AE%E9%A2%98.md)    
+[buffer pool]    
+[我又遇到order by的坑了](https://github.com/jmilktea/jtea/blob/master/mysql/%E6%88%91%E5%8F%88%E9%81%87%E5%88%B0order%20by%E7%9A%84%E5%9D%91%E4%BA%86.md)    
+
+## redis   
+[详解redis网络IO模型](https://github.com/jmilktea/jtea/blob/master/redis/%E8%AF%A6%E8%A7%A3redis%E7%BD%91%E7%BB%9CIO%E6%A8%A1%E5%9E%8B.md)   
+[redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)   
+[resp协议](https://github.com/jmilktea/jmilktea/blob/master/redis/resp%E5%8D%8F%E8%AE%AE.md)  
+[redis单机和集群搭建](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%8D%95%E6%9C%BA%E5%92%8C%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.md)  
+[缓存和数据库一致性问题](https://github.com/jmilktea/jmilktea/blob/master/redis/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98.md)   
+[分布式锁](https://github.com/jmilktea/jmilktea/blob/master/redis/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)   
+[string类型底层SDS](https://github.com/jmilktea/jmilktea/blob/master/redis/string%E7%B1%BB%E5%9E%8B%E5%BA%95%E5%B1%82SDS.md)  
+[redis geo地理空间](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%20geo%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4.md)  
+[zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)   
+[zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
+[hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)    
+[持久化机制](https://github.com/jmilktea/jtea/blob/master/redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)      
+[使用Pipeline提升性能](https://github.com/jmilktea/jtea/blob/master/redis/Pipeline.md)   
+
 ## 中间件
 [nacos集群](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/nacos-cluster/nacos%E9%9B%86%E7%BE%A4.md)  
 [canal简介](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/canal/canal%E7%AE%80%E4%BB%8B.md)  
@@ -38,6 +84,11 @@
 [使用MapStruct替换BeanUtils](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E4%BD%BF%E7%94%A8MapStruct%E6%9B%BF%E6%8D%A2BeanUtils.md)    
 [加强版ThreadPoolExecutor](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%8A%A8%E6%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor.md)        
 [加强版ThreadPoolExecutor升级](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%8A%A8%E6%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor%E5%8D%87%E7%BA%A7.md)    
+
+## kafka
+[kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
+[kafka错误日志问题](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98.md)      
+[kafka分区分配策略](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5.md)   
 
 ## elasticsearch
 [核心概念](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5.md)    
@@ -61,28 +112,13 @@
 [核心组件](https://github.com/jmilktea/jtea/blob/master/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6.md)    
 [springboot是如何集成mybatis的](https://github.com/jmilktea/jmilktea/blob/master/mybatis/springboot%E9%9B%86%E6%88%90mybatis%E5%8E%9F%E7%90%86.md)     
 
-## mysql
-[锁简介](https://github.com/jmilktea/jtea/blob/master/mysql/%E9%94%81%E7%AE%80%E4%BB%8B.md)      
-[数据库开发规范](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)   
-[mysql三种log](https://github.com/jmilktea/jmilktea/blob/master/mysql/mysql%E4%B8%89%E7%A7%8Dlog.md)   
-[一条危险的update语句](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%B8%80%E6%9D%A1%E5%8D%B1%E9%99%A9%E7%9A%84update%E8%AF%AD%E5%8F%A5.md)   
-[使用p6spy监控应用sql](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E4%BD%BF%E7%94%A8p6spy%E7%9B%91%E6%8E%A7%E5%BA%94%E7%94%A8sql.md)  
-[这么分页查数据居然重复了](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E8%BF%99%E4%B9%88%E5%88%86%E9%A1%B5%E6%9F%A5%E6%95%B0%E6%8D%AE%E5%B1%85%E7%84%B6%E9%87%8D%E5%A4%8D%E4%BA%86.md)  
-[MVCC原理](https://github.com/jmilktea/jmilktea/blob/master/mysql/MVCC%E5%8E%9F%E7%90%86.md)       
-[深入理解索引](https://github.com/jmilktea/jmilktea/blob/master/mysql/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E7%B4%A2%E5%BC%95.md)        
-[sql到底慢在哪里](https://github.com/jmilktea/jmilktea/blob/master/mysql/sql%E5%88%B0%E5%BA%95%E6%85%A2%E5%9C%A8%E5%93%AA%E9%87%8C.md)   
-[order by居然有bug?](https://github.com/jmilktea/jmilktea/blob/master/mysql/orderby%20bug.md)       
-[mysql到底有没有解决幻读问题](https://github.com/jmilktea/jtea/blob/master/mysql/mysql%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB%E9%97%AE%E9%A2%98.md)    
-[buffer pool]    
-[我又遇到order by的坑了](https://github.com/jmilktea/jtea/blob/master/mysql/%E6%88%91%E5%8F%88%E9%81%87%E5%88%B0order%20by%E7%9A%84%E5%9D%91%E4%BA%86.md)    
+## 设计模式
+[在同事的代码中学习-责任链模式](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%9C%A8%E5%90%8C%E4%BA%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%AD%A6%E4%B9%A0-%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.md)   
 
 ## 场景设计  
 [分层设计](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 [mq多环境topic设计](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/mq%E5%A4%9A%E7%8E%AF%E5%A2%83topic%E8%AE%BE%E8%AE%A1.md)   
 [解决多环境下微服务实例乱窜](https://github.com/jmilktea/jmilktea/blob/master/%E8%AE%BE%E8%AE%A1/%E8%A7%A3%E5%86%B3%E5%A4%9A%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9E%E4%BE%8B%E4%B9%B1%E7%AA%9C.md)  
-
-## 设计模式
-[在同事的代码中学习-责任链模式](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%9C%A8%E5%90%8C%E4%BA%8B%E7%9A%84%E4%BB%A3%E7%A0%81%E4%B8%AD%E5%AD%A6%E4%B9%A0-%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.md)
 
 ## 算法
 [使用TreeSet优化任务分配.md](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%BD%BF%E7%94%A8TreeSet%E4%BC%98%E5%8C%96%E4%BB%BB%E5%8A%A1%E5%88%86%E9%85%8D.md)   
@@ -92,42 +128,6 @@
 [一致性hash算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E4%B8%80%E8%87%B4%E6%80%A7hash%E7%AE%97%E6%B3%95.md)      
 [比例分配算法](https://github.com/jmilktea/jmilktea/blob/master/%E7%AE%97%E6%B3%95/%E6%AF%94%E4%BE%8B%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95.md)    
 [手写lru](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/%E6%89%8B%E5%86%99lru.md)    
-
-## redis   
-[详解redis网络IO模型](https://github.com/jmilktea/jtea/blob/master/redis/%E8%AF%A6%E8%A7%A3redis%E7%BD%91%E7%BB%9CIO%E6%A8%A1%E5%9E%8B.md)   
-[redis常用配置参数](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0.md)   
-[resp协议](https://github.com/jmilktea/jmilktea/blob/master/redis/resp%E5%8D%8F%E8%AE%AE.md)  
-[redis单机和集群搭建](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%E5%8D%95%E6%9C%BA%E5%92%8C%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.md)  
-[缓存和数据库一致性问题](https://github.com/jmilktea/jmilktea/blob/master/redis/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98.md)   
-[分布式锁](https://github.com/jmilktea/jmilktea/blob/master/redis/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.md)   
-[string类型底层SDS](https://github.com/jmilktea/jmilktea/blob/master/redis/string%E7%B1%BB%E5%9E%8B%E5%BA%95%E5%B1%82SDS.md)  
-[redis geo地理空间](https://github.com/jmilktea/jmilktea/blob/master/redis/redis%20geo%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4.md)  
-[zset](https://github.com/jmilktea/jmilktea/blob/master/redis/zset.md)   
-[zset实践](https://github.com/jmilktea/jmilktea/blob/master/redis/zset%E5%AE%9E%E8%B7%B5.md)   
-[hash](https://github.com/jmilktea/jmilktea/blob/master/redis/hash.md)    
-[持久化机制](https://github.com/jmilktea/jtea/blob/master/redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)      
-[使用Pipeline提升性能](https://github.com/jmilktea/jtea/blob/master/redis/Pipeline.md)   
-
-## kafka
-[kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
-[kafka错误日志问题](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98.md)      
-[kafka分区分配策略](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5.md)   
-
-## jvm   
-[jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
-[jdk常用命令](https://github.com/jmilktea/jtea/blob/master/jvm/jdk%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)   
-[TLAB堆内存中的线程私有区域](https://github.com/jmilktea/jtea/blob/master/jvm/TLAB%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%8C%BA%E5%9F%9F.md)   
-[三色标记法](https://github.com/jmilktea/jtea/blob/master/jvm/%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B3%95.md)   
-
-## java基础  
-[@Transactional不生效?](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%40Transactional%E4%B8%8D%E7%94%9F%E6%95%88%EF%BC%9F.md)  
-[java开发规范](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/java%E8%A7%84%E8%8C%83.md)   
-[什么？@Transactional又不生效了？](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E4%BB%80%E4%B9%88%EF%BC%9F%40Transactional%E5%8F%88%E4%B8%8D%E7%94%9F%E6%95%88%E4%BA%86%EF%BC%9F.md)   
-[cas](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/cas.md)   
-[java集合类型-Queue继承体系](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/Queue.md)    
-[happend before](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/happend%20before%E5%8E%9F%E5%88%99.md)   
-[java内省机制](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/Java%E5%86%85%E7%9C%81%E6%9C%BA%E5%88%B6.md)    
-[并发工具类Phaser](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BBPhaser.md)   
 
 ## 问题排查   
 [java cpu占用高问题排查](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/java%E5%BA%94%E7%94%A8cpu100%25(%E5%90%ABdocker).md)  
