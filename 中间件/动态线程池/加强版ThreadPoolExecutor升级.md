@@ -1,14 +1,14 @@
 [上一篇](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor.md)我们介绍了加强版的ThreadPoolExecutor，主要是在jdk线程池的基础上增加了监控的功能，把监控指标暴露给spring boot actuator，可以收集到prometheus和grafana做看板监控和告警。     
 美团有一篇技术博客:[Java线程池实现原理及其在美团业务中的实践](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)详细介绍了线程池的实现原理和动态化配置核心参数、监控告警的实现思路，该文章介绍得非常全面，值得反复阅读，遗憾的是美团并没有开源相关代码，不过github上有人基于这个思路做了实现：[hippo4j](https://github.com/mabaiwan/hippo4j)，可以看到监控的内容和我们上一篇介绍的基本上是类似的，这个框架的功能比较多，有点重，而我想要的是结合自己的需要、轻量、容易使用，例如后面加入了优雅下线的功能，可以参考[这篇文章](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/%E6%9C%8D%E5%8A%A1%E4%BC%98%E9%9B%85%E4%B8%8B%E7%BA%BF.md)。使用只是一个方面，关键在于在其中能学到知识，运用到实际的工作中。        
 
-![image](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/images/enhance-executor-2-1.png)     
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/enhance-executor-2-1.png)     
 
 这篇也是对上面文章读后的一个思考，例如对比下图美团的监控参数，发现有些参数我们没有，那他是怎么做到的呢？    
 - 有些参数可以直接从线程池获得，如线程池完成任务数completeTaskCount，队列剩余容量remainingCapacity。         
 - 有些参数无法直接从线程池获得，如队列初始容量，例如我们使用LinkedBlockingQueue，capacity是一个私有变量，无法直接获得，同样也无法直接修改它。还有被拒绝策略拒绝的数量。        
 - 如何与配置中心集成，做到参数动态修改，核心参数的动态修改还是很有必要的，从美团那篇文章可以看到，现在没有一个万能的公式可以计算出线程池最优的线程数，还是需要根据实际业务场景判断，而这很可能会出错，例如配置的参数过小，可能会导致任务积压，响应不及时，配置参数过大，可能会占用过多机器资源，或者造成下游服务的压力过大。我们之前就试过一些跑任务的线程池，设置参数较大，由于部署了多个实例，并发调用次数就成倍增加了，导致下游的服务扛不住，所以动态配置线程池参数还是有必要的，这样可以根据实际情况在不重启服务的情况下动态调整。  
  
-![image](https://github.com/jmilktea/jtea/blob/master/%E8%AE%BE%E8%AE%A1/images/enhance-executor-2-2.png)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/enhance-executor-2-2.png)   
 
 ## 实现    
 对于可以直接从线程池获得的参数，不用多说，直接上报一下就行了，同样可以通过/actuator/prometheus看到相关指标         
