@@ -165,7 +165,8 @@
 [单元测试启动加速](https://github.com/jmilktea/jmilktea/blob/master/%E5%85%B6%E5%AE%83/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8%E5%8A%A0%E9%80%9F.md)  
 [如何优雅的统计方法执行时间](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4.md)    
 [如何做好code reivew](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BDcode%20reivew.md)    
-[为了简写这行代码，我竟使用静态和动态编译技术](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E4%B8%BA%E4%BA%86%E7%AE%80%E5%86%99%E8%BF%99%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E6%88%91%E7%AB%9F%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%92%8C%E5%8A%A8%E6%80%81%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF.md)
+[为了简写这行代码，我竟使用静态和动态编译技术](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E4%B8%BA%E4%BA%86%E7%AE%80%E5%86%99%E8%BF%99%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E6%88%91%E7%AB%9F%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%92%8C%E5%8A%A8%E6%80%81%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF.md)  
+[这下对阿里java这几条规范有更深理解了](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E8%BF%99%E4%B8%8B%E5%AF%B9%E9%98%BF%E9%87%8Cjava%E8%BF%99%E5%87%A0%E6%9D%A1%E8%A7%84%E8%8C%83%E6%9C%89%E6%9B%B4%E6%B7%B1%E7%90%86%E8%A7%A3%E4%BA%86.md)
 
 ## 编程原则
 - kiss原则    
