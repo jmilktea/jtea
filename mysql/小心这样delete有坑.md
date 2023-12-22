@@ -31,7 +31,7 @@ CREATE TABLE `t_table_2` (
 EXPLAIN SELECT * from t_table_1 where task_id in (select id from t_table_2 where uid = 1)
 ```
 explain后可以看到是走了索引的    
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/semijoin-1.png)    
 
 到这里可以总结：   
 1. 没有死锁，这点比较肯定，因为没有日志，也符合我们的理解。   
@@ -39,7 +39,7 @@ explain后可以看到是走了索引的
 
 那是select和delete的执行计划不同吗？正常来说应该是一样的，delete无非就是先查，加锁，再删。   
 拿到本地环境执行再次查看执行计划，发现确实不同，select的是一样的，但delete的变成全表扫描了。   
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/semijoin-2.png)    
 
 首先这就符合问题现象了，虽然没有死锁，但每个delete语句都全表扫描，相当于全表加锁，后面的请求就只能等待释放锁，等到超时就出现“Lock wait timeout exceeded”。   
 那为什么delete会不走索引呢，接下来我们分析一下。    
@@ -192,7 +192,7 @@ Materialize the subquery into an indexed temporary table that is used to perform
 **那么为什么delete没有使用semijoin优化呢？**       
 这其实是mysql的一个bug，[bug地址](https://bugs.mysql.com/bug.php?id=35794)，描述场景和我们的一样。  
 文中还提到这个问题在mysql 8.0.21被修复，[地址](https://dev.mysql.com/worklog/task/?id=6057)   
-![image](3)    
+![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/semijoin-3.png)    
 
 大致就是解释了一下之前版本没有支持的原因，提到主要是因为单表没有可以JOIN的对象，没法进行一些列的优化，所以单表的UPDATE/DELETE是无法用semijoin优化的。    
 这个优化还有一些限制，例如不能使用order by和limit，我们还是应该尽量避免使用子查询。    
