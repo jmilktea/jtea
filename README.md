@@ -56,7 +56,7 @@
 [mysql到底有没有解决幻读问题](https://github.com/jmilktea/jtea/blob/master/mysql/mysql%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB%E9%97%AE%E9%A2%98.md)    
 [buffer pool]    
 [我又遇到order by的坑了](https://github.com/jmilktea/jtea/blob/master/mysql/%E6%88%91%E5%8F%88%E9%81%87%E5%88%B0order%20by%E7%9A%84%E5%9D%91%E4%BA%86.md)    
-[小心这样delete有坑](https://github.com/jmilktea/jtea/blob/master/mysql/%E5%B0%8F%E5%BF%83%E8%BF%99%E6%A0%B7delete%E6%9C%89%E5%9D%91.md)    
+[这样delete居然不走索引](https://github.com/jmilktea/jtea/blob/master/mysql/%E8%BF%99%E6%A0%B7delete%E5%B1%85%E7%84%B6%E4%B8%8D%E8%B5%B0%E7%B4%A2%E5%BC%95.md)    
 
 ## redis   
 [详解redis网络IO模型](https://github.com/jmilktea/jtea/blob/master/redis/%E8%AF%A6%E8%A7%A3redis%E7%BD%91%E7%BB%9CIO%E6%A8%A1%E5%9E%8B.md)   
