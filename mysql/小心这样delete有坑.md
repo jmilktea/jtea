@@ -194,7 +194,7 @@ Materialize the subquery into an indexed temporary table that is used to perform
 文中还提到这个问题在mysql 8.0.21被修复，[地址](https://dev.mysql.com/worklog/task/?id=6057)   
 ![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/semijoin-3.png)    
 
-大致就是解释了一下之前版本没有支持的原因，提到主要是因为单表没有可以JOIN的对象，没法进行一些列的优化，所以单表的UPDATE/DELETE是无法用semijoin优化的。    
+大致就是解释了一下之前版本没有支持的原因，提到主要是因为单表没有可以JOIN的对象，没法进行一系列的优化，所以单表的UPDATE/DELETE是无法用semijoin优化的。    
 这个优化还有一些限制，例如不能使用order by和limit，我们还是应该尽量避免使用子查询。    
 在我们的场景通过将子查询改写为join即可走索引，现在也明白为什么老司机们都说尽量用join代替了子查询了吧。    
 
