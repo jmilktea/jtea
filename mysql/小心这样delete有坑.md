@@ -34,8 +34,8 @@ explain后可以看到是走了索引的
 ![image](https://github.com/jmilktea/jtea/blob/master/mysql/images/semijoin-1.png)    
 
 到这里可以总结：   
-1. 没有死锁，这点比较肯定，因为没有日志，也符合我们的理解。   
-2. 有慢sql，这点比较奇怪，通过explain select语句是走索引的，但数据库慢日志记录到，全表扫描，不会错。       
+1.没有死锁，这点比较肯定，因为没有日志，也符合我们的理解。   
+2.有慢sql，这点比较奇怪，通过explain select语句是走索引的，但数据库慢日志记录到，全表扫描，不会错。       
 
 那是select和delete的执行计划不同吗？正常来说应该是一样的，delete无非就是先查，加锁，再删。   
 拿到本地环境执行再次查看执行计划，发现确实不同，select的是一样的，但delete的变成全表扫描了。   
