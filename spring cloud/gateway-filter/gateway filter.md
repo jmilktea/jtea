@@ -3,7 +3,7 @@
 
 ## spring cloud gateway   
 请求过程如下图  
-![image](https://github.com/jmilktea/jmilktea/blob/master/spring%20service/gateway-filter/images/gate%E8%AF%B7%E6%B1%82.png)  
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/gateway-filter/images/gate%E8%AF%B7%E6%B1%82.png)  
 客户端向Spring Cloud Gateway发出请求，如果Gateway Handler Mapping确定请求与路由匹配，则将其发送到Gateway Web Handler。此handler通过特定于该请求的过滤器链处理请求。
 从功能上来说，filter可以分为全局和特定两种，全局即对所有请求生效，特定可以针对某些服务生效。全局的过滤器继承了GlobalFilter，特定过滤器可以继承GatewayFilter或者AbstractGatewayFilterFactory。
 
