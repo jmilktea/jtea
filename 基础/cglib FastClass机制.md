@@ -1,6 +1,6 @@
 # 前言    
 关于动态代理的一些知识，以及cglib与jdk动态代理的区别，在[这一篇](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E4%B8%8Ecglib.md)已经介绍过，不熟悉的可以先看下。    
-本篇我们来学习一下cglib的FastClass机制，这是cglib与jdk动态代理的一个主要区别。      
+本篇我们来学习一下cglib的FastClass机制，这是cglib与jdk动态代理的一个主要区别，也是一个面试考点。          
 我们知道jdk动态代理是使用InvocationHandler接口，在invoke方法内，可以使用Method方法对象进行反射调用，反射的一个最大问题是性能较低，cglib就是通过使用FastClass来优化反射调用，提升性能，接下来我们就看下它是如何实现的。     
 
 # 示例     
@@ -12,7 +12,6 @@ public class HelloWorld {
 		System.out.println("hello world");
 	}
 }
-
 
 public class HelloWorldInterceptor implements MethodInterceptor {
 	public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
@@ -51,7 +50,8 @@ after hello world
 我们知道cglib是通过继承实现的，动态代理类会继承被代理类，并重写它的方法，所以它不需要像jdk动态代理一样要求被代理对象有实现接口，因此比较灵活。    
 既然是通过继承实现的，那应该生成一个类就可以了，但是通过上面的路径观察，可以看到生成了3个文件，其中两个带有FastClass关键字。       
 这三个类分别是：动态代理类，动态代理类的FastClass，被代理对象的FastClass，从名称上也可以看出它们的关系。     
-![image](1)     
+
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/fc-1.png)     
 
 其中动态代理类继承了被代理类，并重写了父类的所有方法，包括父类的父类的方法，包括Object类的equals方法和toString方法等。    
 ```
@@ -60,7 +60,8 @@ public class HelloWorld$$EnhancerByCGLIB$$49f9f9c8 extends HelloWorld implements
 ```
 
 这里我们只关注print方法，如下：   
-![image](2)    
+
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/fc-2.png)    
 
 第一个直接调用父类方法，也就是被代理对象的方法；第二个会先判断有没有拦截器，如果没有也是直接调用父类方法，否则调用MethodInterceptor的intercept方法，对于我们这里就是HelloWorldInterceptor。    
 看下intercept的几个参数分别是什么，这几个参数的初始化在动态代理类的静态代码块中都可以找到。   
@@ -116,7 +117,7 @@ private void init()
 ```
 init方法使用加锁+双检查的方式，只会初始化一次fastClassInfo变量，它用volatile关键字进行修饰，这里涉及到java字节码重排问题，具体可以参考我们之前的分析:[happend before原则](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/happend%20before%E5%8E%9F%E5%88%99.md)     
 
-接着回到invokeSuper方法，fci.f2.invoke(fci.i2, obj, args); 实际就是调用动态代理对象的FastClass的invoke方法，并把要调用方法的索引下标i2传达过去。   
+接着回到invokeSuper方法，fci.f2.invoke(fci.i2, obj, args); 实际就是调用动态代理对象的FastClass的invoke方法，并把要调用方法的索引下标i2传过去。   
 至于方法的索引下标是怎么找到的，可以看动态代理对象的FastClass的getIndex方法，其实就是通过方法的名称、参数个数、参数类型，完全匹配，点到源码文件可以看到有大量的switch分支判断。    
 这里我们可以看到print方法的索引下标就是18。     
 ```
@@ -131,7 +132,7 @@ public int getIndex(String var1, Class[] var2) {
                         }
                 }
             }
-            break;
+	break;
         case 770871766:
             if (var1.equals("CGLIB$print$0")) {
                 switch (var2.length) {
@@ -139,7 +140,7 @@ public int getIndex(String var1, Class[] var2) {
                         return 18;
                 }
             }
-            break;
+	break;
     }
 }
 ```
@@ -164,16 +165,24 @@ public int getIndex(String var1, Class[] var2) {
         super.print();
     }
 ```
-最终调用的就是父类的方法。我们画张图总结一下，有兴趣的同学跟着图和代码逻辑应该可以快速理解。    
-![image](3)     
+最终调用的就是父类的方法。我们画张图总结一下，有兴趣的同学跟着图和代码逻辑应该可以快速理解。   
+
+![image](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/images/fc-3.png)     
 
 
 # 总结    
-经过上面的分析，我们可以看到cglib在整个调用过程并没有用到反射，而是使用FastClass对每个方法进行索引，通过方法名称，参数长度，参数类型就可以找到具体的方法，因此性能较好。但也有缺点，首次调用需要生成3个类，会比较慢。      
-另外MethodProxy还有一个invoke方法，如果我们换一下调用这个方法会发生，留给大家自己尝试。    
+经过上面的分析，我们可以看到cglib在整个调用过程并没有用到反射，而是使用FastClass对每个方法进行索引，通过方法名称，参数长度，参数类型就可以找到具体的方法，因此性能较好。但也有缺点，首次调用需要生成3个类，会比较慢。在我们实际开发中，特别是一些框架开发，如果有类似的场景也可以借助FastClass对反射进行优化，如：   
 ```
-	methodProxy.invokeSuper(o, objects);
-    //换成 methodProxy.invoke(o, objects);
+MyClass cs = new MyCase();
+FastClass fastClass = FastClass.create(Case.class);
+int index = fastClass.getIndex("test", new Class[]{Integer.class});
+Object invoke = fastClass.invoke(index, cs, new Object[1]);
+```
+
+另外MethodProxy还有一个invoke方法，如果我们换一下调用这个方法会发生？留给大家自己尝试。    
+```
+methodProxy.invokeSuper(o, objects);
+//换成 methodProxy.invoke(o, objects);
 ```
 
 
