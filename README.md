@@ -34,7 +34,8 @@
 [java集合类型-Queue继承体系](https://github.com/jmilktea/jmilktea/blob/master/%E5%9F%BA%E7%A1%80/%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B/Queue.md)    
 [happend before](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/happend%20before%E5%8E%9F%E5%88%99.md)   
 [java内省机制](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/Java%E5%86%85%E7%9C%81%E6%9C%BA%E5%88%B6.md)    
-[并发工具类Phaser](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BBPhaser.md)   
+[并发工具类Phaser](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BBPhaser.md)    
+[cglib FastClass机制](https://github.com/jmilktea/jtea/blob/master/%E5%9F%BA%E7%A1%80/cglib%20FastClass%E6%9C%BA%E5%88%B6.md)     
 
 ## jvm   
 [jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
