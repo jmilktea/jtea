@@ -22,6 +22,7 @@ static final class Entry {
 # 原理
 我们先通过一个例子感受一下Recycler的使用，然后再来分析它的原理。   
 
+```
 public final class Connection {
 
 	private Recycler.Handle handle;
@@ -55,6 +56,7 @@ public final class Connection {
 		System.out.println(hc1 == hc2); //true
 	}
 }
+```
 
 代码非常简单，我们用final修饰Connection，这样就无法通过继承创建对象。同时构造方法定义为私有，防止外部直接new创建对象，这样就只能通过newInstance静态方法创建对象。   
 Recycler是一个抽象类，newObject是它的抽象方法，这里使用匿名类继承Recycler并重写newObject，用于创建一个新的对象。   
@@ -65,12 +67,12 @@ Handle是一个接口，Recycler会创建并通过newObject方法传进来，默
 **原理分析**     
 想象一下，如果由我们设计，怎么设计一个高性能的对象池呢？对象池的操作很简单，一取一放，但考虑到多线程，实际情况就变得复杂了。    
 如果只有一个全局的对象池，多线程操作需要保证线程安全，那就需要通过加锁或者CAS，这都会影响存取效率，由于线程竞争，锁等待，可能通过对象池获取对象的效率还不如直接new一个，这样就得不偿失了。   
-针对这种情况，已经有很多的经验供我们借鉴，核心思想都是一样的，**降低锁竞争**。例如ConcurrentHashMap，通过每个节点上锁，hash到不同节点的线程就不会相互竞争；例如ThreadLocal，通过在线程级别绑定一个ThreadLocalMap，每个线程操作的都是自己的私有变量，不会相互竞争；再比如jvm在分配内存的时候，内存区域是共享的，所以jvm为每个线程设计了一块私有的TLAB，可以高效进行内存分配，关于TLAB可以参考[这篇文章](https://github.com/jmilktea/jtea/blob/master/jvm/TLAB%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%8C%BA%E5%9F%9F.md)。    
+针对这种情况，已经有很多的经验供我们借鉴，核心思想都是一样的，**降低锁竞争**。例如ConcurrentHashMap，通过每个节点上锁，hash到不同节点的线程就不会相互竞争；例如ThreadLocal，通过在线程级别绑定一个ThreadLocalMap，每个线程操作的都是自己的私有变量，不会相互竞争；再比如jvm在分配内存的时候，内存区域是共享的，所以jvm为每个线程设计了一块私有的TLAB，可以高效进行内存分配，关于TLAB可以参考：[这篇文章](https://github.com/jmilktea/jtea/blob/master/jvm/TLAB%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%8C%BA%E5%9F%9F.md)。    
 
 这种无锁化的设计在netty中非常常见，例如对象池，内存分配，netty还设计了FastThreadLocal来代替jdk的ThreadLocal，使得线程内的存取更加高效。   
 Recycler设计如下：   
 
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/netty/image/recycler-1.png)    
 
 如上图，Recycler内部维护了两个重要的变量，**Stack**和**WeakOrderQueue**，实际对象就是包装成DefaultHandle，保存在这两个结构中。    
 默认情况一个线程最多存储4 * 1024个对象，可以根据实际情况，通过Recycler的构造函数指定。   
@@ -214,30 +216,30 @@ public final class WrapperUtils {
 
 ```
 public static void main(String[] args) {
-		try (PooledQueryWrapper<Case> objectPooledWrapper = WrapperUtils.newInstance()) {
-			QueryWrapper<Case> wrapper = objectPooledWrapper.getWrapper();
-			wrapper.eq("age", 1);
-			wrapper.select("id,name");
-			wrapper.last("limit 1");
-			System.out.println(wrapper.hashCode());
-		}
-
-		try (PooledQueryWrapper<Case> objectPooledWrapper = WrapperUtils.newInstance()) {
-			QueryWrapper<Case> wrapper = objectPooledWrapper.getWrapper();
-			wrapper.eq("age", 2);
-			wrapper.select("id,email");
-			wrapper.last("limit 2");
-			System.out.println(wrapper.hashCode());
-		}
-
-		try (PooledQueryWrapper<Case> objectPooledWrapper = WrapperUtils.newInstance()) {
-			QueryWrapper<Case> wrapper = objectPooledWrapper.getWrapper();
-			wrapper.eq("age", 3);
-			wrapper.select("id,phone");
-			wrapper.last("limit 3");
-			System.out.println(wrapper.hashCode());
-		}
+	try (PooledQueryWrapper<Case> objectPooledWrapper = WrapperUtils.newInstance()) {
+		QueryWrapper<Case> wrapper = objectPooledWrapper.getWrapper();
+		wrapper.eq("age", 1);
+		wrapper.select("id,name");
+		wrapper.last("limit 1");
+		System.out.println(wrapper.hashCode());
 	}
+
+	try (PooledQueryWrapper<Case> objectPooledWrapper = WrapperUtils.newInstance()) {
+		QueryWrapper<Case> wrapper = objectPooledWrapper.getWrapper();
+		wrapper.eq("age", 2);
+		wrapper.select("id,email");
+		wrapper.last("limit 2");
+		System.out.println(wrapper.hashCode());
+	}
+
+	try (PooledQueryWrapper<Case> objectPooledWrapper = WrapperUtils.newInstance()) {
+		QueryWrapper<Case> wrapper = objectPooledWrapper.getWrapper();
+		wrapper.eq("age", 3);
+		wrapper.select("id,phone");
+		wrapper.last("limit 3");
+		System.out.println(wrapper.hashCode());
+	}
+}
 ```
 
 # 总结    
