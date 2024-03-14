@@ -120,7 +120,7 @@ private static class RedisPooledObjectFactory<T extends StatefulConnection<?, ?>
 
 	@Test
 	public void test() throws InterruptedException {
-        //对象池配置
+        	//对象池配置
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 		config.setMinIdle(1); //最小空闲对象数
 		config.setMaxIdle(1); //最大空闲对象数
@@ -144,7 +144,7 @@ private static class RedisPooledObjectFactory<T extends StatefulConnection<?, ?>
 					//归还对象
 					objectPool.returnObject(connection);
 				} catch (Exception e) {
-                    //超时获取不到对象
+                    			//超时获取不到对象
 					System.out.println(e.getMessage());
 				}
 			}).start();
