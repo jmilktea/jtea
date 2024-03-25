@@ -98,7 +98,8 @@ Pileline会创建一个ChannelHandlerContext，然后开始入站操作，经过
 
 >思考，根据reactor模型，Boos EventLoopGroup负责接收连接，一个线程就够了，还有必要开多线程吗？通常是可以不用的，设置一个线程即可，但是当应用需要监听多个端口，或者还有其它任务要处理，那设置多个线程就有用了。
 
-![image](1)
+整体架构：
+![image](https://github.com/jmilktea/jtea/blob/master/netty/image/netty-learn-1.png)
 
 # netty中的ByteBuf    
 netty的ByteBuf是java ByteBuffer的升级，相比之下更加强大。    
