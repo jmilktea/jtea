@@ -69,6 +69,9 @@ netty是一个高性能、易扩展、社区活跃的网络开发框架。
 5、相比Mina，Netty是后来居上者，经过重新设计，相比Mina要更加优秀。Grizzly出自Sun公司，应用较少。   
 目前netty用得多的版本是4.x，5.x版本由于有重大bug被官方废弃。   
 
+整体架构：   
+![image](0)    
+
 # reactor模型     
 reactor模型是基于事件的处理模型，在很多中间件都有使用到reactor模型，nginx、nodejs、redis等。
 doug lee在[scalable io in java](https://gee.cs.oswego.edu/dl/cpjslides/nio.pdf)总结了三种reactor模型，netty对这三种模型都能支持。   
