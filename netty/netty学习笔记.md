@@ -85,20 +85,21 @@ EvevtLoop会轮询注册在它上面的Seletor的所有Channel的IO事件，并�
 默认情况下，每个EventLoopGroup会分配cpu核数 * 2个EventLoop，也就是线程数。   
 
 **Channel通道**，与java NIO的Channel类似，Channel会注册到EventLoop上，提供各种IO操作，如connect,read,write,flush。netty中有代表TCP协议的异步NioServerSocketChannel，NioSocketChannel，同步的OioServerSocketChannel，OioSocketChannel。代表UDP协议的NioDatagramChannel，OioDatagramChanel。    
->总结一下，一个EventLoopGroup可以包含多个EventLoop，一个EventLoop关联一个Selector，一个EventLoop分配一个线程，可以管理多个Channel。    
+>一个EventLoopGroup可以包含多个EventLoop，一个EventLoop关联一个Selector，一个EventLoop分配一个线程，可以管理多个Channel。    
 
 **Pipeline,ChannelHandlerContext,ChannelHandler**，管道和处理器，每一个Channel都会关联一个Pipeline，请求会在Pipeline内流转，经过一系列的ChannelHandler处理，这是责任链模式。一个Pipeline内部维护了一个双向链表构成的ChannelHandlerContext，ChannelHandlerContext是对ChannelHandler的封装，通过它可以拿到Pipepline,Channel,Handler等信息。   
 请求会经过每一个ChannelHandlerContext然后执行对应的ChannelHandler逻辑。   
 Handler分为**ChannelInboundHandler**和**ChannelOutboundHandler**，Inbound表示入站处理器，请求进来时会从Pipeline的ChannelHandlerContext头节点开始传播，经过一系列的ChannelInboundHandler，最后到尾节点。写回时，从尾结点开始传播，经过一系列的ChannelOutboundHandler出站处理器，最后到头节点，返回数据给客户端。常见的入站出站处理器如ByteToMessageHandler和MessageToByteHandler。     
 
-**总结**：Boos EventLoopGroup会创建EventLoop，绑定一个Selector，然后创建NioServerSocketChannel，注册到Selector上，负责监听客户端连接。  
+>总结：Boos EventLoopGroup会创建EventLoop，绑定一个Selector，然后创建NioServerSocketChannel，注册到Selector上，负责监听客户端连接。  
 当有连接加入时，Boos EventLoop会触发channelRead事件，然后被ServerBootstrapAcceptor处理器捕获，ServerBootstrapAcceptor会根据本次连接创建SocketChannel，然后分配给Worker EventLoopGroup。   
 Worker EventLoopGroup会选择一个EventLoop，将SocketChannel注册到它的Selector上，等待IO事件的到来。当有IO事件发生时，Worker EventLoop会通过Channel将数据读取出来，然后交给Pipeline处理。   
 Pileline会创建一个ChannelHandlerContext，然后开始入站操作，经过一系列的ChannelInboundHandler处理后，写回数据，再经过一系列的ChannelOutboundHandler，最终返回数据。      
 
 >思考，根据reactor模型，Boos EventLoopGroup负责接收连接，一个线程就够了，还有必要开多线程吗？通常是可以不用的，设置一个线程即可，但是当应用需要监听多个端口，或者还有其它任务要处理，那设置多个线程就有用了。
 
-整体架构：
+整体架构：  
+
 ![image](https://github.com/jmilktea/jtea/blob/master/netty/image/netty-learn-1.png)
 
 # netty中的ByteBuf    
@@ -149,14 +150,14 @@ TCP协议的消息是流式传输的，这意味着我们无法很好的分辨�
 例如要发送的3条消息是：a b c，由于每次只发生一个字符，而每次都需要加上各种首部信息，是极大的浪费，所以会粘包合并为abc一次性发送。nagle算法是一种TCP/IP拥塞控制方法，主要用于解决频繁传递小数据包带来的网络拥塞问题，它的做法是将多个小数据包合并成一个发送，这种思路和我们平时批量处理问题，kafka批量发送消息的思想是一样的，但这会有延迟问题。      
 粘包/拆包的本质问题是为了在保证传输性能的前提下，可以识别出一个完整的信息。解决方式是在**应用层定义传输协议**，常见的做法有：  
 
-**消息长度固定(FixedLengthFrameDecoder)**
+- **消息长度固定(FixedLengthFrameDecoder)**
 如，发送端固定每次发送64字节，接收端每次接收到64字节就认为是一个完整的消息。    
 消息长度固定的缺点显而易见，固定的长度太长会浪费空间，太短可能会丢失数据。  
 
-**换行分隔符和自定义分隔符(LineBasedFrameDecoder，DelimiterBasedFrameDecoder)**
+- **换行分隔符和自定义分隔符(LineBasedFrameDecoder，DelimiterBasedFrameDecoder)**
 如，识别到换行符就认为是一个完整的消息，redis客户端/服务端的resp协议就是使用换行分隔符作为标识。  
 
-**消息长度 + 消息内容(LengthFieldBasedFrameDecoder)**     
+- **消息长度 + 消息内容(LengthFieldBasedFrameDecoder)**     
 如，每次发送都通过一个字段告知服务端本次消息的长度，当接收到这个长度时才认为是一次完整的消息，如果一次接收后还达不到这个长度，那么需要继续解析后面的数据包。     
 如，6 abcdef，被拆包了，服务端接收到的是：6 abcd，那么需要继续解析下一个数据包得到ef。   
 这种方式用得最多，就好像http请求头一样，还可以添加更多需要的字段标识。   
@@ -270,13 +271,14 @@ netty中的FileRegion底层用了java nio的FileChannel的transferTo实现零拷
 
 除此之外，netty还实现了许多**应用层面的零拷贝**，如：  
 
-**堆外内存**，如果使用堆内内存，实际还有一次从堆内内存拷贝到堆外内存的过程，因为堆内内存受jvm管理，受gc影响，地址可能会改变，所以需要先拷贝到堆外内存，netty可以直接使用堆外内存较少这次拷贝。  
-
-**CompositeByteBuf**，CompositeByteBuf可以组合多个ByteBuf，内部通过数组保留原ByteBuf的引用，所以不需要移动底层的字节数组，通过索引，可以通过CompositeByteBuf直接操作ByteBuf。    
-
-**Unpooled.wrappedBuffe**，将一个字节数组包装成ByteBuf，使用的仍然字节数组引用，没有内存拷贝。       
-
-**ByteBuf.slice**，可以将一个ByteBuf拆分成多个，底层仍共享一个字节数组，也不需要内存拷贝。   
+- **堆外内存**  
+如果使用堆内内存，实际还有一次从堆内内存拷贝到堆外内存的过程，因为堆内内存受jvm管理，受gc影响，地址可能会改变，所以需要先拷贝到堆外内存，netty可以直接使用堆外内存较少这次拷贝。  
+- **CompositeByteBuf**  
+CompositeByteBuf可以组合多个ByteBuf，内部通过数组保留原ByteBuf的引用，所以不需要移动底层的字节数组，通过索引，可以通过CompositeByteBuf直接操作ByteBuf。    
+- **Unpooled.wrappedBuffe**   
+将一个字节数组包装成ByteBuf，使用的仍然字节数组引用，没有内存拷贝。       
+- **ByteBuf.slice**   
+可以将一个ByteBuf拆分成多个，底层仍共享一个字节数组，也不需要内存拷贝。   
 
 ## Sharable Handler
 在往Pipeline添加handler的时候，通常直接在initChannel()使用new Handler()，也就是每个请求都会创建一个handler对象，在请求量大的时候，会有性能销毁。
@@ -350,40 +352,45 @@ Netty 会检测 ByteBuf 是否已经不可达且引用计数大于0，判定内�
 
 # netty中的设计模式  
 
-**责任链模式**，Pipeline中的ChannelHandlerContext构成一个双向链表，入站请求会从head节点开始执行到tail节点，出站会从tail节点开始执行到head节点，通过这种方式可以很方便的在Pipeline中加入自定义逻辑读取和响应请求。      
+- **责任链模式**  
+Pipeline中的ChannelHandlerContext构成一个双向链表，入站请求会从head节点开始执行到tail节点，出站会从tail节点开始执行到head节点，通过这种方式可以很方便的在Pipeline中加入自定义逻辑读取和响应请求。      
 
-**单例模式**，netty提供了SelectStrategy表示nio select时的策略，默认的实现类DefaultSelectStrategy就是一个单例，它是通过饿汉模式实现的。SelectStrategy支持的策略有select，continue，当EventLoop队列中有任务要执行时，此时的策略是continue，不会调用select方法进行阻塞(实际是调用了selectNow立刻返回)，保证队列里的任务得到执行。如果队列里没有任务要执行，策略就是select，此时会调用select方法挂起线程。（计算一个阻塞时间，到时间无论select有没有事件都返回，执行队列任务）  
+- **单例模式**   
+netty提供了SelectStrategy表示nio select时的策略，默认的实现类DefaultSelectStrategy就是一个单例，它是通过饿汉模式实现的。SelectStrategy支持的策略有select，continue，当EventLoop队列中有任务要执行时，此时的策略是continue，不会调用select方法进行阻塞(实际是调用了selectNow立刻返回)，保证队列里的任务得到执行。如果队列里没有任务要执行，策略就是select，此时会调用select方法挂起线程。（计算一个阻塞时间，到时间无论select有没有事件都返回，执行队列任务）  
 
-**工厂模式**，netty的ReflectiveChannelFactory继承了ChannelFactory，用于创建Channel。    ReflectiveChannelFactory会根据在BootStrap阶段设置的Channel类型，例如NioServerSocketChannel，通过反射创建对应的Channel对象。   
+- **工厂模式**   
+netty的ReflectiveChannelFactory继承了ChannelFactory，用于创建Channel。    ReflectiveChannelFactory会根据在BootStrap阶段设置的Channel类型，例如NioServerSocketChannel，通过反射创建对应的Channel对象。   
 
-**建造者模式**，netty的BootStrap和ServerBootStrap使用的就是建造者模式，通过链式调用，设置不同的参数，进行引导配置。     
+- **建造者模式**   
+netty的BootStrap和ServerBootStrap使用的就是建造者模式，通过链式调用，设置不同的参数，进行引导配置。     
 
-**观察者模式**，观察者模式可以通过观察，在感兴趣事件发生时，进行响应。netty的ChannelFuture继承了Future接口，表示异步结果。当我们调用writeAndFlush方法时返回的就是ChannelFuture，在数据flush写入socket后，ChannelFuture注册的listener就会触发调用。    
+- **观察者模式**   
+观察者模式可以通过观察，在感兴趣事件发生时，进行响应。netty的ChannelFuture继承了Future接口，表示异步结果。当我们调用writeAndFlush方法时返回的就是ChannelFuture，在数据flush写入socket后，ChannelFuture注册的listener就会触发调用。    
 
 # netty最佳实践    
 
-**配置Boos EventLoopGroup和Worker EventLoopGroup**    
+- **配置Boos EventLoopGroup和Worker EventLoopGroup**      
 netty可以通过设置Boos EventLoopGroup和Worker EventLoopGroup 实现各种reactor模型，推荐同时配置两者，也就是使用主从多reactor模型，这样Boos负责接收连接建立，worker负责连接读写，分工明确，性能较佳。   
 
-**ChannelHandlerContext.writeAndFlush和Channel.writeAndFlush**     
+- **ChannelHandlerContext.writeAndFlush和Channel.writeAndFlush**     
 ChannelHandlerContext会从当前Context开始往后传递，Channel会从tail节点开始往后传递，当不需要从tail节点开始传递时，使用ChannelHandlerContext.writeAndFlush可以缩短事件传播路径。   
 
-**@Sharable**    
+- **@Sharable**    
 使用Sharable注解修饰的Handler可以在所有请求公用一个Handler对象，避免创建过多的Handler对象。注意使用使用这种方式的Handler必须是线程安全的。   
 
-**使用业务线程池**     
+- **使用业务线程池**     
 netty使用少量的EventLoop线程管理成千上万的连接和处理请求，默认会开启cpu * 2个EventLoop线程。如果使用EventLoop进行耗时的业务操作，那么系统很快就会崩溃。所以建议自定义线程池或者使用netty提供的EventExecutorGroup线程池进行复杂的业务处理。
 
-**使用内存池/对象池**
+- **使用内存池/对象池**
 内存池和对象池都是池化思想，通过复用减少频繁创建的开销。使用PooledByteBufferAllocator可以分配池化的堆内/堆外内存，使用堆外内存在IO的时候还可以减少一次堆内->堆外内存的拷贝。
 使用Recyler可以创建对象池，对象用完后会缓存到线程绑定的Stack结构中，不会被GC回收。  
 
-**开启nagle**    
-nagle算法是linux底层算法，用于合并多个较小的TCP数据包，提升传输效率。
-但nagle算法会有一定的延迟性，对实时性要求较高的场景不适合，netty默认是关闭。
-如果对实时性要求不高的场景，开启可以降低小数据包带来的网络拥塞问题。    
-
-**cpu亲和性**   
+- **cpu亲和性**   
 netty的目标是处理海量请求，对性能的要求非常高。
 cpu亲和性，是指将线程和cpu绑定，称为“绑核”，这样可以更好利用cpu缓存。
 可以使用[Affinity](https://github.com/OpenHFT/Java-Thread-Affinity)轻松集成。  
+
+- **开启nagle**    
+nagle算法是linux底层算法，用于合并多个较小的TCP数据包，提升传输效率。
+但nagle算法会有一定的延迟性，对实时性要求较高的场景不适合，netty默认是关闭。
+如果对实时性要求不高的场景，开启可以降低小数据包带来的网络拥塞问题。    
