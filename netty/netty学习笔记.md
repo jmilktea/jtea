@@ -70,7 +70,8 @@ netty是一个高性能、易扩展、社区活跃的网络开发框架。
 目前netty用得多的版本是4.x，5.x版本由于有重大bug被官方废弃。   
 
 整体架构：   
-![image](0)    
+
+![image](https://github.com/jmilktea/jtea/blob/master/netty/image/netty-learn-0.png)    
 
 # reactor模型     
 reactor模型是基于事件的处理模型，在很多中间件都有使用到reactor模型，nginx、nodejs、redis等。
