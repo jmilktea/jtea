@@ -102,8 +102,10 @@
 [使用java访问es](https://github.com/jmilktea/jtea/blob/master/elasticsearch/%E4%BD%BF%E7%94%A8java%E8%AE%BF%E9%97%AEes.md)   
 [es中的分页](https://github.com/jmilktea/jtea/blob/master/elasticsearch/es%E4%B8%AD%E7%9A%84%E5%88%86%E9%A1%B5.md)     
 
-## netty
-[Recycler对象池](https://github.com/jmilktea/jtea/blob/master/netty/Recycler%E5%AF%B9%E8%B1%A1%E6%B1%A0.md)  
+## netty   
+[学习笔记](https://github.com/jmilktea/jtea/blob/master/netty/netty%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)    
+[Recycler对象池](https://github.com/jmilktea/jtea/blob/master/netty/Recycler%E5%AF%B9%E8%B1%A1%E6%B1%A0.md)     
+
 
 ## linux  
 [基础命令](https://github.com/jmilktea/jtea/blob/master/linux/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4.md)  
