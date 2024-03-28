@@ -47,7 +47,7 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 **g1 gc**
 -XX:+UseG1GC | 使用g1收集器，jdk9开始默认使用g1收集器       
 -XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms   
--XX:G1HeapRegionSize | g1 region的个数，1~32m之间，2的整数倍，默认根据堆大小自动计算   
+-XX:G1HeapRegionSize | g1 region的大小，1~32m之间，2的整数倍，默认根据堆大小自动计算。超过region大小的一半即被认为是大对象，会被分配在Humongous区，Humongous被视为老年代一样对待。
 -XX:InitiatingHeapOccupancyPercent | 老年代达到这个阈值就开始mixed gc，默认45%   
 **TLAB**   
 -XX:+UseTLAB | 开启TLAB机制，默认是开启
