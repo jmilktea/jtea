@@ -197,11 +197,30 @@ netty提供了FastThreadLocal，搭配FastThreadLocalThread使用，FastThreadLo
 FastThreadLocal fastThreadLocal1 = new FastThreadLocal();   //index为1
 FastThreadLocal fastThreadLocal2 = new FastThreadLocal();   //index为2
 FastThreadLocal fastThreadLocal3 = new FastThreadLocal();   //index为3
+for (int index = 0; index < 40; index++) {
+	final int value = index;
+	new FastThreadLocalThread(() -> {
+		fastThreadLocal1.set(value);
+		fastThreadLocal2.set(value + 1);
+		fastThreadLocal3.set(value + 2);
+	}).start();
+}
 ```
-fastThreadLocal1的线程数据都会放在FastThreadLocalThread关联的InternalThreadLocalMap内部数组下标为1的位置，fastThreadLocal2的线程数据都会放在FastThreadLocalThread关联的InternalThreadLocalMap内部数组下标为2的位置（0位置是一个Set，存储所有FastThreadLocal对象）。    
-从上可以看出，相比jdk的ThreadLocal，FastThreadLocal的高性能在于：   
+fastThreadLocal1的线程数据都会放在FastThreadLocalThread关联的InternalThreadLocalMap内部数组下标为1的位置，fastThreadLocal2的线程数据都会放在FastThreadLocalThread关联的InternalThreadLocalMap内部数组下标为2的位置，下标为0的位置是一个Set，存储本线程所有FastThreadLocal对象。       
+从上可以看出，相比jdk的ThreadLocal，FastThreadLocal的优势在于：   
 1、查找数据时，FastThreadLocal可以通过index快速定位到数组位置，没有hash冲突，查找速度为O(1)。    
 2、当需要扩容时，按index以2的n次幂创建一个新的数组，然后把数据搬过去，不需要rehash。   
+3、自动清除，使用FastThreadLocalThread提交Runnable时，会包装为一个FastThreadLocalRunnable，当任务执行完后，会调用removeAll方法，从Set取出所有FastThreadLocal，调用remove方法。   
+```
+@Override
+public void run() {
+    try {
+        runnable.run();
+    } finally {
+        FastThreadLocal.removeAll();
+    }
+}      
+```
 
 ## 时间轮 HashedWheelTimer   
 jdk提供的Timer,DelayedQueue,ScheduledThreadPoolExecutor都提供了定时功能，但这些定时任务添加和取消任务时间复杂度都是O(logn)，并且在实现上都有一些不足。例如Timer,这是最早期的定时器，它内部维护了一个小根堆数据结构，最先要执行的任务会放到堆的根，然后开启一个TimerThread去判断根节点的任务是否可以执行，如果可以执行就取出，然后执行，否则继续等待。Timer的问题是它是单线程的，当有任务执行比较久时，后面的任务都会阻塞，另外它没有进行异常处理，如果有任务执行异常，后面的任务都无法执行。   
