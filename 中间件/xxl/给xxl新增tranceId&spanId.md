@@ -12,7 +12,7 @@ spring cloud sleuth在spring boot中开箱即用，对常用的功能组件做�
 定时任务方面，spring scheduling，quartz常用的也做了集成，我们通常使用分布式定时任务调度，例如xxl-job，这个是国产用得比较多的定时任务，sleuth就没有进行集成了，通过xxl-job github查看，也没有对应的集成实现。   
 
 spring cloud sleuth已经支持的模块：   
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/scs-1.png)    
 
 # 实现    
 在我司，为了解决这个问题有些团队是这样做的，伪代码如下：   
@@ -47,7 +47,7 @@ public class XxxJob extends IJobHandler {
 
 **他山之石**   
 spring cloud sleuth已经对许多常用功能进行集成，我们可以参考他的源码实现，最好的参照物就是scheduling，它也是一个基于注解的定时任务，我们只需要把它换成xxl注解即可。   
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/images/scs-2.png)    
 
 可以看到它定义一个切面，拦截@Scheduled注解，然后在请求执行前后进行设置和清除。    
 针对xxl我们可以实现如下，也可以将此作为一个思路去实现提交给xxl-job仓库。    
