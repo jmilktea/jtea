@@ -86,6 +86,7 @@
 [使用MapStruct替换BeanUtils](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E4%BD%BF%E7%94%A8MapStruct%E6%9B%BF%E6%8D%A2BeanUtils.md)    
 [加强版ThreadPoolExecutor](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%8A%A8%E6%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor.md)        
 [加强版ThreadPoolExecutor升级](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%8A%A8%E6%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%8A%A0%E5%BC%BA%E7%89%88ThreadPoolExecutor%E5%8D%87%E7%BA%A7.md)    
+[给xxl新增tranceId&spanId](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/xxl/%E7%BB%99xxl%E6%96%B0%E5%A2%9EtranceId&spanId.md)   
 
 ## kafka
 [kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
