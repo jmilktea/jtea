@@ -1,6 +1,6 @@
 本篇来源于一道面试题，提出本人的一个解决方案。题目：以使用kafka为例，**消息队列在partition扩容后，如何保证消息的有序性。**     
 
-在开始前我们首先回顾一下基础知识，在[kafka分区分配策略]这一篇已经对kafka的存储结构做了一些介绍。    
+在开始前我们首先回顾一下基础知识，在[kafka分区分配策略](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5.md)这一篇已经对kafka的存储结构做了一些介绍。    
 我们知道topic是一个逻辑概念，实际消息是存储在partition中，一个topic可以有一到多个partition，多个partition可以存储在不同的broker上，分担存储压力。   
 此外，消费者可以为每个partition指定一个消费实例（进程或线程都可以），这样可以并发从各个partition拉取数据，提升消费能力。需要知道的是，消费实例数量一般不超过partition数量，因为每个partition最多被同一个消费者组内的一个消费实例处理，超过部分属于浪费。   
 partition是一个队列数据结构，先进先出，所以在同一个partition内，天然可以保证消息消费的顺序性。   
