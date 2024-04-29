@@ -5,11 +5,11 @@
 此外，消费者可以为每个partition指定一个消费实例（进程或线程都可以），这样可以并发从各个partition拉取数据，提升消费能力。需要知道的是，消费实例数量一般不超过partition数量，因为每个partition最多被同一个消费者组内的一个消费实例处理，超过部分属于浪费。   
 partition是一个队列数据结构，先进先出，所以在同一个partition内，天然可以保证消息消费的顺序性。   
 
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-partition-order-1.png)    
 
-那么kafka client是如何决定将一条消息发送到哪个partition的呢？这里以使用spring kafka为例，默认使用的随机挑选一个partition，源码位置在：StickyPartitionCache.partition()。  
+那么kafka client是如何决定将一条消息发送到哪个partition的呢？这里以使用spring kafka为例，默认使用的随机挑选一个partition，源码位置在：StickyPartitionCache.nextPartition()。  
 
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-partition-order-2.png)    
 
 从上代码可以看出，会使用ThreadLocalRandom随机生成一个整数，然后取余总partition数量，得到要发送的partition。    
 > ThreadLocalRandom 是 Random 的ThreadLocal版本，线程间不会有竞争，并发效率高，推荐使用。    
@@ -25,12 +25,12 @@ partition是一个队列数据结构，先进先出，所以在同一个partitio
 例如，以订单id作为key，为其选一个partition，后续这个订单的状态变更都发送到这里，那么就不会有乱序问题。   
 代码如下，其中key就是用于标识的字段。   
 
-![image](3)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-partition-order-3.png)   
 
 继续往下看，会发现如果指定了key，会使用murmur2算法，生成一个固定的hash值，然后计算得到一个partition。    
 > Murmur2 哈希算法是由 Austin Appleby 在 2008 年设计的一种非加密哈希函数。它被优化用于速度，并生成 32 位的哈希值。该算法作用于一系列字节流，基于整个输入产生一个哈希值。    
 
-![image](4)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-partition-order-4.png)    
 
 一般到这里就万事大吉了，但面试官往往要体现自己的水平，提出一些刁钻的问题，也就是本篇我们要讨论的主题。    
 随着业务的发展，数据量越来越大，消费速度跟不上了，消费实例还可以增加，但由于partition数量的限制，增加也没有用，所以必须扩容partition。    
@@ -45,7 +45,7 @@ partition是一个队列数据结构，先进先出，所以在同一个partitio
 
 我们可以新建一个topic，partition是扩容后的数量，消费逻辑和旧的是一样的，但发往这个topic的消息会先pause住，不消费。等旧的topic消费完成，再重新resume，消费新topic的数据。   
 
-![image](5)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-partition-order-5.png)    
 
 这种做法对代码的侵入性实际也不会特别强，就是发送者需要改一下发送的topic。消费者pause/resume可以做成一个通用的功能，通过配置中心配置，即可暂停指定topic的消息消费，例如笔者所在项目者就有这个通用实现。spring MessageListenerContainer提供了pause/resume方法，可以暂停指定topic消息的消费和恢复，我们只需要跟配置中心对接起来即可。   
 
