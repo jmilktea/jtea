@@ -92,6 +92,7 @@
 [kafka消费者重启消息重复消费](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E5%90%AF%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98.md)   
 [kafka错误日志问题](https://github.com/jmilktea/jmilktea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E9%97%AE%E9%A2%98.md)      
 [kafka分区分配策略](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5.md)   
+[patition扩容后如何保证消息顺序性](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/patition%E6%89%A9%E5%AE%B9%E5%90%8E%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E9%A1%BA%E5%BA%8F%E6%80%A7.md)    
 
 ## elasticsearch
 [核心概念](https://github.com/jmilktea/jmilktea/blob/master/elasticsearch/elasticsearch%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5.md)    
