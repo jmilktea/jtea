@@ -18,7 +18,8 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -XX:MaxMetaspaceSize | 元数据空间最大大小  
 -XX:MaxDirectMemorySize | 最大堆外内存  
 -XX:+HeapDumpOnOutOfMemoryError | 开启oom head dump  
--XX:HeapDumpPath|dump文件路径
+-XX:HeapDumpPath | dump文件路径
+-XX:+AlwaysPreTouch | 开启“预触摸”，默认是不开启。开启后jvm在启动时就会像系统申请Xms指定的堆大小。
 **gc**|
 -XX:MaxTenuringThreshold | 默认值是15，进入老年代的年龄。cms默认是6。
 -XX:+DisableExplicitGC | 明确禁止使用system.gc  
