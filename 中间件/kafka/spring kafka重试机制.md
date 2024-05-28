@@ -142,6 +142,7 @@ spring kafka这里可以将顺序消息排除，使用固定时间间隔重试�
 
 **与rocketmq对比**    
 上面也提到，rocketmq在使用方面更加友好，灵活，因为rocketmq在broker端就考虑处理了各种问题，重试，有序消息，事务消息，都是在broker端提供支持。而kafka broker并没有提供，spring kafka只能在客户端尽力实现。在重试机制方面，两者也大不相同，rocketmq是先将消息投递到schedule topic，在broker端使用线程扫描，如果达到时间，就重新投递到retry topic，对于开发者来说，客户端不需要关注太多细节。   
+spring kafka还支持更多重试方式，例如先在原队列重试n次后，不成功再投递到重试队列重试，更多使用方法参考下方官网链接。    
 
 ![image](4)      
 
