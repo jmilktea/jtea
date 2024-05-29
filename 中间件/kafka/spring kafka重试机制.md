@@ -68,7 +68,7 @@ spring kafka提供了@RetryTopic注解，可以打在@KafkaListener注解的方�
 ```
 ![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-retry-2.png)     
 
-> rocketmq的重试则显得要友好很多，它的重试由broker管理触发，默认只需要一个重试topic。  
+> rocketmq的重试则显得要友好很多，它的重试由broker管理，默认会将要重试的消息重新投递到一个名称为：%RETRY%+ConsumerGroup的队列中。
 
 当达到重试最大次数还失败了，就会发送到DLT，命名规则是原topic加上“-dlt”，例如：my_test-dlt。我们可以使用@DltHandler在同个class里，标记要处理死信消息方法，通常是将消息保存到数据库或es，人工介入处理。    
 ```
