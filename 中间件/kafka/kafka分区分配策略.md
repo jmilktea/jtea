@@ -134,4 +134,6 @@ C1：P01,P11,P21,P21，
 
 # 总结
 这4种分区分配策略是可以配置的，客户端通过partition.assignment.strategy参数进行设置，默认是RangeAssignor。   
+更多信息参考：https://www.conduktor.io/blog/kafka-partition-assignment-strategy/
+
 ![image](https://github.com/jmilktea/jtea/blob/master/%E4%B8%AD%E9%97%B4%E4%BB%B6/kafka/images/kafka-assignor-6.png)   
