@@ -100,6 +100,22 @@ jmap -histo:live pid | head -10
 需要注意的是，jmap -dump,-histo 都会触发fullgc。    
 参考：[一次内存泄漏排查](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%8E%92%E6%9F%A5.md)    
 
+**gdb gcore**   
+有时候会遇到java进程“假死”已经无法响应jmap命令，会提示“unable to open socket file”，且让我们使用-F参数来导出堆栈。   
+使用-F参数,jmap会使用Linux的ptrace机制来导出堆内存，ptrace是Linux平台的一种调试机制，像strace、gdb都是基于它开发的，它使得调试进程(jmap)可以直接读取被调试进程(jvm)的原生内存，然后jmap再根据jvm的内存布局规范，将原生内存转换为hprof格式。    
+但实际操作过程会发现特别慢，因为ptrace每次只能读取少量的字节，对于堆比较大的进程，可能要花费几个小时。    
+解决方式是使用：gdb的gcore命令，它可用来生成程序原生内存的core文件，然后jstack、jmap等都可以读取此类文件，导出堆信息后，就可以像原来一样使用工具进行分析了。   
+```
+# 生成core文件，5709是进程号
+$ gcore -o core 5709
+
+# 从core文件中读取线程栈
+$ jstack `which java` core.5709
+
+# 将core文件转换为hprof文件，很慢，建议摘流量后执行
+$ jmap -dump:format=b,file=heap.hprof `which java` core.5709
+```
+
 ## jcmd
 jdk7后新增的一个多功能命令行工具，上面的命令很多功能都可以用jcmd代替
 - jcmd -l：查看所有jvm进程，相当于jps -l
