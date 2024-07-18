@@ -24,6 +24,7 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -XX:MaxTenuringThreshold | 默认值是15，进入老年代的年龄。cms默认是6。
 -XX:+DisableExplicitGC | 明确禁止使用system.gc  
 -XX:+ParallelRefProcEnabled | 并行处理Reference对象，默认是false。
+-XX:+SafepointTimeout -XX:SafepointTimeoutDelay=1000 | 开启安全点超时检查，当超过这个时间还没有进入安全点，就打印日志
 **gc log**|
 -XX:+PrintGCDetails | 打印gc日志  
 -XX:+PrintGCDateStamps | 打印gc时间  
