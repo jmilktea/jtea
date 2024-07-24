@@ -106,7 +106,7 @@
 [es中的分页](https://github.com/jmilktea/jtea/blob/master/elasticsearch/es%E4%B8%AD%E7%9A%84%E5%88%86%E9%A1%B5.md)     
 
 ## netty   
-[学习笔记](https://github.com/jmilktea/jtea/blob/master/netty/netty%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)    
+[netty学习笔记](https://github.com/jmilktea/jtea/blob/master/netty/netty%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)    
 [Recycler对象池](https://github.com/jmilktea/jtea/blob/master/netty/Recycler%E5%AF%B9%E8%B1%A1%E6%B1%A0.md)     
 
 
