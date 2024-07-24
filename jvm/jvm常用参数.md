@@ -51,6 +51,8 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -XX:MaxGCPauseMills | gc最大停顿时间，默认是200ms   
 -XX:G1HeapRegionSize | g1 region的大小，1~32m之间，2的整数倍，默认根据堆大小自动计算。超过region大小的一半即被认为是大对象，会被分配在Humongous区，Humongous被视为老年代一样对待。
 -XX:InitiatingHeapOccupancyPercent | 老年代达到这个阈值就开始mixed gc，默认45%   
+-XX:G1NewSizePercent | 初始年轻代占整个 Java Heap 的大小，默认值为 5%
+-XX:G1MaxNewSizePercent | 最大年轻代占整个 Java Heap 的大小，默认值为 60%；
 -XX:G1ReservePercent | 预留内存百分比，默认是整堆的10%。预留内存的目的是防止mixed gc后仍不够分配，此时g1会启动serial old作为后备方案，stw停顿时间更长。
 **TLAB**   
 -XX:+UseTLAB | 开启TLAB机制，默认是开启
