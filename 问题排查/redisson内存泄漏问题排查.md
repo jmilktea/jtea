@@ -2,8 +2,8 @@
 最近生产有个服务突然出现频繁告警，接口P99响应时间变长，运维同学观察到相应的pod cpu飙升，内存占用很高。    
 cpu升高问题排查是老生常谈的话题了，一般可以使用**top -p pid -H**查看是哪个线程占用cpu高，再结合**jstack**找到对应的java线程代码。   
 不过经验告诉我们，cpu升高还有另外一个更常见的原因，内存不足导致频繁gc。垃圾收集器回收内存后又很快不足，继续回收，循环这个过程，而gc期间涉及到STW，用户线程会被挂起，响应时间自然会增加。这里的内存不足可能是正常的服务本身内存就不够用，也可以是异常的程序bug导致内存溢出。      
-果不其然，当时节点的full gc时间陡增，通过**jstat -gcutil pid 500 30**也可以看到fc非常频繁。如图：   
-![image](1)    
+果不其然，当时节点的full gc时间陡增，通过**jstat -gcutil pid 500 30**也可以看到fc非常频繁。如图：    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-1.png)    
 
 这个问题实际月初也出现过，当时研发同学和运维同学通过重启暂时解决，今天又出现了，看来不是简单通过“重启大法”能解决的，这次我们需要分析解决它。   
 
@@ -14,7 +14,7 @@ jmap -dump:format=b,file=./pid.hprof pid
 ```
 
 用jdk自带的**virsualvm**或**idea virsualvm launcher**插件打开堆文件可以看到    
-![image](2)     
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-2.png)     
 
 很明显，跟redisson相关，我们使用的版本是**3.17.1**！查找服务涉及到redisson的地方并不多，调用量高且可疑的只有一处，简化后的代码如下：   
 ```
@@ -165,11 +165,11 @@ lua脚本保证了多个命令执行的原子性，不会有并发问题。
 ## 怀疑写法问题    
 回到我们的代码，首先映入眼帘值得怀疑的是，加锁和解锁使用不是同个对象，如果redisson加解锁是与对象状态相关的，那就会有问题。    
 但从源码分析可以看到，解锁逻辑非常简单，主要使用到的是线程id，这个是不会变的。当然这种写法还是要修正，除了会给人误导，也没必要多创建一个锁对象。此外持有锁的时间设置为100ms也太短了，尽管业务逻辑处理很快，但如果持有锁期间发生full gc，锁就会过期，其它线程就可以获取到锁，出现并发执行。   
-![image](3)     
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-3.png)     
 
 ## 怀疑网络问题    
 由于不是频繁出现问题，一个月就出现一两次，所以怀疑是不是某些特殊条件才触发，例如当时出现过网络抖动，主从切换等异常情况。联系dba同学得知前一天redis网络确实出现过抖动，结合生产日志发现8月份出现两次问题的前一天都有redis异常，redisson github上也有一些相关讨论，这更坚定了我的推测，在网络异常情况下可能触发某个bug，导致内存溢出，验证这一点也浪费了我们不少时间。        
-![image](4)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-4.png)   
 
 网络问题主要有两种，连接直接断开和读取超时。连接直接断开我们连开发环境的redis很好模拟，直接将内网断开即可。读取超时可以使用redis-cli登录redis server，然后使用**client pause**命令阻塞客户端，如下会阻塞所有客户端请求10s，这个命令在我平时一些模拟测试也经常用到。         
 ```
@@ -178,9 +178,9 @@ client pause 10000
 
 接着写代码循环测试，使用jvirsualvm观察内存对象，发现并没有问题，redisson相关对象占比都很低，且能被gc回收。       
 ```
-		for (int i = 0; i < 10000000; i++) {
-			//贴入前面的代码
-		}
+for (int i = 0; i < 10000000; i++) {
+	//贴入前面的代码
+}
 ```
 
 ## 源码分析    
@@ -285,7 +285,7 @@ public class AsyncSemaphore {
 
 里面的逻辑比较复杂，有兴趣的同学可以自己分析分析，但我们关注的是每个分支最终都需要调用semaphore.release。   
 按照这个思路，最终笔者在此处发现一处可能没有调用release的方法：org.redisson.pubsub.PublishSubscribeService#unsubscribe。   
-unsubscribe方法在complete的时候会执行lock.release()，它的complete是在BaseRedisPubSubListener回调中调用的，只有if条件成立才会执行。前面我们说传记录的topicType是subscribe，而这里BaseRedisPubSubListener处理的是unsubscribe和punsubscribe类型，对应不上了，这就导致whenComplete不会执行，lock.release()不会执行。   
+unsubscribe方法在complete的时候会执行lock.release()，它的complete是在BaseRedisPubSubListener回调中调用的，只有if条件成立才会执行。前面我们说传记录的topicType是subscribe，而这里BaseRedisPubSubListener处理的是**unsubscribe**和**punsubscribe**类型，对应不上了，这就导致whenComplete不会执行，lock.release()不会执行。   
 ```
  private CompletableFuture<Void> addListeners(ChannelName channelName, CompletableFuture<PubSubConnectionEntry> promise,
             PubSubType type, AsyncSemaphore lock, PubSubConnectionEntry connEntry,
@@ -347,7 +347,7 @@ unsubscribe方法在complete的时候会执行lock.release()，它的complete是
             future = entry.punsubscribe(channelName, listener);
         }
         return result;
-    }
+}
 ```
 
 ## 问题复现   
@@ -355,22 +355,22 @@ unsubscribe方法在complete的时候会执行lock.release()，它的complete是
 我的复现代码如下，通过并发调用加锁，开始运行加个断点在org.redisson.pubsub.PublishSubscribeService#unsubscribe里的BaseRedisPubSubListener的onStatus方法，发现正如前面所说，topicType确实对不上。接着运行一段时间后，打一个断点在AsyncSemaphore.acquire方法，观察到listener属性的size不断增长，通过**jmap pid GC.run**触发gc后也不会回收，问题得以复现。   
 ```
 public void test() {
-		for (int i = 0; i < 20000000; i++) {
-			executor.submit(() -> {
-				//贴入前面的代码，提交到线程池
-			});
-		}
+	for (int i = 0; i < 20000000; i++) {
+		executor.submit(() -> {
+			//贴入前面的代码，提交到线程池
+		});
 	}
+}
 ```    
-![image](5)   
-![image](51)      
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-5.png)   
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-51.png)      
 
 ## 问题解决    
 在开始排查问题的时候，笔者就在github提[issue](https://github.com/redisson/redisson/issues/6131)咨询是什么原因，如何解决。他们的回复是跟[这个相关](https://github.com/redisson/redisson/pull/5038)，并推荐升级到3.21.2版本，不过里面提到的描述跟我的不太一样，所以按照版本选择的经验，我决定将版本升级到3.17最后一个小版本3.17.7试一下，重新跑上面的测试代码，跑一段时间后，发现问题没有出现了。    
-![image](6)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-6.png)    
 
 查看org.redisson.pubsub.PublishSubscribeService#unsubscribe源码，发现出问题那段逻辑已经被修复了。    
-![image](7)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-7.png)    
 
 # 经验总结     
 遇到难啃问题几乎是每个开发不可避免的事情，解决问题的过程，方法和事后复盘，经验总结非常重要，对个人的学习和能力提升有很大的帮助。   
@@ -393,5 +393,5 @@ public void test() {
 我们选择的redisson版本是3.17.1，实际这个选择不是很好。按照x.y.z的版本规范，x表示大版本，通常是有重大更新，y表示小版本，通常是一些功能迭代，z表示修复版本，通常是修bug用的。例如springboot从2.x升级到3.0，jdk版本要求最低17，是一个非常重大的更新。     
 上面我为什么选择3.17.7来测试，是因为3.17.7是3.17的最后一个小版本，看到这个版本的release报告你就知道是为什么了，它全部都是在修bug。   
 当然本次的问题修复不一定在.7这个版本，可能是在1-7之间的某个版本，有兴趣的可以再细看下。     
-![image](8)       
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/redisson-bug-8.png)       
 
