@@ -200,7 +200,7 @@ CompositeRouteDefinitionLocator组合了**PropertiesRouteDefinitionLocator**和*
 
 也就是说，当GatewayProperties刷新了，CompositeRouteDefinitionLocator的route也就刷新了。不过gateway是通过**RouteLocator**是使用路由的，默认是**CachingRouteLocator**，它通过RouteDefinitionLocator获取路由信息后缓存在内部一个ConcurrentHashMap中，所以最终要路由生效需要刷新这个缓存。从类的定义可以看出，它实现了**ApplicationListener**接口，监听**RefreshRouteEvent**事件，在事件发生时会再次调用RouteDefinitionLocator获取路由，更新缓存。  
 
-![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-16.png)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-16-2.png)   
 
 ![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-17.png)  
 
