@@ -19,7 +19,7 @@
 
 两者的粒度是不一样的，前者粒度比较粗，实现起来比较通用，我们本次是这种方式，在网关对指定的请求进行限流。后者粒度比较细，通常需要具体编码，例如可以使用guava，redisson等实现。    
 
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-1.png)    
 
 ### 限流类型
 - 请求频率    
@@ -48,7 +48,7 @@ QPS是指一秒内能处理的请求，而并发限流是只同一时刻能处�
 ### 固定窗口    
 固定窗口的思想和实现非常简单，就是统计每个固定每个时间窗口的请求数，超过则拒绝。   
 
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-2.png)    
 
 如图我们定义了窗口大小为1s，最大请求数100，窗口内超过100的请求数将被拒绝。实现上也非常简单，利用redis的incr自增计数，当前时间秒作为缓存key，每次自增后判断是否超过指定大小即可。  
 
@@ -58,7 +58,7 @@ QPS是指一秒内能处理的请求，而并发限流是只同一时刻能处�
 
 到这里我们很容易想到，1s这个范围太大了，缩小一些就更好了，这种把固定窗口拆成更多个小窗口的做法就是滑动窗口算法。     
 
-![image](3)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-3.png)   
 
 ### 滑动窗口
 滑动窗口的思想是将固定窗口拆成更多个小窗口，随着时间的推移，窗口不断的滑动，统计也在不断的变化。窗口拆分的越多，滑动就会越平滑，统计就会越精确，所消耗的资源就会越多。若滑动窗口如果只拆为1个窗口，就退化为固定窗口。  
@@ -67,18 +67,18 @@ QPS是指一秒内能处理的请求，而并发限流是只同一时刻能处�
 
 图片来自hystrix官网：   
 
-![image](4)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-4.png)    
 
 ### 漏桶
 漏桶算法的思想是将请求先放到一个桶中，然后像滴水一样不断的从中取出请求执行，桶满则溢，后面的请求会被拒绝。  
 漏桶算法的特点是流入速度不确定，但是流出速度是确定的，漏桶可以很平滑，均衡的处理请求，但是无法应对短暂的突发流量。   
 
-![image](5)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-5.png)    
 
 ### 令牌桶
 令牌桶算法的思想是不断的生成令牌放到一个桶中，请求到来时到桶中申请令牌，申请得到就执行，申请不到就拒绝。如果桶中的令牌满了，新生成的令牌也会丢弃。  
 
-![image](6)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-6.png)   
 
 与漏桶不同的是，令牌桶是流入速度确定(生成令牌的速度)，流出速度不确定，所以它不像漏桶一样可以均衡的处理请求，但是由于有令牌桶这个缓冲，一旦有突增的流量，令牌桶里已有的令牌可以短暂的应对突发流量，由于流出速度是不限制的，此时桶中已有的令牌都可以被申请到，请求一下子就会到我们的服务，给系统带来一定的压力，所以桶的大小需要合适，不宜过大。    
 
@@ -104,13 +104,13 @@ QPS是指一秒内能处理的请求，而并发限流是只同一时刻能处�
 ## 技术选型    
 我们的限流业务背景是：已经使用了spring cloud gateway，限流场景简单，要求集群限流，没有并发限流要求，希望快速集成开发，易维护。  
 
-![image](7)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-7.png)    
 
 综上，我们选择spring cloud gateway自带的RateLimiter实现，底层使用的是令牌桶算法，[官方文档](https://docs.spring.io/spring-cloud-gateway/docs/3.1.4/reference/html/)        
 注意，RateLimiter不支持：  
 1、并发限流。  
 2、小数位限流，例如：6次/min 这种是不支持的。     
-3、自定义响应码和返回报文，下方会说到是由于response在内部被提前结束。    
+3、自定义响应码和返回报文。    
 
 ### 例子      
 RequestRateLimiter就是RequestRateLimiterGatewayFilterFactory，是一个gateway filter，意味着它需要配置在route上。   
@@ -156,27 +156,27 @@ RequestRateLimiter实际就是RequestRateLimiterGatewayFilterFactory，省略Gat
 代码入口在org.springframework.cloud.gateway.filter.factory.**RequestRateLimiterGatewayFilterFactory**的apply方法，判断是否放行是调用limiter.isAllow方法，limiter是一个**RateLimiter**接口，目前只有一个实现就是**RedisRateLimiter**。  
 如果被限流了，这里就会设置http响应码，默认是429 too many request，同时将response设置为complete，响应就会停止传递，这就导致我们无法再对response进行处理，例如重新修改响应码为200。   
 
-![image](8)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-8.png)   
 
 RedisRateLimiter isAllow方法会获取我们的配置，然后通过一段lua脚本判断是否通过，这段脚本存放在gateway源码script目录下。  
 在gateway使用的是非阻塞的ReactiveStringRedisTemplate。   
 
-![image](9)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-9.png)
 
-![image](10)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-10.png)
 
-![image](11)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-11.png)
 
 **带宽问题**   
-如果每次执行都传输这段lua脚本，对redis网络带宽会有较大影响，解决这个问题是利用redis server的脚本缓存功能，相关命令是：**eval，evalsha**。  
+如果每次执行都传输这段lua脚本，对redis网络带宽会有较大影响，解决这个问题是利用redis server的脚本缓存功能，相关命令是：**eval，evalsha**，[参考](https://redis.io/docs/latest/commands/evalsha/)。  
 逻辑如下：首次执行redis server还没有缓存，此时通过sha1去执行server会返回一个NOSCRIPT的错误；判断是该错误后，调用eval命令执行，执行后会计算sha1并缓存脚本，后面则可以直接使用。
 
-![image](12)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-12.png) 
 
 **弱依赖**       
 基于redis实现的限流，那如果redis不可以用了会怎么样？spring cloud的做法值得我们学习，参考。他使用的是**弱依赖**的方式，当redis不可用时，请求会放行，这非常合理，不能因为限流这个辅助功能导致我们正常的请求都无法处理。弱依赖这个思想非常值得借鉴，与弱依赖对应的是强依赖，当依赖方出问题时，流程会进行不下去。     
 
-![image](13)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-13.png)  
 
 ### 动态刷新     
 我们希望限流的路由配置是可以动态刷新的，不用每次修改都重启服务，这就需要使用到配置中心，我们项目使用的配置中心是k8s config map，客户端使用的是spring cloud kubernetes。接下来就分析一下它是如何支持路由的动态刷新的，如果你的项目使用的是apollo，nacos，也是大同小异。     
@@ -190,9 +190,9 @@ spring.cloud.kubernetes.reload.mode = event
 
 从官方文档可以看到这两个注解的类支持动态刷新，spring cloud gateway的路由是配置在**GatewayProperties**，这个类刚好有@ConfigurationProperties注解。
 
-![image](14)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-14.png)  
 
-![image](15)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-15.png)   
 
 GatewayProperties刷新后路由还不会生效，它是被**RouteDefinitionLocator**使用，默认情况下是org.springframework.cloud.gateway.route.**CompositeRouteDefinitionLocator**。   
 
@@ -200,9 +200,9 @@ CompositeRouteDefinitionLocator组合了**PropertiesRouteDefinitionLocator**和*
 
 也就是说，当GatewayProperties刷新了，CompositeRouteDefinitionLocator的route也就刷新了。不过gateway是通过**RouteLocator**是使用路由的，默认是**CachingRouteLocator**，它通过RouteDefinitionLocator获取路由信息后缓存在内部一个ConcurrentHashMap中，所以最终要路由生效需要刷新这个缓存。从类的定义可以看出，它实现了**ApplicationListener**接口，监听**RefreshRouteEvent**事件，在事件发生时会再次调用RouteDefinitionLocator获取路由，更新缓存。  
 
-![image](16)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-16.png)   
 
-![image](17)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-17.png)  
 
 > RouteDefinitionLocator和RouteLocator是一种存储和计算分离的设计，RouteDefinitionLocator负责存储路由的原始定义，RouteLocator负责将原始路由数据转换为程序使用的对象。   
 这样的好处是路由的存储和如何将路由数据转换为程序对象都可以随时切换，外层使用者不会受影响，例如可以将路由定义保存到redis或数据库。 
@@ -210,24 +210,24 @@ CompositeRouteDefinitionLocator组合了**PropertiesRouteDefinitionLocator**和*
 到这里还没有结束，RefreshRouteEvent事件又是怎么发出来的呢？回到k8s的配置，mode=event，会注入一个**EventBasedConfigMapChangeDetector**，它在启动后就会去监听k8s configmap事件。
 当事件触发的时候，根据strategy: refresh，由**ContextRefersher**触发刷新，具体是调用refresh方法，该方法会发出两个事件。    
 
-![image](18)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-18.png)   
 
-![image](19)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-19.png)   
 
-![image](20)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-20.png)   
 
-![image](21)      
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-21.png)      
 
 其中**RefreshScopeRefreshedEvent**事件会被**RouteRefreshListener**监听，并发出**RefreshRoutesEvent**事件，至此完成了整个路由刷新。
 
-![image](22)     
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-22.png)     
 
 > 从源码可以看出，这里有一点设计缺陷，随便一个标记@ConfigurationProerties或@RefreshScope的类被刷新，路由都会重新加载，如果这个加载是从redis或者数据库获取计算，会产生无畏的开销。  
 如果我们只想要针对路由进行处理，可以捕获EnviromentChangeEvent事件，它的key可以知道改的是什么。
 
 **总结**，综上，修改k8s configmap路由配置后可以动态生效，上面整个流程如下图:   
 
-![image](23)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-23.png)    
 
 # 上线    
 ## 插曲
@@ -238,24 +238,24 @@ CompositeRouteDefinitionLocator组合了**PropertiesRouteDefinitionLocator**和*
 确认yaml格式等没问题，我将限流参数redis-rate-limiter.burstCapacity设置为0，表示拒绝所有请求，测试发现也没用，表示限流根本不起作用。   
 通过**curl -v**，打印请求详细报文，终于发现蛛丝马迹，响应头包含如下几个字段，其中X-RateLimit-Remaining表示剩余令牌数，当时值为-1。    
 
-![image](24)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-24.png)
 
 接着我们看源码，发现设置-1的，在org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter#isAllowed有两个地方：   
 
-![image](25)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-25.png)    
 
 最后一处是我们前面说的弱依赖，redis当前肯定是可用的。另一处就是执行后，redis server返回错误，看代码他只打印了debug，而我们程序对于非应用程序包下的日志配置为error，所以如果这里出问题是日志是无法打印的。那就实践验证一下，将这个类的日志打印级别配置为debug，发版后测试，发现果然报错了。   
 
-![image](26)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-26.png)    
 
 > 这里报错打印debug也有点坑，我认为打印error更加合适，顺手给gateway提了个[PR](https://github.com/spring-cloud/spring-cloud-gateway/pull/3502)  
 
 看日志描述是lua脚本的写法，redis集群不支持。这首先很好解释了为什么开发测试环境可以，因为开发测试环境的redis是单节点，而预发生产环境是集群。    
-但这不科学啊，spring cloud不可能搞一个redis集群都不支持的功能，这也太水了。我们到spring cloud gateway github搜索一番，发现有人遇到相同问题，并且提出pr修改：https://github.com/spring-cloud/spring-cloud-gateway/pull/2992，但并没有被采纳，言外之意，spring cloud认为这不是问题。     
+但这不科学啊，spring cloud不可能搞一个redis集群都不支持的功能，这也太水了。我们到spring cloud gateway github搜索一番，发现有人遇到相同问题，并且提出pr修改：https://github.com/spring-cloud/spring-cloud-gateway/pull/2992, 但并没有被采纳，言外之意，spring cloud认为这不是问题。     
 
-难道这跟云厂商有关系？接着我们把报错信息拿到阿里云官方文档搜索一番，发现真相原来如此，阿里云集群代理“多此一举”对lua脚本做了一些额外限制，https://help.aliyun.com/zh/redis/support/usage-of-lua-scripts，主要就是**script_check_enable**参数，默认是打开的，它要求lua脚本内只能使用keys参数来获取入参，不能定义局部变量，很明显上面的lua脚本是有拿keys来定义局部变量的，所以报错。   
+难道这跟云厂商有关系？接着我们把报错信息拿到阿里云官方文档搜索一番，发现真相原来如此，阿里云集群代理“多此一举”对lua脚本做了一些额外限制，https://help.aliyun.com/zh/redis/support/usage-of-lua-scripts, 主要就是**script_check_enable**参数，默认是打开的，它要求lua脚本内只能使用keys参数来获取入参，不能定义局部变量，很明显上面的lua脚本是有拿keys来定义局部变量的，所以报错。   
 
-![image](27)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-27.png)
 
 解决方式其实很简单，我们咨询过阿里云团队，只要客户端能确保keys是在集群内同一个solt的话，这个检查是可以关闭的，没有其它副作用，所以我们将这个参数关闭，问题解决。   
 
@@ -263,7 +263,7 @@ CompositeRouteDefinitionLocator组合了**PropertiesRouteDefinitionLocator**和*
 
 redis cluster下，lua脚本操作的key必须在同一个节点上，否则就失去原子性。可以使用花括号{}来指定要计算槽位置的哈希标签，相同哈希标签的key会由同一个节点处理，参考：[cluster-keyslot](https://redis.io/docs/latest/commands/cluster-keyslot/)。spring cloud RedisRateLimiter正式利用了这一点，所以我们可以保证lua脚本的key都是在同一个节点上，因此script_check_enable参数可以关闭。          
 
-![image](28)      
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-28.png)      
 
 ## 总结    
 上线后我们还要对429状态码做监控告警，以便及时发现问题，例如频繁出现告警要考虑是否调整参数，或进行扩容。   
