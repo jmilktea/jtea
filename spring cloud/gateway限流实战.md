@@ -1,4 +1,4 @@
-# 背景    
+![image](https://github.com/user-attachments/assets/80ad282c-fbfb-4dd8-99bd-ba9f22b5d4f6)# 背景    
 在[限流算法](https://github.com/jmilktea/jtea/blob/master/%E7%AE%97%E6%B3%95/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95.md)这一篇中我们对限流算法以及常见的限流组件做了介绍，基本上对限流有个大概的认识了。这不，前段时间笔者就接到一个实际需求，一个项目要对某些请求进行qps限流，以保护后端的模型服务，正好把之前的理论做了实践，可见平时的知识储备是多么重要，正所谓厚积才能薄发。于是有了本篇，限流实战。   
 
 # 技术方案
@@ -248,7 +248,7 @@ CompositeRouteDefinitionLocator组合了**PropertiesRouteDefinitionLocator**和*
 
 ![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/gateway-ratelimiter-26.png)    
 
-> 这里报错打印debug也有点坑，我认为打印error更加合适，顺手给gateway提了个[PR](https://github.com/spring-cloud/spring-cloud-gateway/pull/3502)  
+> 这里报错打印debug也有点坑，我认为打印error更加合适，顺手给gateway提了个[PR](https://github.com/spring-cloud/spring-cloud-gateway/pull/3502)，官方已经合并到[4.2.0-M2 release版本](https://github.com/spring-cloud/spring-cloud-gateway/releases/tag/v4.2.0-M2)  
 
 看日志描述是lua脚本的写法，redis集群不支持。这首先很好解释了为什么开发测试环境可以，因为开发测试环境的redis是单节点，而预发生产环境是集群。    
 但这不科学啊，spring cloud不可能搞一个redis集群都不支持的功能，这也太水了。我们到spring cloud gateway github搜索一番，发现有人遇到相同问题，并且提出pr修改：https://github.com/spring-cloud/spring-cloud-gateway/pull/2992, 但并没有被采纳，言外之意，spring cloud认为这不是问题。     
