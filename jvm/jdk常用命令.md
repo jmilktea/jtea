@@ -4,7 +4,7 @@ jdk bin目录下为我们提供了许多实用工具，包括命令行工具，�
 ## jar
 - jar tf yourfile.jar：列出jar包内的文件
 - jar xf yourfile.jar path/to/your/file：解压jar包内某个文件
-- unzip -p yourfile.jar path/to/config.properties：查看jar包内某个文件，不用解压
+- unzip -p yourfile.jar path/to/your/file：查看jar包内某个文件，不用解压
 
 ## jps    
 查看jvm进程状态    
