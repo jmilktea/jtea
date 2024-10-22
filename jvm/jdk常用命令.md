@@ -1,6 +1,11 @@
 jdk bin目录下为我们提供了许多实用工具，包括命令行工具，如jps、jinfo、jstack等，还有可视化分析工具jvirsualvm。    
 本篇我们就来熟悉一下这些常见的命令行工具，以java8为例，这些命令和说明都可以在oracle官方文档找到：[链接](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html)。   
 
+## jar
+- jar tf yourfile.jar：列出jar包内的文件
+- jar xf yourfile.jar path/to/your/file：解压jar包内某个文件
+- unzip -p yourfile.jar path/to/config.properties：查看jar包内某个文件，不用解压
+
 ## jps    
 查看jvm进程状态    
 - jps：输出虚拟机执行主机名称和虚拟机进程id，面试时有时候会问怎么查看机器上的java进程，除了使用ps -ef | grep xxx linux命令外，也可以使用使用jps命令。  
