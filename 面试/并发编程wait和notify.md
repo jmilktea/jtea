@@ -94,7 +94,7 @@ public final synchronized void join(long millis) throws InterruptedException {
     }
 }
 ```
-可以看到该方法使用了synchronized修饰，需要注意的是我们是在A线程中执行bthread.join，synchronized修饰在方法上，锁对象即是当前实例对象，也就是bthread对象，isAlive和wait都是针对current thread也就是A线程，所以A线程会进入等待状态，当B线程执行结束,jvm会在底层调用锁对象bthread的notify方法，进而让在锁对象等待的A线程恢复执行，这里看起来有点绕，结合上面说到的线程和锁对象理解。   
+可以看到该方法使用了synchronized修饰，需要注意的是我们是在A线程中执行bthread.join，synchronized修饰在方法上，锁对象即是当前实例对象bthread，表明A线程要获取B线程对象锁。isAlive和wait都是针对current thread也就是A线程，所以A线程进入等待状态。当B线程执行结束,jvm会在底层调用线程对应的notifyAll方法，唤醒在此线程对象锁等待的线程。这里看起来有点绕，结合上面说到的线程和锁对象理解。   
 
 这种等待通知机制在队列中也有运用，例如BlockingQueue的生产者消费者模型，假设队列容量是10，当队列满了，生产者需要阻塞，如果消费者消费了，队列不满了，通知生产者继续生产。同理当队列空了，消费者需要阻塞，如果生产者生产了，队列不空了，通知消费者继续消费。如图：   
 ![image](https://github.com/jmilktea/jtea/blob/master/%E9%9D%A2%E8%AF%95/images/wait-notify-2.png)      
