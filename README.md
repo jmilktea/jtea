@@ -188,6 +188,8 @@
 - [阿里java开发规范](https://github.com/alibaba/p3c)    
 阿里团队多年编程总结，最佳实践，可以用来作为团队开发规范。
 
+- [mysql学习](https://xiaolincoding.com/mysql/base/row_format.html)     
+
 ## 编程原则
 - kiss原则    
 keep it simple and stupid，保持简单，意思不要把东西搞得复杂。  
