@@ -58,7 +58,9 @@ epoll_create负责创建一个上下文，用于存储数据，以后的操作�
 epoll_ctl负责将文件描述和所关心的事件注册到上下文   
 epoll_wait用于等待事件的发生，当有有事件触发，就只返回对应的文件描述符了。  
 
-epoll有LT、ET两种默认，默认是LT模式。LT是调用epoll_wait方法有事件触发时应用程序可以不处理事件，下次调用时epoll会再次通知该事件。ET是如果应用程序不处理事件，下次就不再通知。
+epoll有水平触发，边缘触发两种模式。   
+水平触发模式下，用户线程调用epoll_wait获取到IO就绪的socket后，对socket进行系统IO调用读取数据，假设没有读取完，再次调用epoll_wait，epoll_wait会检测socket还有可读数据，依然可以获得这个socket继续处理IO事件。    
+边缘触发模式下，假设没有读取完，再次调用epoll_wait，socket也不会返回，除非有新数据到来，socket才会返回，继续处理剩下数据。    
 
 # netty简介
 netty是一个高性能、易扩展、社区活跃的网络开发框架。    
