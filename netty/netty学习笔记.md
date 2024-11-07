@@ -54,9 +54,11 @@ int epoll_create(int size);
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
 ```
-epoll_create负责创建一个上下文，用于存储数据，以后的操作就都在这个上下文上进行。 
-epoll_ctl负责将文件描述和所关心的事件注册到上下文   
+epoll_create负责创建一个上下文，用于存储数据，以后的操作就都在这个上下文上进行。    
+epoll_ctl负责将文件描述和所关心的事件注册到上下文。
 epoll_wait用于等待事件的发生，当有有事件触发，就只返回对应的文件描述符了。  
+
+epoll使用的是红黑树，对某个文件描述符操作的时间复杂度是O(logn)。    
 
 epoll有水平触发，边缘触发两种模式。   
 水平触发模式下，用户线程调用epoll_wait获取到IO就绪的socket后，对socket进行系统IO调用读取数据，假设没有读取完，再次调用epoll_wait，epoll_wait会检测socket还有可读数据，依然可以获得这个socket继续处理IO事件。    
