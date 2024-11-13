@@ -237,13 +237,14 @@ AService实例化，放到二级缓存，填充属性，发现需要BService
 BService实例化，放到二级缓存，填充属性，发现需要AService，从二级缓存拿到AService    
 BService完成属性填充和初始化，放到一级缓存   
 AService完成属性填充和初始化，生成代理对象，放到一级缓存，**关键：此时BService中的AService属性是原始对象，我们放到一级缓存的代理对象，不是同一个了**        
+是原始对象当然不行，丧失代理对象的功能，如事务，异步等。    
 
-这里还可以狡辩一下，提前生成AService的代理对象不可以吗？   
+这里还可以狡辩一下，提前生成AService的代理对象放到填充属性前，不可以吗？   
 可以是可以，不过这就打乱了bean的生命周期了，所以不好。关于spring bean生命周期可以[参考这里](https://github.com/jmilktea/jtea/blob/master/spring/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)，代理对象一般在BeanPostProcessor后置处理器生成。    
 
 那如果使用三级缓存，它们的创建步骤如下：  
-AService实例化，创建工厂(会创建代理对象)放到三级缓存，填充属性，发现需要BService    
-BService实例化，同样放到三级缓存，填充属性，发现需要AService，从三级缓存获取到创建AService的方法，执行拿到A的代理对象，放到二级缓存         
+AService实例化，工厂对象放到三级缓存，填充属性，发现需要BService    
+BService实例化，同样放到三级缓存，填充属性，发现需要AService，从三级缓存获取到创建AService的工厂，执行拿到A的代理对象，放到二级缓存         
 BService完成属性填充和初始化，放到一级缓存   
 AService完成属性填充和初始化，从二级缓存拿到代理对象，放到一级缓存，**关键：此时BService中的AService属性是动态代理对象，我们放到一级缓存的也是代理对象，是同一个**       
 
