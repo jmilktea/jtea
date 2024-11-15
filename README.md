@@ -184,12 +184,6 @@
 [为了简写这行代码，我竟使用静态和动态编译技术](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E4%B8%BA%E4%BA%86%E7%AE%80%E5%86%99%E8%BF%99%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E6%88%91%E7%AB%9F%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%92%8C%E5%8A%A8%E6%80%81%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF.md)  
 [这下对阿里java这几条规范有更深理解了](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E8%BF%99%E4%B8%8B%E5%AF%B9%E9%98%BF%E9%87%8Cjava%E8%BF%99%E5%87%A0%E6%9D%A1%E8%A7%84%E8%8C%83%E6%9C%89%E6%9B%B4%E6%B7%B1%E7%90%86%E8%A7%A3%E4%BA%86.md)
 
-## 好文推荐
-- [阿里java开发规范](https://github.com/alibaba/p3c)    
-阿里团队多年编程总结，最佳实践，可以用来作为团队开发规范。
-
-- [mysql学习](https://xiaolincoding.com/mysql/base/row_format.html)     
-
 ## 编程原则
 - kiss原则    
 keep it simple and stupid，保持简单，意思不要把东西搞得复杂。  
