@@ -1,13 +1,6 @@
 # 简介
 在我潮汕地区，茶是必不可少的，人们品尝就跟喝水一样平常，但茶却包含了很多学问和人生道理。茶之道，在于心境的平和，人生如茶，沉时坦然，浮时淡然，沉浮之间，淡然处之，可谓茶壶虽小，内涵乾坤。自古以来，以茶会友，以茶道来醒悟人生之道。可以说茶就好像国外的咖啡一样，而咖啡正是java的原意，这也是本仓库命名的由来。在技术的道路上，需要不断的醒悟和感悟，技术的远方是无止境的，但只要以平和的心态持之以恒，终能有所收获。
 
-# 面试/招聘
-
-![image](1)    
-
-涵盖：java基础，jvm，spring/boot/cloud，数据库，redis，mq，netty，分布式相关技术，容器等等...     
-持续完善中，欢迎关注：https://www.processon.com/embed/6720bd5c6b5a4a4adda5eac9?cid=6720bd5c6b5a4a4adda5eacc     
-
 # 目录       
 ## spring/spring boot/cloud
 [spring bean生命周期](https://github.com/jmilktea/jmilktea/blob/master/spring/spring%20bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md)     
@@ -314,4 +307,7 @@ keep it simple and stupid，保持简单，意思不要把东西搞得复杂。
 价格成本就是实际的钱了，例如部署服务，各种中间件最小需要什么配置，而不是随意申请一个配置高的，配置高意味着价格贵，这种情况在笔者工作生涯也是屡见不鲜。再比如调用某些第三方服务需要收费，那就要考虑调用结果缓存，减少调用次数，限流等。     
 虽然省下来的钱老板也不会给你加工资(扎心~)，不过作为一个有理想的程序员，还是要严格要求自己。    
 
-
+# 面试/招聘
+![image](https://github.com/jmilktea/jtea/blob/master/java.png)    
+涵盖：java基础，jvm，spring/boot/cloud，数据库，redis，mq，netty，分布式相关技术，容器等等...     
+持续完善中，欢迎关注：https://www.processon.com/embed/6720bd5c6b5a4a4adda5eac9?cid=6720bd5c6b5a4a4adda5eacc     
