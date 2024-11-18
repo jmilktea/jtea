@@ -308,6 +308,6 @@ keep it simple and stupid，保持简单，意思不要把东西搞得复杂。
 虽然省下来的钱老板也不会给你加工资(扎心~)，不过作为一个有理想的程序员，还是要严格要求自己。    
 
 # 面试/招聘
-![image](https://github.com/jmilktea/jtea/blob/master/java.png)    
 涵盖：java基础，jvm，spring/boot/cloud，数据库，redis，mq，netty，分布式相关技术，容器等等...     
 持续完善中，欢迎关注：https://www.processon.com/embed/6720bd5c6b5a4a4adda5eac9?cid=6720bd5c6b5a4a4adda5eacc     
+![image](https://github.com/jmilktea/jtea/blob/master/java.png)     
