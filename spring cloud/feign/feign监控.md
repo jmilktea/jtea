@@ -71,7 +71,7 @@ public interface MyClient {
 ```
 
 很遗憾，这种写法无法监控到每个url，输出的指标的uri tag是：/，如果想精细化监控就不行了。    
-不过还是有办法，天无绝人之路。源码之下无秘密，翻看feign-micrometer的源码可以发现，它里面关于这个uri的获取是通过methodMetadata()拿到的，metadata是通过反射feign的方法获取到的的元信息，由于上面的test方法我们没有设置value为指定的url，获取通过metadata就获取不到path，默认就展示了/。
+不过还是有办法，源码之下无秘密。翻看feign-micrometer的源码可以发现，它里面关于这个uri的获取是通过methodMetadata()拿到的，metadata是通过反射feign的方法获取到的的元信息，由于上面的test方法我们没有设置value为指定的url，获取通过metadata就获取不到path，默认就展示了/。
 
 ![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/feign/images/feign-micrometer-3.png)    
 
