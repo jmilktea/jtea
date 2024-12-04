@@ -311,4 +311,4 @@ keep it simple and stupid，保持简单，意思不要把东西搞得复杂。
 # 面试/招聘
 涵盖：java基础，jvm，spring/boot/cloud，数据库，redis，mq，netty，分布式相关技术，容器等等...     
 持续完善中，欢迎关注：https://www.processon.com/embed/6720bd5c6b5a4a4adda5eac9?cid=6720bd5c6b5a4a4adda5eacc     
-![image](https://github.com/jmilktea/jtea/blob/master/java-v1.png)     
+![image](https://github.com/jmilktea/jtea/blob/master/java-v2.png)     
