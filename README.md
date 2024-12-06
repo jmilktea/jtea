@@ -158,7 +158,6 @@
 
 ## 工具
 [arthas实践](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/arthas/%E5%AE%9E%E8%B7%B5.md)   
-[arthas tunnel,集中管理所有agent](https://arthas.aliyun.com/doc/tunnel.html)    
 [git](https://github.com/jmilktea/jtea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/git.md)     
 [git hook解决多仓库代码合规问题](https://github.com/jmilktea/jmilktea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/githook%E8%A7%A3%E5%86%B3%E4%BB%A3%E7%A0%81%E5%90%88%E8%A7%84%E9%97%AE%E9%A2%98.md)  
 [ssh多个远端仓库](https://github.com/jmilktea/jtea/blob/master/%E5%B7%A5%E5%85%B7%E7%B1%BB/git/ssh%E5%A4%9A%E4%B8%AA%E8%BF%9C%E7%AB%AF%E4%BB%93%E5%BA%93.md)     
@@ -184,6 +183,9 @@
 [如何做好code reivew](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BDcode%20reivew.md)    
 [为了简写这行代码，我竟使用静态和动态编译技术](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E4%B8%BA%E4%BA%86%E7%AE%80%E5%86%99%E8%BF%99%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E6%88%91%E7%AB%9F%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%92%8C%E5%8A%A8%E6%80%81%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF.md)  
 [这下对阿里java这几条规范有更深理解了](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E8%BF%99%E4%B8%8B%E5%AF%B9%E9%98%BF%E9%87%8Cjava%E8%BF%99%E5%87%A0%E6%9D%A1%E8%A7%84%E8%8C%83%E6%9C%89%E6%9B%B4%E6%B7%B1%E7%90%86%E8%A7%A3%E4%BA%86.md)
+
+## 文章收集
+[arthas tunnel,集中管理所有agent](https://arthas.aliyun.com/doc/tunnel.html)    
 
 ## 编程原则
 - kiss原则    
