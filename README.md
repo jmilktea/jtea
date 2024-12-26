@@ -46,7 +46,8 @@
 [jvm常用参数](https://github.com/jmilktea/jtea/blob/master/jvm/jvm%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0.md)    
 [jdk常用命令](https://github.com/jmilktea/jtea/blob/master/jvm/jdk%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)   
 [TLAB堆内存中的线程私有区域](https://github.com/jmilktea/jtea/blob/master/jvm/TLAB%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%8C%BA%E5%9F%9F.md)   
-[三色标记法](https://github.com/jmilktea/jtea/blob/master/jvm/%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B3%95.md)   
+[三色标记法](https://github.com/jmilktea/jtea/blob/master/jvm/%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B3%95.md)    
+[young gc调优](https://github.com/jmilktea/jtea/blob/master/jvm/young%20gc%E8%B0%83%E4%BC%98.md)    
 
 ## mysql
 [锁简介](https://github.com/jmilktea/jtea/blob/master/mysql/%E9%94%81%E7%AE%80%E4%BB%8B.md)      
