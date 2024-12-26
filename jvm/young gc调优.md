@@ -15,9 +15,9 @@ resources:
 
 **请求调用量和请求耗时**  
 
-![image](1)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-1.png)    
 
-![image](2)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-2.png)    
 
 从监控上看：   
 1.调用量比较高，达到1w+。    
@@ -30,21 +30,21 @@ resources:
 # gc情况
 我们主要关注的是吞吐量和延迟，jkd8没有设置gc参数的话，默认采用的是Parallel并行收集器，通过**jmap -heap pid**查看。
 
-![image](3)   
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-3.png)   
 
 parallel gc关注的是吞吐量，**吞吐量 = 运行用户代码时间  / (运行用户代码时间 + gc时间)**，当然吞吐量越高表示运行用户的代码时间越多，越好。我们挑选一台机器进行观测：
 
 young gc次数，每分钟最大6次左右。
 
-![image](4)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-4.png)    
 
 young gc时间，每分钟最大1.5s左右。
 
-![image](5)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-5.png)    
 
 full gc，10几天才有1次full gc，且回收大量对象。
 
-![image](6)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-6.png)    
 
 简单总结一下：
 
@@ -53,9 +53,9 @@ full gc，10几天才有1次full gc，且回收大量对象。
 
 结合jstat看一下，命令：jstat -gc 1 2000 60，结果：
 
-![image](7)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-7.png)    
 
-![image](8)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-8.png)    
 
 有几个关键信息：
 
@@ -77,7 +77,7 @@ full gc，10几天才有1次full gc，且回收大量对象。
 # young gc 分析
 parallel young/old 垃圾回收器都只有两个阶段，标记 → 回收，且整个过程会STW，不像CMS或G1有阶段会与用户线程并发。    
 
-![image](9)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-9.png)    
 
 按照经验，逐步排查以下情况：
 
@@ -113,15 +113,15 @@ jvm参数生成：https://opts.console.heapdump.cn
 - Stack Local，线程栈中的引用对象
 - 本地方法栈中的引用对象
 - 同步锁对象
-- 复制是将存活的对象复制到suvivor或老年代，这个过程的耗时与要复制的对象大小有关，从上面jstat结果也可以看出，每次复制的对象很小，这个阶段的耗时也非常小。
 
+复制是将存活的对象复制到suvivor或老年代，这个过程的耗时与要复制的对象大小有关，从上面jstat结果也可以看出，每次复制的对象很小，这个阶段的耗时也非常小。    
 复制这个阶段耗时很小是有实际证据支撑了，不过标记过程只有理论支撑，那会不会是这里出了篓子？   
 经过一番查找，发现还有一些特殊的场景会导致新生代扫描阶段耗时过程：**跨代引用**和**StringTable**。    
 
 # 跨代引用
 先提出一个问题，在young gc时，是否只要扫描新生代就可以了？答案是否定的，也需要扫描老年代，因为可能出现跨代引用。如下：
 
-![image](10)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-10.png)    
 
 如果只扫描新生代，你会发现A2是垃圾，但它实际被老年代的对象引用着，是不能被回收的，这就是跨代引用。    
 那么解决方案也非常简单，在young gc的时候把老年代也可达性分析一遍就可以了，但这样效率太低了，想想young gc要扫描整个老年堆，效率是非常低的。    
@@ -131,7 +131,7 @@ java虚拟机通过**记忆集RememberSet**解决这个问题，记忆集建立�
 在hotspot虚拟机，卡表将内存划分为n个大小为512字节的区域，通过0和1表是该页是否为脏页，1则表示为脏页，该区域内有对象存在跨代引用，则改区域内全部对象需要加入到gc root去扫描，这种方式只需要通过一个Bit位则可以表示该区域是否存在跨代引用，节约内存空间。    
 卡表的更新是发生在对象跨代引用时，虚拟机是通**写屏障**实现的，写屏障就是在为对象赋值前后加一些判断逻辑，可以看做类似spring里的AOP，虚拟机这种方式会导致对象赋值的效率下降，但提升gc的效率。    
 
-![image](11)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-11.png)    
 
 需要注意的是，上面卡表是建立在新生代，记录老年代指向新生代的集合，那如果反过来呢？老年代gc时，如果新生代引用了老年代对象，也是跨代引用，Parallel Old，CMS，G1这些老年代的垃圾回收器是怎么解决的呢？这里留给读者思考。
 
@@ -150,9 +150,8 @@ StringTable的回收时间是在full gc，且为了保证新生代的string对�
 那么是什么导致StringTable一直增长呢？一般业务代码不会主动调用intern()方法，字面量的创建又是无法避免的，难以优化。    
 
 还有一种典型的案例就是json，以jackson为例，在序列化key的时候，由于key（java里的属性）一般是固定的，所以这个时候使用StringTable是可以获益的，jackson通过InternCache缓存，代码：com.fasterxml.jackson.core.util.InternCache。
-jackson提供了objectMapper.getFactory().disable(JsonFactory.Feature.INTERN_FIELD_NAMES); 可以禁止key的缓存，不过这样禁止会导致固定的key也不做缓存，堆内存使用会上升很多。
 
-![image](12)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-12.png.png)    
 
 测试，在InternCache.inern方法打个断点观察：
 ```
@@ -161,17 +160,18 @@ jackson提供了objectMapper.getFactory().disable(JsonFactory.Feature.INTERN_FIE
 ```
 
 那么key如果是随机的，那将导致大量的随机字符串进入StringTable，该服务与上游app和下游模型交互，报文很大，有很多map，主要是透传，很符合出问题的场景，通过查找相关日志发现确实存在许多随机的key。所以使用json最好不要用随机字符串作为key，也让不要让上下游这么做。        
+jackson也提供了objectMapper.getFactory().disable(JsonFactory.Feature.INTERN_FIELD_NAMES); 可以禁止key的缓存，不过这样禁止会导致固定的key也不做缓存，堆内存使用会上升很多。     
 
-![image](13)  
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-13.png)  
 
 # 解决方案    
 如果是上面导致的问题，那么可以猜测young gc的时间是跟这老年代的增长而不逐步增长的，也就是说在fullgc后，young gc开始的时间其实是很快的，但随着StringTable的增加，扫描耗时增加。这样我们拉长时间看一下监控，如图：    
 
-![image](14)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-14.png.png)    
 
-![image](15)  
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-15.png.png)  
 
-可以看到这个时间线和老年代的gc是对得上的，young gc在前面几天回收时间都在50ms以内，后逐步增加，和我们的猜测完全对应上。
+可以看到这个时间线和老年代的gc是对得上的，young gc在前面几天回收时间都在50ms以内，后逐步增加，和我们的猜测完全对应上。   
 也可以通过jmap -histo[:live] pid除非一次full gc，然后观察young gc的耗时就降下来了。
 
 问题找到了，如何解决呢？   
@@ -190,7 +190,7 @@ jackson提供了objectMapper.getFactory().disable(JsonFactory.Feature.INTERN_FIE
 从jstat上看，应用进行了6次full gc，总共消耗1.056s，每次约170ms。从监控上看2周左右会进行一次full gc，假设我们缩小老年代大小为一半，理论上一周会发生一次，由于老年代空间减少，老年代基于标记-整理算法，回收时间也会等比减少。  
 所以减少老年代的大小会使full gc更加频繁，但仍非常少，相比新生代的回收次数仍接近于0，且耗时会比现在低。    
 
-![image](16)    
+![image](https://github.com/jmilktea/jtea/blob/master/jvm/image/ygc-16.png.png)    
 
 所以我们先对一台机器jvm参数进行调整，降低老年代的内存空间：
 
