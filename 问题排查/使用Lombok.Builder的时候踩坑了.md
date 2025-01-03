@@ -42,7 +42,7 @@ public class UserQueryCondition {
 ```
 
 我们来看运行结果:  
-![image](jmilktea/jtea/问题排查/images/builder1.png)  
+![image](问题排查/images/builder1.png)  
 发现竟然出现出现空指针了。debug看到该字段的值确实是null  
 ![image](jmilktea/jtea/问题排查/images/Builder2.png)    
 但是，我们在上面的类中，不是已经给了默认值false吗？为何来到这里会变为null？  
