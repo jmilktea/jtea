@@ -31,7 +31,6 @@ public class UserQueryCondition {
 		}
 ```
 如果if里面的过滤逻辑没执行到，那便会把敏感信息返回出去了。同时，我注意到项目中都是使用Builder来创建请求对象的，而我使用curl的方式去调用接口，是通过new 去创建对象的（因为UserQueryCondition类上贴了@NoArgsConstructor注解），莫非，使用Builder跟使用new创建出来的对象不一样？于是乎，我执行了以下测试：
-所以当我使用Builder方式来创建对象。执行以下代码时，字段的值应该是false，进而输入  no 才符合正常逻辑。
 ```
 	public static void main(String[] args) {
 		UserQueryCondition queryCondition = UserQueryCondition.builder().build();
