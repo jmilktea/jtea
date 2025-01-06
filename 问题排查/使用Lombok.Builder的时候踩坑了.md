@@ -41,7 +41,7 @@ public class UserQueryCondition {
 ```
 
 我们来看运行结果:  
-![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/builder1.png)    
+![image](https://github.com/jmilktea/jtea/blob/master/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/images/Builder1.png)    
 
 发现竟然出现出现空指针了。debug看到该字段的值确实是null    
 
