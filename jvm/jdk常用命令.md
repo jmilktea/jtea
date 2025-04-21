@@ -121,6 +121,16 @@ $ jstack `which java` core.5709
 $ jmap -dump:format=b,file=heap.hprof `which java` core.5709
 ```
 
+**arthas**    
+笔者还遇到一种情况是，开始可以执行jstack,jmap，但当服务运行一段时间后（超过10天），再执行时就会报错，重启再执行又是正常的。    
+似乎跟服务运行时长久不重启有关系，有些文件被操作系统清掉导致执行失败？网上有部分说了是这个问题，不过我看相关路径文件还是存在的，具体原因还没答案。    
+跟上面一样，也是提示使用-F，-F会导致jstack丢失一些信息，jmap执行起来非常慢。    
+我的解决方式是使用arthas，很奇怪吧，java命令执行失败，但使用arthas是可以的，按理说arthas也是执行jstack,jmap，不过笔者验证过是可以成功的。   
+```
+thread -10 -- 查看top 10 cpu
+heapdump arthas-output/dump.hprof -- head dump
+```
+
 ## jcmd
 jdk7后新增的一个多功能命令行工具，上面的命令很多功能都可以用jcmd代替
 - jcmd -l：查看所有jvm进程，相当于jps -l

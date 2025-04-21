@@ -7,7 +7,7 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 参数 | 解释
 ---|---
 **内存**|
--Xss: | 指定线程栈大小，默认是1M  
+-Xss: | 指定线程栈大小，默认是1M。需要注意的是这1M是虚拟内存空间，并不是创建一个线程就会占用1M物理内存空间。     
 -Xms: | 指定jvm初始堆大小  
 -Xmx: | 指定jvm最大可用内存  
 -Xmn：| 设置新生代内存大小，设置这个参数会覆盖NewRatio参数
@@ -17,7 +17,8 @@ jvm参数总共有几百个，没人能全部记下来，下面主要收集我�
 -XX:MetaspaceSize | 元数据空间初始大小
 -XX:MaxMetaspaceSize | 元数据空间最大大小  
 -XX:MaxDirectMemorySize | 最大堆外内存  
--XX:+HeapDumpOnOutOfMemoryError | 开启oom head dump  
+-XX:+HeapDumpOnOutOfMemoryError | 开启oom head dump   
+-XX:+CrashOnOutOfMemoryError | 发生OOM时，进程终止    
 -XX:HeapDumpPath | dump文件路径
 -XX:+AlwaysPreTouch | 开启“预触摸”，默认是不开启。开启后jvm在启动时就会像系统申请Xms指定的堆大小。
 **gc**|
