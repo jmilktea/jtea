@@ -128,6 +128,7 @@ $ jmap -dump:format=b,file=heap.hprof `which java` core.5709
 我的解决方式是使用arthas，很奇怪吧，java命令执行失败，但使用arthas是可以的，按理说arthas也是执行jstack,jmap，不过笔者验证过是可以成功的。   
 ```
 thread -10 -- 查看top 10 cpu
+thread --all -- 显示所有线程
 heapdump arthas-output/dump.hprof -- head dump
 ```
 
