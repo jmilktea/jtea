@@ -131,6 +131,14 @@ thread -10 -- 查看top 10 cpu
 thread --all -- 显示所有线程
 heapdump arthas-output/dump.hprof -- head dump
 ```
+20250702补充：    
+服务运行一段时间后执行jstack,jmap失败的原因是jvm进程启动后会在/tmp目录下创建进程文件，jstack相关命令依赖这个进程文件进行attach，若太久没访问会被linux系统清理掉。    
+可以通过命令查看临时文件是否存在，如下，1是进程号：   
+```
+ls -l /tmp/.java_pid1
+```
+linux这个机制是配置在/usr/lib/tmpfiles.d/tmp.conf，默认是10天。     
+
 
 ## jcmd
 jdk7后新增的一个多功能命令行工具，上面的命令很多功能都可以用jcmd代替
