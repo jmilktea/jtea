@@ -189,8 +189,10 @@
 [这下对阿里java这几条规范有更深理解了](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E8%BF%99%E4%B8%8B%E5%AF%B9%E9%98%BF%E9%87%8Cjava%E8%BF%99%E5%87%A0%E6%9D%A1%E8%A7%84%E8%8C%83%E6%9C%89%E6%9B%B4%E6%B7%B1%E7%90%86%E8%A7%A3%E4%BA%86.md)      
 [一个异常处理的反例](https://github.com/jmilktea/jtea/blob/master/%E5%85%B6%E5%AE%83/%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E5%8F%8D%E4%BE%8B.md)     
 
-## 文章收集
-[arthas tunnel,集中管理所有agent](https://arthas.aliyun.com/doc/tunnel.html)    
+## 文章收集      
+[arthas tunnel,集中管理所有agent](https://arthas.aliyun.com/doc/tunnel.html)         
+[分库分表最佳实践](https://wiki.sqlfans.cn/design/partition-table.html)      
+...
 
 ## 编程原则   
 - **kiss原则**      
