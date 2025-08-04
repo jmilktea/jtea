@@ -17,7 +17,8 @@
 [除了java-jar,还能这样运行你的springboot应用](https://github.com/jmilktea/jmilktea/blob/master/spring%20cloud/springboot%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F.md)    
 [网关限流实战](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/gateway%E9%99%90%E6%B5%81%E5%AE%9E%E6%88%98.md)     
 [feign监控](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/feign/feign%E7%9B%91%E6%8E%A7.md)     
-[请求P99指标监控](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/feign/%E8%AF%B7%E6%B1%82P99%E6%8C%87%E6%A0%87%E7%9B%91%E6%8E%A7.md)    
+[请求P99指标监控](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/feign/%E8%AF%B7%E6%B1%82P99%E6%8C%87%E6%A0%87%E7%9B%91%E6%8E%A7.md)      
+[zuul升级到gateway](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/zuul%E5%8D%87%E7%BA%A7%E5%88%B0gateway.md)    
 
 ## webflux   
 [错误处理](https://github.com/jmilktea/jmilktea/blob/master/webflux/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.md)  
