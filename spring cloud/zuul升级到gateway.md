@@ -19,7 +19,7 @@
 spring cloud gateway是基于webflux框架构建的，功能丰富，高性能的，响应式网关。   
 webflux是spring5推出的响应式web服务，与之前的spring mvc对比，传统的servlet是阻塞的。官网介绍如下：   
 
-![image](1)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-1.png)   
 
 https://spring.io/reactive/
 
@@ -39,11 +39,11 @@ project reactor是基于生产者-消费者模型，生产者负责生产数据�
 
 顶层Publisher接口：   
 
-![image](2)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-2.png)   
 
 顶层Subscriber接口：   
 
-![image](3)   
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-3.png)   
 
 **Mono和Flux**是两个最常用的生产者，我们平时使用的几乎都是它们，Mono表示生产0或1个元素的生产者，Flux表示生产0至N个元素的生产者，可以简单理解为Object和List。   
 
@@ -60,12 +60,12 @@ Flux.just(1, 2, 3, 4)
 遇到这种问题，一般我们的做法就是增加处理线程，但没有免费的午餐，增加线程会增加资源消耗，每个线程都可以申请占用1M的栈空间，和少量的内核空间，同时更多的线程会带来线程切换，也会有性能损耗。    
 而一旦servlet容器的线程被使用完了，请求就不得不排队，进入队列，尽管cpu此时是空闲的，但得不到任何利用。     
 
-![image](4)     
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-4.png)     
 
 servlet 3.0后开始支持非阻塞，tomcat等常用容器都支持servlet3.0。      
 与之相比基于响应式的webflux框架是非阻塞的，这样线程可以立马返回，处理其它任务，而当IO返回，如读取数据库完成时，响应式框架会通知我们，线程接着处理返回的数据。
 
-![image](5)     
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-5.png)     
 
 从图可以看到，通过事件的方式将同步变成异步，请求只需要将阻塞操作提交给Event Loop就可以返回处理其它请求，当操作返回时，EventLoop会通知线程继续处理，这样一个线程就可以处理很多个请求。   
 
@@ -73,7 +73,7 @@ servlet 3.0后开始支持非阻塞，tomcat等常用容器都支持servlet3.0�
 webflux 需要使用非阻塞的容器，如：netty，tomcat等都可以，默认使用的是netty，服务启动后可以看到：o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 18001       
 netty是一个高性能、易扩展、社区活跃的网络开发框架，已经过大量的生产验证，ElasticSearch、Dubbo、Rocketmq、HBase、spring webflux，gRPC都使用了netty作为底层网络开发框架。     
 
-**注意：**既然使用了响应式框架，意味着只有少量处理请求的线程，请求从头到尾就不能有阻塞操作，否则请求线程很快会消耗完。
+**注意**，既然使用了响应式框架，意味着只有少量处理请求的线程，请求从头到尾就不能有阻塞操作，否则请求线程很快会消耗完。
 
 正例：web 请求 → 查接口（非阻塞）→ 处理返回数据 → 查数据库（非阻塞）→ 处理数据     
 反例：web 请求 → 查接口（非阻塞）→ 处理返回数据 → 查数据库（阻塞）→ 处理数据      
@@ -81,7 +81,7 @@ netty是一个高性能、易扩展、社区活跃的网络开发框架，已经
 幸运的是现在基本所有的阻塞IO操作都有相应的reactive实现，如Feign → ReactiveFeign，Redis → ReactiveRedis，jdbc → r2dbc。      
 
 ## springcloud gateway处理请求流程
-![image](6)      
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-6.png)      
 
 - global filter，实现GlobalFilter接口，拦截所有请求
 - gateway filter，实现GatewayFilter接口，拦截指定的路由请求
@@ -131,7 +131,7 @@ management:
 ```   
 说明：不需要调整，端点测试正常。   
 
-3.1.3
+3.1.4
 ```
 ribbon:
   MaxAutoRetries: 0
@@ -164,7 +164,7 @@ spring:
 说明：gateway下ribbon已经废弃，使用loadbalancer。    
 cache.enabled: false 禁止loadbalancer缓存，避免双缓存，使用eureka client缓存即可。     
 
-3.1.4
+3.1.5
 ```
 hystrix:
   command:
@@ -176,9 +176,9 @@ hystrix:
 
 ->
 ```
-说明：删掉，gateway下hystrix已经废弃。    
+说明：删掉，gateway下hystrix已经废弃，改用resilience4j。   
 
-3.1.5
+3.1.6
 ```
 zuul:
   semaphore:
@@ -201,7 +201,7 @@ routes:
       - name: CircuitBreaker
 ``` 
 
-3.1.6
+3.1.7
 ```
 eureka:
   client:
@@ -244,7 +244,7 @@ public interface DataClient {
 @Autowired
 ReactiveRedisTemplate reactiveRedisTemplate;
 ```   
-3.3 其它    
+## 3.3 其它    
 3.3.1 session问题    
 webflux使用的是WebSession，redis session使用的是EnableRedisWebSession。    
 sessionId问题需要重写一下解析sessionId的方法，保证传到下游服务的sessionId一致，参考：https://juejin.cn/post/7181636384979943481。     
@@ -288,60 +288,60 @@ jvm参数：-Xms1g -Xmx1g
 ## 4.1 zuul
 **线程数：200**    
 执行情况：失败率：0，P99：388，吞吐量：1403     
-![image](7)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-7.png)    
 
 gc情况：2秒左右一次young gc，无full gc（超过3分钟没观测到）  
-![image](8)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-8.png)    
 
 线程情况：大量线程  
-![image](9)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-9.png)    
 
 cpu情况：cpu负载14,使用率60%  
-![image](10)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-10.png)   
 
 **线程数：600**     
 执行情况：失败率：0.01，P99：810，吞吐量：1952	  
-![image](11)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-11.png)    
 
 gc情况：每秒一次young gc，每分钟一次full gc	  
-![image](12)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-12.png)    
 
 线程情况：大量线程	  
-![image](13)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-13.png)
 
 cpu情况：cpu负载77，使用率80%  
-![image](14)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-14.png)
 
 ## 4.2 springcloud gateway
 **线程数：200**    
 执行情况：失败率：0，P99：403，吞吐量：1388  
-![image](15)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-15.png)
 
 gc情况：3秒左右一次young gc，无full gc  
-![image](16)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-16.png)
 
 线程情况：线程数稳定	  
-![image](17)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-17.png)
 
 cpu情况：cpu负载14，使用率50%  
-![image](18)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-18.png)
 
 **线程数：600**    
 执行情况：失败率：0.02%，P99：787，吞吐量：2202  
-![image](19)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-19.png)
 
 gc情况：2秒左右一次young gc，无full gc   
-![image](20)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-20.png)
 
 线程情况：线程数稳定  
-![image](21)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-21.png)
 
 cpu情况：cpu负载28，使用率70%   
-![image](22)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-22.png)
 
 
 官网的benchmark：https://github.com/spencergibb/spring-cloud-gateway-bench  
-![image](23)
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-23.png)
 
 ## 总结      
 使用springcloud gateway在并发增加时，线程数始终稳定，与cpu核数一致，图中的http-reactor线程，而zuul会创建大量线程。     
@@ -357,20 +357,20 @@ springcloud gateway请求时间并没有比zuul好，这也符合前面的原理
 优点：不需要部署新服务，切换过程简单，不需要下线旧服务。   
 缺点：切换验证过程，老网关节点压力会有较大压力。   
 整体过程如下：   
-![image](24) 
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-24.png) 
 
 ## 方案二：蓝绿发布    
 部署一套新网关服务，放少量流量到新网关服务，验证没问题，直接下线老网关服务。     
 优点：对老网关完全没有影响，不会增加节点压力。    
 缺点：需要部署一套新服务，切换过程比较复杂，需要下线旧服务。    
 整体过程如下：   
-![image](25)    
+![image](https://github.com/jmilktea/jtea/blob/master/spring%20cloud/images/z-g-25.png)    
 
 ## 回滚方案
 验证过程发现有问题，通过ng切量回老网关。   
 老网关代码master checkout一个分支保留，有问题可以随时回退到老代码。     
 
-## 上线后问题   
+## 其它问题   
 1.熔断，https://cloud.spring.io/spring-cloud-gateway/reference/html/#spring-cloud-circuitbreaker-filter-factory   
 熔断后默认抛出的异常不友好，无法看出是被熔断了，可以重写其逻辑。   
 
