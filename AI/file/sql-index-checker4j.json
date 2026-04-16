@@ -1,0 +1,14 @@
+{
+  "repo_root": "D:\\risk",
+  "mysql_jdbc_jar": "your mysql-connector-j-8.0.33.jar path",
+  "base_branch": "master",
+  "fetch_timeout_seconds": 15,
+  "repos": [
+    "your repostiroy"
+  ],
+  "db_host": "dbhost",
+  "db_port": 3306,
+  "db_name": "dbname",
+  "db_user": "dbuser",
+  "db_password": "dbpwd"
+}
