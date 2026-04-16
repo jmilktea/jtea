@@ -194,6 +194,7 @@
 
 ## AI
 [修改工具包版本号](https://github.com/jmilktea/jtea/blob/master/AI/%E4%BF%AE%E6%94%B9%E5%B7%A5%E5%85%B7%E5%8C%85%E7%89%88%E6%9C%AC%E5%8F%B7.md)   
+[一个轻量级的 SQL 索引检查工具](https://github.com/jmilktea/jtea/blob/master/AI/%E4%B8%80%E4%B8%AA%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%9A%84%20SQL%20%E7%B4%A2%E5%BC%95%E6%A3%80%E6%9F%A5%E5%B7%A5%E5%85%B7.md)    
 
 ## 文章收集      
 [arthas tunnel,集中管理所有agent](https://arthas.aliyun.com/doc/tunnel.html)         
