@@ -183,5 +183,5 @@ Found 1 DML change(s), 0 DDL file(s).
 - **历史趋势分析**：记录每次检查结果，追踪 SQL 质量变化趋势
 
 ## 文件
-[sql-index-checker4j.ps1]([https://github.com/jmilktea/jtea/blob/master/AI/file/SqlIndexChecker4j.ps1](https://github.com/jmilktea/jtea/blob/master/AI/file/sql-index-checker4j.ps1))    
+[sql-index-checker4j.ps1](https://github.com/jmilktea/jtea/blob/master/AI/file/sql-index-checker4j.ps1)   
 [sql-index-checker4j.java](https://github.com/jmilktea/jtea/blob/master/AI/file/SqlIndexChecker4j.java)    
