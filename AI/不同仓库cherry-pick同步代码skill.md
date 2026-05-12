@@ -222,4 +222,4 @@ git push internal {分支名}_internal
 
 它不酷也不炫，就是实实在在地帮我省了每周半小时的机械操作。对于这种"不难但烦"的重复性工作，我觉得是目前 AI 编程助手最务实的用法之一。  
 
-[具体SKILL.md文件]()  
+[具体SKILL.md文件](https://github.com/jmilktea/jtea/blob/master/AI/file/cherry-pick-code/SKILL.md)  
