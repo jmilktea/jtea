@@ -129,6 +129,7 @@ $ jmap -dump:format=b,file=heap.hprof `which java` core.5709
 ```
 thread -10 -- 查看top 10 cpu
 thread --all -- 显示所有线程
+thread 763 -- 查看763线程堆栈
 heapdump arthas-output/dump.hprof -- head dump
 ```
 20250702补充：    
